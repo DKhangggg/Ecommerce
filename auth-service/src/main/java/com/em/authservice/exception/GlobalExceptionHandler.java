@@ -3,6 +3,9 @@ package com.em.authservice.exception;
 import com.em.authservice.dto.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,74 +16,52 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        ApiResponse<Object> response = ApiResponse.<Object>builder()
-                .message("Validation failed")
-                .Status(400)
-                .data(null)
-                .timestamp(String.valueOf(System.currentTimeMillis()))
-                .build();
-        return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.badRequest().body(ApiResponse.badRequest("Validation failed"));
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ApiResponse<Object>> handleUsernameNotFoundException(UsernameNotFoundException ex) {
-        ApiResponse<Object> response = ApiResponse.<Object>builder()
-                .message("User not found")
-                .Status(404)
-                .data(null)
-                .timestamp(String.valueOf(System.currentTimeMillis()))
-                .build();
-        return ResponseEntity.status(404).body(response);
+        return ResponseEntity.status(404).body(ApiResponse.notFound("User not found"));
     }
+
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<ApiResponse<Object>> handleDisabledException(DisabledException ex) {
+        return ResponseEntity.status(403).body(ApiResponse.forbidden("User account is disabled"));
+    }
+
+    @ExceptionHandler(LockedException.class)
+    public ResponseEntity<ApiResponse<Object>> handleLockedException(LockedException ex) {
+        return ResponseEntity.status(423).body(ApiResponse.error(423).message("User account is locked").build());
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiResponse<Object>> handleBadCredentialsException(BadCredentialsException ex) {
+        return ResponseEntity.status(401).body(ApiResponse.unauthorized("Invalid username or password"));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleGenericException(Exception ex) {
-        ApiResponse<Object> response = ApiResponse.builder()
-                .Status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .message("Internal server error: " + ex.getMessage())
-                .data(null)
-                .timestamp(String.valueOf(System.currentTimeMillis()))
-                .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        return ResponseEntity.status(500).body(ApiResponse.internalServerError("Internal server error: " + ex.getMessage()));
     }
+
     @ExceptionHandler(DuplicateAccountException.class)
     public ResponseEntity<ApiResponse<Object>> handleDuplicateAccountException(DuplicateAccountException ex) {
-        ApiResponse<Object> response = ApiResponse.<Object>builder()
-                .message("Duplicate account found: " + ex.getMessage())
-                .Status(409)
-                .data(null)
-                .timestamp(String.valueOf(System.currentTimeMillis()))
-                .build();
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        return ResponseEntity.status(409).body(ApiResponse.conflict("Duplicate account found: " + ex.getMessage()));
     }
+
     @ExceptionHandler(TokenExpiredException.class)
     public ResponseEntity<ApiResponse<Object>> handleTokenExpiredException(TokenExpiredException ex) {
-        ApiResponse<Object> response = ApiResponse.<Object>builder()
-                .message("Token expired: " + ex.getMessage())
-                .Status(401)
-                .data(null)
-                .timestamp(String.valueOf(System.currentTimeMillis()))
-                .build();
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        return ResponseEntity.status(401).body(ApiResponse.unauthorized("Token expired: " + ex.getMessage()));
     }
+
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<ApiResponse<Object>> handleInvalidTokenException(InvalidTokenException ex) {
-        ApiResponse<Object> response = ApiResponse.<Object>builder()
-                .message("Invalid token: " + ex.getMessage())
-                .Status(401)
-                .data(null)
-                .timestamp(String.valueOf(System.currentTimeMillis()))
-                .build();
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        return ResponseEntity.status(401).body(ApiResponse.unauthorized("Invalid token: " + ex.getMessage()));
     }
+
     @ExceptionHandler(InvalidRequestException.class)
     public ResponseEntity<ApiResponse<Object>> handleInvalidRequestException(InvalidRequestException ex) {
-        ApiResponse<Object> response = ApiResponse.<Object>builder()
-                .message("Invalid request: " + ex.getMessage())
-                .Status(400)
-                .data(null)
-                .timestamp(String.valueOf(System.currentTimeMillis()))
-                .build();
-        return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.badRequest().body(ApiResponse.badRequest(ex.getMessage()));
     }
 
 }

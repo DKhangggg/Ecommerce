@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.core.Local;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,18 +22,19 @@ import java.util.Map;
 @Service
 public class JwtService {
 
-    private final String SECRET_KEY = "super-secret-key-123456";
-    private final long EXPIRATION_TIME = 864_000_000;// 10 days
+    private final String SECRET_KEY = "super-secret-key-123456-people-must-change-this-key-now!";
+    private final long EXPIRATION_TIME = 864_000_000;//
 
-    @Autowired
-    private AccountService accountService;
+
+    private long refreshExpiration= 7*24*60*60*1000; // 7 days
+
 
     public String generateToken(UserDetails accountDetail) {
-        return buildToken(accountDetail, 3600000);
+        return buildToken(accountDetail, EXPIRATION_TIME);
     }
 
     public String generateRefreshToken(UserDetails accountDetail){
-        return buildToken(accountDetail, EXPIRATION_TIME);
+        return buildToken(accountDetail, refreshExpiration);
     }
 
     private String buildToken(UserDetails userDetails,long expirationTime) {
@@ -43,11 +45,12 @@ public class JwtService {
                     .map(GrantedAuthority::getAuthority)
                     .toList());
             claims.put("id", customAccountDetail.getAccount().getId());
-            claims.put("username", customAccountDetail.getAccount().getUsername());
+
 
         }
         return Jwts.builder()
                 .claims(claims)
+                .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis()+ expirationTime))
                 .signWith(getSigningKey())
@@ -56,13 +59,10 @@ public class JwtService {
     public boolean isTokenValid(String token){
         try{
            String username = extractUsername(token);
-           if(username.isEmpty() || accountService.loadUserByUsername(username) == null){
+           if(username == null || username.isEmpty()){
                return false;
            }
-           if(isTokenExpired(token)){
-                return false;
-           }
-            return !ExtractClaims(token).getExpiration().before(new Date());
+           return !isTokenExpired(token);
         } catch (Exception e) {
             return false;
         }
@@ -82,6 +82,7 @@ public class JwtService {
     private Key getSigningKey(){
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
+
     public boolean isTokenExpired(String token) {
         return ExtractClaims(token).getExpiration().before(new Date());
     }
