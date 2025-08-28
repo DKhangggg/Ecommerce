@@ -1,3 +1,6 @@
+server:
+  port: 8082  # Đổi port để tránh conflict với auth-service
+
 spring:
   application:
     name: user-service
@@ -14,18 +17,21 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: true
         format_sql: true
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8080/realms/ecommerce-realm
-keycloak:
-  auth-server-url: http://localhost:8080/
-  realm: ecommerce
-  resource: user-service
-  bearer-only: true
-  ssl-required: external
-  credentials:
-    secret: <client-secret-trong-keycloak>
-server:
-  port: 8081
+  sql:
+    init:
+      mode: always
+
+grpc:
+  client:
+    auth-service:
+      address: "static://localhost:9090"
+      negotiationType: plaintext
+
+jwt:
+  secret: mySecretKeyForJWTTokenGenerationThatIsLongEnoughToMeetTheRequirements256BitsMinimum
+
+logging:
+  level:
+    root: INFO
+    com.em.userservice: DEBUG
+    org.springframework.security: DEBUG

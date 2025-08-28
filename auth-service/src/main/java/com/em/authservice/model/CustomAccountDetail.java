@@ -5,7 +5,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,7 +20,7 @@ public class CustomAccountDetail implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = account.getRoles();
         return roles.stream()
-                .map(role-> new SimpleGrantedAuthority(role.getRoleName()))
+                .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
                 .collect(Collectors.toSet());
     }
 
@@ -34,6 +33,7 @@ public class CustomAccountDetail implements UserDetails {
     public String getUsername() {
         return account.getUsername();
     }
+
     @Override
     public boolean isEnabled() {
         return account.isActive();
@@ -41,5 +41,20 @@ public class CustomAccountDetail implements UserDetails {
 
     public Account getAccount() {
         return account;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // Account không bao giờ expired
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // Account không bị lock
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // Credentials không expired
     }
 }

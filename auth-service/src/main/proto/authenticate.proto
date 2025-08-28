@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package authenticate;
+
+option java_multiple_files = true;
+option java_package = "com.em.ServiceStack.grpc";
+option java_outer_classname = "AuthenticateProto";
+//request messages
+message ValidateTokenRequest {
+  string token = 1;
+}
+// Response messages
+message TokenResponse {
+  bool valid = 1;
+  string username = 2;
+}
+
+// Authentication Service
+service AuthenticationService {
+  rpc ValidateToken(ValidateTokenRequest) returns (TokenResponse);
+}

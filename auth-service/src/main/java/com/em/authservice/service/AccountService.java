@@ -11,12 +11,10 @@ import com.em.authservice.model.CustomAccountDetail;
 import com.em.authservice.model.Role;
 import com.em.authservice.repository.AccountRepository;
 import com.em.authservice.repository.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -117,7 +115,6 @@ public class AccountService implements UserDetailsService {
         account.setEmail(request.getEmail());
         account.setActive(true);
         account.setRefreshToken(null);
-
         account.getRoles().add(userRole);
 
         accountRepo.save(account);

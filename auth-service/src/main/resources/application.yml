@@ -1,5 +1,6 @@
 server:
   port: 8081
+
 spring:
   application:
     name: auth-service
@@ -16,8 +17,28 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: true
         format_sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
+
+# gRPC Configuration
+grpc:
+  server:
+    port: 9090
+    security:
+      enabled: false  # Disable gRPC security completely
+      auth-type: NONE # No authentication required
+
+# JWT Configuration - Secret key phải >= 256 bits
+jwt:
+  secret: mySecretKeyForJWTTokenGenerationThatIsLongEnoughToMeetTheRequirements256BitsMinimum
+  expiration: 86400000 # 24 hours
+  refresh-expiration: 604800000 # 7 days
+
 logging:
   level:
     root: INFO
     com.em.authservice: DEBUG
-
+    org.springframework.security: DEBUG
