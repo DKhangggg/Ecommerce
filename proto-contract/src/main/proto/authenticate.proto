@@ -1,10 +1,9 @@
-syntax = "proto3";
+syntax = 'proto3';
 
 package authenticate;
-
-option java_multiple_files = true;
-option java_package = "com.em.ServiceStack.grpc";
-option java_outer_classname = "AuthenticateProto";
+option java_multiple_files=true;
+option java_package="com.em.proto";
+option java_outer_classname="AuthenticateProto";
 //request messages
 message ValidateTokenRequest {
   string token = 1;

@@ -54,7 +54,6 @@ public class AuthController {
     public ResponseEntity<ApiResponse<?>> register(@Valid @RequestBody RegisterRequest request) {
         log.info("Registering user with username: {}", request.getUsername());
         log.info("Registering user with email: {}", request.getEmail());
-
         AuthResponse authResponse = accountService.register(request);
         return ResponseEntity.status(201).body(ApiResponse.created("Registration successful", authResponse));
     }

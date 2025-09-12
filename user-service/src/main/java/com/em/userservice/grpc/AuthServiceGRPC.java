@@ -1,10 +1,9 @@
 package com.em.userservice.grpc;
 
-import com.em.ServiceStack.grpc.AuthenticationServiceGrpc;
-import com.em.ServiceStack.grpc.TokenResponse;
-import com.em.ServiceStack.grpc.ValidateTokenRequest;
+
+import com.em.proto.AuthenticationServiceGrpc;
+import com.em.proto.ValidateTokenRequest;
 import com.em.userservice.dto.response.TokenValidResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service

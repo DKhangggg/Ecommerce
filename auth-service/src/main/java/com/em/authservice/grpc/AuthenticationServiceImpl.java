@@ -2,14 +2,12 @@ package com.em.authservice.grpc;
 
 import com.em.authservice.dto.response.TokenValidResponse;
 import com.em.authservice.service.AccountService;
+import com.em.proto.AuthenticationServiceGrpc;
+import com.em.proto.TokenResponse;
+import com.em.proto.ValidateTokenRequest;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
-
-// Import generated classes từ protobuf
-import com.em.ServiceStack.grpc.AuthenticationServiceGrpc;
-import com.em.ServiceStack.grpc.TokenResponse;
-import com.em.ServiceStack.grpc.ValidateTokenRequest;
 
 @GrpcService
 @RequiredArgsConstructor

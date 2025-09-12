@@ -25,10 +25,8 @@ public class User {
     private LocalDate dateOfBirth;
 
     private String avatarUrl;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Address> addresses = new ArrayList<>();
-
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

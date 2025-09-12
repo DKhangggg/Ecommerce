@@ -1,6 +1,6 @@
 package com.em.userservice.config;
 
-import com.em.ServiceStack.grpc.AuthenticationServiceGrpc;
+import com.em.proto.AuthenticationServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.context.annotation.Bean;
@@ -17,5 +17,5 @@ public class GrpcClientConfig {
     @Bean
     public AuthenticationServiceGrpc.AuthenticationServiceBlockingStub authStub(ManagedChannel authChannel) {
         return AuthenticationServiceGrpc.newBlockingStub(authChannel);
-    }
+   }
 }

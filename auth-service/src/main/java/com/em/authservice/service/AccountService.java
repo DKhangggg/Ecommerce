@@ -105,8 +105,7 @@ public class AccountService implements UserDetailsService {
         if(accountRepo.existsByEmail(request.getEmail())){
             throw new InvalidRequestException("Email already exists");
         }
-
-        Role userRole = roleRepository.findByRoleName("USER")
+        Role userRole = roleRepository.findByRoleName("ROLE_USER")
                 .orElseThrow(() -> new InvalidRequestException("Default USER role not found"));
 
         Account account = new Account();

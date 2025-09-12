@@ -18,11 +18,6 @@ spring:
         show_sql: true
         format_sql: true
     defer-datasource-initialization: true
-  sql:
-    init:
-      mode: always
-      data-locations: classpath:data.sql
-
 # gRPC Configuration
 grpc:
   server:
@@ -40,5 +35,5 @@ jwt:
 logging:
   level:
     root: INFO
-    com.em.authservice: DEBUG
+    com.em.ServiceStack: DEBUG
     org.springframework.security: DEBUG
