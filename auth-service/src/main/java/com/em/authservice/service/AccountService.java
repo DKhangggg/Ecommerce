@@ -1,7 +1,9 @@
 package com.em.authservice.service;
 
+import com.em.authservice.OpenFeign.UserClient;
 import com.em.authservice.dto.request.LoginRequest;
 import com.em.authservice.dto.request.RegisterRequest;
+import com.em.authservice.dto.request.UserCreate;
 import com.em.authservice.dto.response.AuthResponse;
 import com.em.authservice.dto.response.TokenValidResponse;
 import com.em.authservice.exception.InvalidRequestException;
@@ -29,13 +31,15 @@ public class AccountService implements UserDetailsService {
     private final JwtService jwtService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final UserClient userClient;
 
-    public AccountService(AccountRepository accountRepo, RoleRepository roleRepository, JwtService jwtService, BCryptPasswordEncoder bCryptPasswordEncoder, @Lazy AuthenticationManager authenticationManager) {
+    public AccountService(AccountRepository accountRepo, RoleRepository roleRepository, JwtService jwtService, BCryptPasswordEncoder bCryptPasswordEncoder, @Lazy AuthenticationManager authenticationManager, UserClient userClient) {
         this.accountRepo = accountRepo;
         this.roleRepository = roleRepository;
         this.jwtService = jwtService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.authenticationManager = authenticationManager;
+        this.userClient = userClient;
     }
 
     @Override
@@ -115,14 +119,23 @@ public class AccountService implements UserDetailsService {
         account.setActive(true);
         account.setRefreshToken(null);
         account.getRoles().add(userRole);
+        Account savedAccount=accountRepo.save(account);
+        UserCreate userCreate = new UserCreate();
+        userCreate.setId(savedAccount.getId());
+        userCreate.setFirstName(request.getFirstName());
+        userCreate.setLastName(request.getLastName());
+        userCreate.setEmail(request.getEmail());
+        userCreate.setPhoneNumber(request.getPhoneNumber());
+        userCreate.setGender(request.getGender());
+        userCreate.setDateOfBirth(request.getDateOfBirth());
+        userClient.createUser(userCreate);
 
-        accountRepo.save(account);
 
         UserDetails accountDetail = loadUserByUsername(request.getUsername());
         String token = jwtService.generateToken(accountDetail);
         String refreshToken = jwtService.generateRefreshToken(accountDetail);
-        account.setRefreshToken(refreshToken);
-        accountRepo.save(account);
+        savedAccount.setRefreshToken(refreshToken);
+        accountRepo.save(savedAccount);
 
         return new AuthResponse(token, refreshToken);
     }

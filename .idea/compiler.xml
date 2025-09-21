@@ -11,6 +11,8 @@
         <module name="auth-service" />
         <module name="proto-contract" />
         <module name="user-service" />
+        <module name="discovery-server" />
+        <module name="Product-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -19,8 +21,10 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Product-service" options="" />
       <module name="api-gateway" options="" />
       <module name="auth-service" options="" />
+      <module name="discovery-server" options="" />
       <module name="proto-contract" options="" />
       <module name="user-service" options="" />
     </option>

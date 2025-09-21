@@ -14,6 +14,8 @@
         <module>auth-service</module>
         <module>user-service</module>
         <module>api-gateway</module>
+        <module>discovery-server</module>
+        <module>Product-service</module>
     </modules>
 
     <properties>

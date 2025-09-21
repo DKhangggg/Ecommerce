@@ -1,5 +1,6 @@
 package com.em.userservice.controller;
 
+import com.em.userservice.dto.request.UserCreate;
 import com.em.userservice.dto.response.TokenValidResponse;
 import com.em.userservice.grpc.AuthServiceGRPC;
 import com.em.userservice.service.UserService;
@@ -21,5 +22,11 @@ public class UserController {
     public ResponseEntity<TokenValidResponse> validateToken(@RequestParam("token") String token) {
         TokenValidResponse response = authServiceGRPC.getToken(token);
         return  ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/internal")
+    public ResponseEntity<Void> createUser(@RequestBody UserCreate request) {
+        userService.createUser(request);
+        return ResponseEntity.status(201).build();
     }
 }
