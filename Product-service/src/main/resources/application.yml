@@ -1,8 +1,0 @@
-spring:
-  application:
-    name: Product-service
-  data:
-    mongodb:
-      uri: mongodb://root:12345@localhost:27017/ecommerce_product?authSource=admin
-server:
-  port: 8083

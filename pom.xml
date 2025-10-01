@@ -10,12 +10,17 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>proto-contract</module>
-        <module>auth-service</module>
-        <module>user-service</module>
-        <module>api-gateway</module>
-        <module>discovery-server</module>
-        <module>Product-service</module>
+        <module>config/api-gateway</module>
+        <module>config/config-server</module>
+        <module>config/discovery-server</module>
+
+        <module>common/common-data</module>
+        <module>common/proto-contract</module>
+
+        <module>services/auth-service</module>
+        <module>services/user-service</module>
+        <module>services/product-service</module>
+        <module>services/inventory-service</module>
     </modules>
 
     <properties>
@@ -100,6 +105,7 @@
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
+                        <parameters>true</parameters>
                     </configuration>
                 </plugin>
 
