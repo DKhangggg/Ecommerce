@@ -13,14 +13,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/product-service")
 @AllArgsConstructor
 @Slf4j
 public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping
+    // PUBLIC ENDPOINTS - Không cần authentication
+    @GetMapping("/public/products")
     public ResponseEntity<ApiResponse<List<ProductResponse>>> getAllProducts() {
         log.info("Getting all products...");
         List<ProductResponse> products = productService.getAllProducts();
@@ -28,42 +29,43 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.success("Fetched products successfully", products));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/public/products/{id}")
     public ResponseEntity<ApiResponse<ProductResponse>> getProductById(@PathVariable String id) {
         log.info("Getting product by ID: {}", id);
         ProductResponse product = productService.getProductById(id);
         return ResponseEntity.ok(ApiResponse.success("Product fetched successfully", product));
     }
 
-    @PostMapping
+    // PRIVATE ENDPOINTS - Cần authentication và role ADMIN
+    @PostMapping("/private/products")
     public ResponseEntity<ApiResponse<?>> createProduct(@Valid @RequestBody ProductRequest productRequest) {
         log.info("Creating product: {}", productRequest.getName());
         productService.createProduct(productRequest);
         return ResponseEntity.ok(ApiResponse.created("Product created successfully", null));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/private/products/{id}")
     public ResponseEntity<ApiResponse<?>> updateProduct(@PathVariable String id, @Valid @RequestBody ProductRequest productRequest) {
         log.info("Updating product with ID: {}", id);
         productService.updateProduct(id, productRequest);
         return ResponseEntity.ok(ApiResponse.success("Product updated successfully", null));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/private/products/{id}")
     public ResponseEntity<ApiResponse<Object>> deleteProduct(@PathVariable String id) {
         log.info("Deleting product with ID: {}", id);
         productService.deleteProduct(id);
         return ResponseEntity.ok(ApiResponse.success("Product deleted successfully", null));
     }
 
-    @PatchMapping("/{id}/stock")
+    @PatchMapping("/private/products/{id}/stock")
     public ResponseEntity<ApiResponse<?>> updateStock(@PathVariable String id, @RequestParam Integer stock) {
         log.info("Updating stock for product ID: {} to {}", id, stock);
         productService.updateStock(id, stock);
         return ResponseEntity.ok(ApiResponse.success("Stock updated successfully", null));
     }
 
-    @PatchMapping("/{id}/decrease-stock")
+    @PatchMapping("/private/products/{id}/decrease-stock")
     public ResponseEntity<ApiResponse<?>> decreaseStock(@PathVariable String id, @RequestParam Integer quantity) {
         log.info("Decreasing stock for product ID: {} by {}", id, quantity);
         productService.decreaseStock(id, quantity);

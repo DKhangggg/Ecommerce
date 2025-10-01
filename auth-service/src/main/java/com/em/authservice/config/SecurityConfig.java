@@ -36,8 +36,12 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth->auth
-                        .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/refresh-token", "/api/auth/validate-token").permitAll()
-                        .requestMatchers("/api/auth/logout").authenticated()
+                        .requestMatchers("/api/auth-service/public/login",
+                                "/api/auth-service/public/register",
+                                "/api/auth-service/public/refresh-token",
+                                "/api/auth-service/public/validate-token")
+                        .permitAll()
+                        .requestMatchers("/api/auth-service/public/logout").authenticated()
                         .anyRequest().authenticated())
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)

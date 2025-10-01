@@ -11,14 +11,27 @@ spring:
             - id: auth-service
               uri: lb://auth-service
               predicates:
-              - Path=/api/auth/**
+              - Path=/api/auth-service/**
               metadata:
                   auth: public
 
             - id: user-service
               uri: lb://user-service
               predicates:
-              - Path=/api/user/**
+              - Path=/api/user-service/**
+              metadata:
+                auth: private
+
+            - id: product-service-public
+              uri: lb://product-service
+              predicates:
+                - Path=/api/product-service/public/**
+              metadata:
+                auth: public
+            - id: product-service-private
+              uri: lb://product-service
+              predicates:
+                - Path=/api/product-service/private/**
               metadata:
                 auth: private
 eureka:

@@ -22,7 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/auth")
+
+@RequestMapping("/api/auth-service/public")
 public class AuthController {
 
     @Autowired
@@ -51,7 +52,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<?>> register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<ApiResponse<?>> register( @RequestBody RegisterRequest request) {
         log.info("Registering user with username: {}", request.getUsername());
         log.info("Registering user with email: {}", request.getEmail());
         AuthResponse authResponse = accountService.register(request);

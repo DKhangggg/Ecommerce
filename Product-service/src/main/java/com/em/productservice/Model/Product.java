@@ -25,7 +25,7 @@ public class Product {
     private String name;
     private String description;
     private double price;
-    private int stock;
+    private String sellerId;
 
     @DBRef(lazy = true)
     private List<Category> categories;  // Reference to actual Category documents

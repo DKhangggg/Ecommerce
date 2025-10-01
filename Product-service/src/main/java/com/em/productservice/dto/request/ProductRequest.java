@@ -29,7 +29,7 @@ public class ProductRequest {
     @Max(value = 999999, message = "Product stock cannot exceed 999,999")
     private Integer stock;
 
-    private List<String> categoryIds;  // Changed from Set to List
+    private List<String> categoryIds;
 
     private List<String> imageUrls;
 

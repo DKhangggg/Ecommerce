@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name="user-service")
 public interface UserClient {
 
-    @PostMapping("/api/user/internal")
+    @PostMapping("/api/user-service/private/internal")
     void createUser(@RequestBody UserCreate request);
 }
