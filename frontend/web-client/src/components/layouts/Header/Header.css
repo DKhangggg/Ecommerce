@@ -1,0 +1,15 @@
+.Container {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  gap: 16px;
+  padding: 16px;
+  background-color: #ffffff;
+}
+.Topbar {
+}
+.Middlebar {
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+  align-items: center;
+  gap: 16px;
+}
