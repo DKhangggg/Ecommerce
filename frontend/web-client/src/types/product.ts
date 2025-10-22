@@ -1,9 +1,9 @@
 export interface Product {
   id: number;
   name: string;
-  href: string;
-  imageSrc: string;
-  imageAlt: string;
   price: string;
-  color: string;
+  imageSrc: string;
+  color?: string;
+  href?: string;
+  imageAlt?: string;
 }

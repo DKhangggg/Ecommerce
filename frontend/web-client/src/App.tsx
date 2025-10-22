@@ -1,7 +1,8 @@
-import UserLayout from "./components/layouts/User";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
 
 function App() {
-  return <UserLayout></UserLayout>;
+  return <RouterProvider router={router} />;
 }
 
 export default App;

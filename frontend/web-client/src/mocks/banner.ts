@@ -1,6 +1,7 @@
-import type { BannerProps } from "../components/layouts/Main/Banner";
+import type {} from "../components/Banner/Banner";
+import type { banner } from "../types/banner";
 
-export const mockBanners: BannerProps[] = [
+export const mockBanners: banner[] = [
   {
     id: 1,
     title: "Top sách bán chạy",
