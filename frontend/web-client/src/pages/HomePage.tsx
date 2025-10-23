@@ -39,17 +39,17 @@ export function HomePage() {
     }
   }, []);
 
-  if (isBannerLoading) {
-    return <CircularIndeterminate />;
+  if (isBannerLoading && isProductLoading) {
+    return <BannerList banners={banners} isLoading={isBannerLoading} />;
   }
 
   return (
     <>
       <BannerList banners={banners} />
       <ProductList products={products} title="Sản phẩm nổi bật" />
-      <ProductList products={products} title="Sản phẩm nổi bật" />
-      <ProductList products={products} title="Sản phẩm nổi bật" />
-      <ProductList products={products} title="Sản phẩm nổi bật" />
+      <ProductList products={products} title="Hot deals" />
+      <ProductList products={products} title="Bán chạy Nhất" />
+      <ProductList products={products} title="Flash Sales" />
     </>
   );
 }

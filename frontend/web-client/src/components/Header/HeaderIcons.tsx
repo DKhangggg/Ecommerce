@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 
 export default function HeaderIcons() {
   return (
-    <div className="flex justify-evenly items-center">
+    <div className="flex justify-evenly items-center header-icons">
       <Link
         to="/wishlist"
-        className="relative hover:text-pink-600 flex items-center gap-1"
+        className="relative flex items-center gap-1 opacity-90 hover:opacity-100"
       >
         <Heart />
         Yêu Thích
@@ -14,7 +14,7 @@ export default function HeaderIcons() {
 
       <Link
         to="/account"
-        className="hover:text-blue-600 flex items-center gap-1"
+        className="flex items-center gap-1 opacity-90 hover:opacity-100"
       >
         <User />
         Tài khoản
@@ -22,7 +22,7 @@ export default function HeaderIcons() {
 
       <Link
         to="/cart"
-        className="relative hover:text-green-600 flex items-center gap-1"
+        className="relative flex items-center gap-1 opacity-90 hover:opacity-100"
       >
         <ShoppingCart />
         Giỏ hàng

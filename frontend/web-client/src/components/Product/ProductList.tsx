@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import type { Product } from "../../types/product";
 import ProductCard from "./ProductCard";
+import "./product.css";
 
 interface Props {
   title?: string;
@@ -34,7 +35,17 @@ export default function ProductList({
   };
 
   return (
-    <div className="bg-white rounded-lg p-4 mb-4 w-full">
+    <div
+      className="w-full"
+      style={{
+        background: "#fff",
+        border: "1px solid var(--brand-2)",
+        borderRadius: 16,
+        padding: 16,
+        marginBottom: 16,
+        boxShadow: "0 6px 16px rgba(0,0,0,0.06)",
+      }}
+    >
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-gray-800">{title}</h2>
         {showViewAll && (
@@ -81,15 +92,23 @@ export default function ProductList({
           </svg>
         </button>
 
+        {/* Mobile/tablet: horizontal scroller */}
         <div
           ref={scrollContainerRef}
-          className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-2"
+          className="flex gap-4 overflow-x-auto scroll-smooth pb-2 scrollbar-hide lg:hidden"
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
             maxWidth: "100%",
           }}
         >
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+
+        {/* Desktop: centered responsive grid */}
+        <div className="hidden lg:grid grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-4 place-items-stretch">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
