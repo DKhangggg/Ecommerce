@@ -3,18 +3,18 @@
 @tailwind utilities;
 
 :root {
-  /* Brand palette */
-  --brand-1: #f7e6ca; /* light cream */
-  --brand-2: #e8d59e; /* sand */
-  --brand-3: #d9bbb0; /* dusty pink */
-  --brand-4: #ad9c8e; /* taupe */
-  --text-on-brand: #2b2b2b; /* dark neutral for contrast */
-  /* Layout */
-  --header-height: 112px; /* used for sticky sidebar offset */
-  --page-max: 1440px; /* unified page width */
+
+  --brand-1: #f7e6ca; 
+  --brand-2: #e8d59e; 
+  --brand-3: #d9bbb0; 
+  --brand-4: #ad9c8e; 
+  --text-on-brand: #2b2b2b;
+
+  --header-height: 112px; 
+  --page-max: 1440px; 
 }
 
-/* Export palette via CSS classes if needed */
+
 .bg-brand-gradient {
   background-image: linear-gradient(
     90deg,
@@ -59,19 +59,16 @@ img {
   height: auto;
 }
 
-/* Ensure no element can overflow horizontally - but exclude structural elements */
 img,
 video,
 iframe {
   max-width: 100%;
 }
 
-/* Allow specific scroll containers */
 .overflow-x-auto {
   max-width: 100%;
 }
 
-/* Hide horizontal scrollbar where applied */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -80,7 +77,6 @@ iframe {
   scrollbar-width: none;
 }
 
-/* Unified page container for consistent side gutters */
 .page-container {
   max-width: var(--page-max);
   margin-left: auto;

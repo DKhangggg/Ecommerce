@@ -7,7 +7,6 @@ type ProductCardProps = {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const { imageSrc, name, price, imageAlt } = product;
-  // Simple visual discount badge (demo only)
   const discount = product.id % 3 === 0 ? 25 : product.id % 2 === 0 ? 15 : 10;
 
   return (
