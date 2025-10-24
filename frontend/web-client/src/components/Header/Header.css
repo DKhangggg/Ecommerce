@@ -1,3 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+.modern-header {
+  width: 100%;
+  background: linear-gradient(135deg, #f5f0eb 0%, #faf7f4 100%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  font-family: "Poppins", sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.modern-header-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 3rem;
+}
+
+.modern-header-topbar {
+  background: linear-gradient(135deg, #b97b48 0%, #a06a3e 100%);
+  color: #ffffff;
+  padding: 8px 0;
+  font-size: 13px;
+}
+
+.modern-header-main {
+  background: linear-gradient(135deg, #f5f0eb 0%, #ffffff 100%);
+  border-bottom: 1px solid rgba(185, 123, 72, 0.1);
+}
+
+.modern-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  gap: 2rem;
+}
+
+.modern-header-logo {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.modern-header-logo:hover {
+  transform: scale(1.05);
+}
+
+.modern-header-search {
+  flex: 1;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.modern-header-icons {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.modern-header-nav {
+  background: rgba(249, 240, 227, 0.5);
+  border-top: 1px solid rgba(185, 123, 72, 0.1);
+  padding: 12px 0;
+}
+
 .Container {
   display: grid;
   grid-template-rows: auto auto auto;
@@ -29,7 +97,6 @@
   padding-top: 6px;
 }
 
-/* Nav links */
 .Bottombar nav a {
   color: var(--text-on-brand);
   text-decoration: none;
@@ -42,41 +109,123 @@
   transform: translateY(-1px);
 }
 
-/* Search bar (Ant Design) */
 .header-search .ant-input,
 .header-search .ant-input-affix-wrapper {
   background: #ffffff;
-  border-color: var(--brand-4);
+  border: 2px solid rgba(185, 123, 72, 0.2);
+  border-radius: 50px;
+  padding: 8px 20px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
+
 .header-search .ant-input:focus,
 .header-search .ant-input-affix-wrapper-focused {
-  box-shadow: 0 0 0 2px rgba(173, 156, 142, 0.25);
-  border-color: var(--brand-4);
+  box-shadow: 0 6px 20px rgba(185, 123, 72, 0.2);
+  border-color: #b97b48;
 }
+
 .header-search .ant-btn {
-  background-color: var(--brand-4);
+  background: linear-gradient(135deg, #b97b48 0%, #a06a3e 100%);
   border: none;
   color: #ffffff;
   font-weight: 600;
-}
-.header-search .ant-btn:hover {
-  background-color: var(--brand-3);
+  border-radius: 50px;
+  padding: 0 28px;
+  height: 42px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(185, 123, 72, 0.3);
 }
 
-/* Logo text */
+.header-search .ant-btn:hover {
+  background: linear-gradient(135deg, #c99d7d 0%, #b07a52 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(185, 123, 72, 0.4);
+}
+
 .logo-text {
   font-weight: 800;
   letter-spacing: 0.5px;
   color: var(--text-on-brand);
 }
 
-/* Header icons */
 .header-icons a {
-  color: var(--text-on-brand);
-  opacity: 0.9;
+  color: #2b2b2b;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.6);
+  border: 2px solid transparent;
 }
+
 .header-icons a:hover {
-  opacity: 1;
-  color: var(--brand-4);
+  background: rgba(249, 240, 227, 0.9);
+  border-color: rgba(185, 123, 72, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(185, 123, 72, 0.15);
+  color: #b97b48;
+}
+
+.header-icons a svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.header-icons a:hover svg {
+  transform: scale(1.15);
+}
+
+@media (max-width: 1024px) {
+  .modern-header-container {
+    padding: 0 2rem;
+  }
+
+  .modern-header-content {
+    gap: 1.5rem;
+  }
+
+  .modern-header-search {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .modern-header-container {
+    padding: 0 1rem;
+  }
+
+  .modern-header-content {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 1rem 0;
+    gap: 1rem;
+  }
+
+  .modern-header-logo {
+    order: 1;
+  }
+
+  .modern-header-icons {
+    order: 2;
+    gap: 0.5rem;
+  }
+
+  .modern-header-search {
+    order: 3;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .header-icons a {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
 }

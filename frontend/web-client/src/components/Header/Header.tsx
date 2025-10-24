@@ -4,31 +4,39 @@ import SearchBar from "./SearchBar";
 import TopBar from "./TopBar";
 import "./Header.css";
 import LogoIcon from "./logoIcon";
+
 export default function Header() {
   return (
-    <>
-      <div className="page-container">
-        <header className="Container">
-          <div className="Topbar">
-            <TopBar />
-          </div>
+    <header className="modern-header">
+      <div className="modern-header-topbar">
+        <div className="modern-header-container">
+          <TopBar />
+        </div>
+      </div>
 
-          <div className="Middlebar">
-            <div>
+      <div className="modern-header-main">
+        <div className="modern-header-container">
+          <div className="modern-header-content">
+            <div className="modern-header-logo">
               <LogoIcon />
             </div>
-            <div>
+
+            <div className="modern-header-search">
               <SearchBar />
             </div>
-            <div>
+
+            <div className="modern-header-icons">
               <HeaderIcons />
             </div>
           </div>
-          <div className="Bottombar">
-            <NavMenu />
-          </div>
-        </header>
+        </div>
       </div>
-    </>
+
+      <div className="modern-header-nav">
+        <div className="modern-header-container">
+          <NavMenu />
+        </div>
+      </div>
+    </header>
   );
 }
