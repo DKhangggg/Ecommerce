@@ -12,7 +12,6 @@ export default function UserLayout() {
 
       <main className="flex-1 w-full overflow-x-hidden">
         <div className="page-container py-4">
-          {/* Flex container for sidebar and content - horizontal layout on desktop */}
           <div
             style={{
               display: "flex",
@@ -23,7 +22,6 @@ export default function UserLayout() {
             }}
             className="flex-col lg:flex-row"
           >
-            {/* Sidebar - Fixed width, sticky on desktop */}
             <aside
               style={{
                 width: "260px",
@@ -35,7 +33,6 @@ export default function UserLayout() {
               <SideBar categories={categories} />
             </aside>
 
-            {/* Main Content - Flexible width, fills remaining space */}
             <div
               style={{
                 flex: 1,

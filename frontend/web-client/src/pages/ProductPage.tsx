@@ -9,15 +9,16 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import BackToHomeButton from "../components/common/BackToHomeButton";
+import { useParams } from "react-router-dom";
 
 interface Props {
   data?: any;
 }
 
 export function ProductDetailPage({ data }: Props) {
+  const { id } = useParams<{ id: string }>();
   const [selectedImage, setSelectedImage] = useState(0);
 
-  // Use data prop if provided, otherwise use default product
   const product = data || {
     name: "Handcrafted Wooden Chair",
     price: 249.99,
