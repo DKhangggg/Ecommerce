@@ -1,7 +1,9 @@
 import { ShoppingCart, Heart, User } from "lucide-react";
-import { Link } from "react-router-dom";
+import { use } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function HeaderIcons() {
+  const navigate = useNavigate();
   return (
     <div className="flex justify-evenly items-center header-icons">
       <Link
@@ -13,7 +15,7 @@ export default function HeaderIcons() {
       </Link>
 
       <Link
-        to="/account"
+        to="/profile"
         className="flex items-center gap-1 opacity-90 hover:opacity-100"
       >
         <User />

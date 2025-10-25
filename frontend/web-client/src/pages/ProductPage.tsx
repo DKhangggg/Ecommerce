@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import BackToHomeButton from "../components/common/BackToHomeButton";
 import { useParams } from "react-router-dom";
+import { type Product } from "../types/product";
 
 interface Props {
   data?: any;
@@ -18,8 +19,9 @@ interface Props {
 export function ProductDetailPage({ data }: Props) {
   const { id } = useParams<{ id: string }>();
   const [selectedImage, setSelectedImage] = useState(0);
-
-  const product = data || {
+  const [product, setProduct] = useState<Product | undefined>();
+  
+  const Mockproduct = data || {
     name: "Handcrafted Wooden Chair",
     price: 249.99,
     description:
@@ -97,8 +99,8 @@ export function ProductDetailPage({ data }: Props) {
             }}
           >
             <Image
-              src={product.images[selectedImage]}
-              alt={product.name}
+              src={Mockproduct.images[selectedImage]}
+              alt={Mockproduct.name}
               className="w-full object-cover"
               style={{
                 height: "500px",
@@ -116,7 +118,7 @@ export function ProductDetailPage({ data }: Props) {
 
           {/* Thumbnail Gallery */}
           <HStack style={{ gap: "15px", justifyContent: "center" }}>
-            {product.images.map((img: string, i: number) => (
+            {Mockproduct.images.map((img: string, i: number) => (
               <Box
                 key={i}
                 onClick={() => setSelectedImage(i)}
@@ -192,19 +194,21 @@ export function ProductDetailPage({ data }: Props) {
                 textTransform: "uppercase",
               }}
             >
-              {product.category}
+              {Mockproduct.category}
             </Badge>
             <Badge
               style={{
-                background: product.stock > 0 ? "#E8F5E9" : "#FFEBEE",
-                color: product.stock > 0 ? "#2E7D32" : "#C62828",
+                background: Mockproduct.stock > 0 ? "#E8F5E9" : "#FFEBEE",
+                color: Mockproduct.stock > 0 ? "#2E7D32" : "#C62828",
                 padding: "6px 14px",
                 borderRadius: "8px",
                 fontWeight: "600",
                 fontSize: "13px",
               }}
             >
-              {product.stock > 0 ? `${product.stock} In Stock` : "Out of Stock"}
+              {Mockproduct.stock > 0
+                ? `${Mockproduct.stock} In Stock`
+                : "Out of Stock"}
             </Badge>
           </HStack>
 
@@ -218,13 +222,13 @@ export function ProductDetailPage({ data }: Props) {
               marginTop: "5px",
             }}
           >
-            {product.name}
+            {Mockproduct.name}
           </Text>
 
           {/* Rating */}
           <HStack style={{ gap: "10px", alignItems: "center" }}>
             <HStack style={{ gap: "3px" }}>
-              {renderStars(Math.floor(product.rating))}
+              {renderStars(Math.floor(Mockproduct.rating))}
             </HStack>
             <Text
               style={{
@@ -233,7 +237,7 @@ export function ProductDetailPage({ data }: Props) {
                 color: "#666",
               }}
             >
-              {product.rating}
+              {Mockproduct.rating}
             </Text>
             <Text
               style={{
@@ -255,7 +259,7 @@ export function ProductDetailPage({ data }: Props) {
               marginTop: "10px",
             }}
           >
-            ${product.price.toFixed(2)}
+            ${Mockproduct.price.toFixed(2)}
           </Text>
 
           {/* Divider */}
@@ -276,7 +280,7 @@ export function ProductDetailPage({ data }: Props) {
               color: "#555",
             }}
           >
-            {product.description}
+            {Mockproduct.description}
           </Text>
 
           {/* Action Buttons */}

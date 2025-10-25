@@ -1,11 +1,27 @@
-import type { Category } from "../../types/category";
 import { useState } from "react";
 import "./sidebar.css";
+import { NavLink } from "react-router-dom";
+
+interface SidebarItem {
+  id: string | number;
+  name: string;
+  icon?: React.ElementType;
+  onClick?: () => void;
+  to?: string;
+}
 
 interface SideBarProps {
-  categories: Category[];
+  title?: string;
+  items: SidebarItem[];
+  useLink?: boolean;
+  className?: string;
 }
-export function SideBar({ categories }: SideBarProps) {
+export function SideBar({
+  title = "Menu",
+  items,
+  useLink = false,
+  className,
+}: SideBarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -14,7 +30,7 @@ export function SideBar({ categories }: SideBarProps) {
       <button
         className="sidebar-mobile-toggle"
         onClick={() => setIsOpen(!isOpen)}
-        aria-label="Toggle categories menu"
+        aria-label={`Toggle ${title}`}
       >
         <svg
           width="20"
@@ -26,7 +42,7 @@ export function SideBar({ categories }: SideBarProps) {
         >
           <path d="M3 12h18M3 6h18M3 18h18" />
         </svg>
-        <span>Categories</span>
+        <span>{title}</span>
         <svg
           width="16"
           height="16"
@@ -44,7 +60,11 @@ export function SideBar({ categories }: SideBarProps) {
       </button>
 
       {/* Sidebar Card */}
-      <div className={`sidebar-card ${isOpen ? "sidebar-open" : ""}`}>
+      <div
+        className={`sidebar-card ${isOpen ? "sidebar-open" : ""} ${
+          className || ""
+        }`}
+      >
         <div className="sidebar-header">
           <svg
             width="22"
@@ -61,29 +81,58 @@ export function SideBar({ categories }: SideBarProps) {
             <rect x="14" y="14" width="7" height="7" />
             <rect x="3" y="14" width="7" height="7" />
           </svg>
-          <span>Categories</span>
+          <span>{title}</span>
         </div>
 
         <ul className="sidebar-list">
-          {categories.map((category) => {
-            const Icon = category.icon;
+          {items.map((item) => {
+            const Icon = item.icon;
+
             return (
-              <li key={category.id} className="sidebar-item">
-                <div className="sidebar-item-content">
-                  {Icon && <Icon className="sidebar-icon" />}
-                  <span className="sidebar-text">{category.name}</span>
-                </div>
-                <svg
-                  className="sidebar-arrow"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M9 18l6-6-6-6" />
-                </svg>
+              <li key={item.id} className="sidebar-item">
+                {useLink && item.to ? (
+                  <NavLink
+                    to={item.to}
+                    className={({ isActive }) =>
+                      `sidebar-link ${isActive ? "sidebar-link-active" : ""}`
+                    }
+                    end={false}
+                  >
+                    <div className="sidebar-item-content">
+                      {Icon && <Icon className="sidebar-icon" />}
+                      <span className="sidebar-text">{item.name}</span>
+                    </div>
+                    <svg
+                      className="sidebar-arrow"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </NavLink>
+                ) : (
+                  <button onClick={item.onClick} className="sidebar-link">
+                    <div className="sidebar-item-content">
+                      {Icon && <Icon className="sidebar-icon" />}
+                      <span className="sidebar-text">{item.name}</span>
+                    </div>
+                    <svg
+                      className="sidebar-arrow"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </button>
+                )}
               </li>
             );
           })}

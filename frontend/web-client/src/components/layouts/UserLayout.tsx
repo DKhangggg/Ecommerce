@@ -30,7 +30,15 @@ export default function UserLayout() {
               }}
               className="w-full lg:w-[260px]"
             >
-              <SideBar categories={categories} />
+              <SideBar
+                title="Danh Mục"
+                items={categories.map((c) => ({
+                  id: c.id,
+                  name: c.name,
+                  icon: c.icon,
+                  onClick: () => console.log(`Clicked ${c.name}`),
+                }))}
+              />
             </aside>
 
             <div
