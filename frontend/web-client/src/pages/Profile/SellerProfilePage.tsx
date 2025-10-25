@@ -1,14 +1,9 @@
 import SellerProfileForm from "../../components/profiles/SellerProfileForm.tsx";
+import "./SellerProfilePage.css";
 
-/**
- * SellerProfilePage Component
- *
- * Page wrapper for seller profile form
- * Displays and manages seller store information
- */
 export default function SellerProfilePage() {
   return (
-    <div className="w-full h-auto">
+    <div className="seller-profile-page">
       <SellerProfileForm />
     </div>
   );

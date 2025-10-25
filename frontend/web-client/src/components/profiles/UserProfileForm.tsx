@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./UserProfileForm.css";
 
 // User profile data interface
 interface UserProfile {
@@ -34,27 +35,16 @@ export default function UserProfileForm() {
     // TODO: Add API call to save profile
   };
 
-  const THEME_COLOR = "#B97B48";
-
   return (
-    <div className="w-full h-auto">
+    <div className="user-profile-form">
       {/* Card Title */}
-      <h2
-        className="text-xl md:text-2xl font-bold mb-6 border-b border-gray-200 pb-3"
-        style={{ color: "#4b3a2b" }}
-      >
-        Thông tin người mua
-      </h2>
+      <h2 className="user-profile-form__title">Thông tin người mua</h2>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="user-profile-form__form">
         {/* Full Name Field */}
-        <div>
-          <label
-            htmlFor="fullName"
-            className="block text-sm font-medium mb-2"
-            style={{ color: "#4b3a2b" }}
-          >
+        <div className="user-profile-form__field">
+          <label htmlFor="fullName" className="user-profile-form__label">
             Họ và tên
           </label>
           <input
@@ -63,31 +53,15 @@ export default function UserProfileForm() {
             name="fullName"
             value={profile.fullName}
             onChange={handleChange}
-            className="border rounded-lg p-2.5 w-full transition-all duration-200 text-sm md:text-base"
-            style={{
-              borderColor: "#d4a574",
-              outline: "none",
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = THEME_COLOR;
-              e.target.style.boxShadow = "0 0 0 3px rgba(185, 123, 72, 0.1)";
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = "#d4a574";
-              e.target.style.boxShadow = "none";
-            }}
+            className="user-profile-form__input"
             placeholder="Nhập họ và tên"
             required
           />
         </div>
 
         {/* Email Field (Disabled) */}
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium mb-2"
-            style={{ color: "#4b3a2b" }}
-          >
+        <div className="user-profile-form__field">
+          <label htmlFor="email" className="user-profile-form__label">
             Email
           </label>
           <input
@@ -96,24 +70,14 @@ export default function UserProfileForm() {
             name="email"
             value={profile.email}
             disabled
-            className="border rounded-lg p-2.5 w-full bg-gray-100 cursor-not-allowed text-sm md:text-base"
-            style={{
-              borderColor: "#e5e7eb",
-              color: "#9ca3af",
-            }}
+            className="user-profile-form__input user-profile-form__input--disabled"
           />
-          <p className="text-xs mt-1" style={{ color: "#7b614a" }}>
-            Email không thể thay đổi
-          </p>
+          <p className="user-profile-form__hint">Email không thể thay đổi</p>
         </div>
 
         {/* Phone Number Field */}
-        <div>
-          <label
-            htmlFor="phone"
-            className="block text-sm font-medium mb-2"
-            style={{ color: "#4b3a2b" }}
-          >
+        <div className="user-profile-form__field">
+          <label htmlFor="phone" className="user-profile-form__label">
             Số điện thoại
           </label>
           <input
@@ -122,31 +86,15 @@ export default function UserProfileForm() {
             name="phone"
             value={profile.phone}
             onChange={handleChange}
-            className="border rounded-lg p-2.5 w-full transition-all duration-200 text-sm md:text-base"
-            style={{
-              borderColor: "#d4a574",
-              outline: "none",
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = THEME_COLOR;
-              e.target.style.boxShadow = "0 0 0 3px rgba(185, 123, 72, 0.1)";
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = "#d4a574";
-              e.target.style.boxShadow = "none";
-            }}
+            className="user-profile-form__input"
             placeholder="Nhập số điện thoại"
             required
           />
         </div>
 
         {/* Address Field */}
-        <div>
-          <label
-            htmlFor="address"
-            className="block text-sm font-medium mb-2"
-            style={{ color: "#4b3a2b" }}
-          >
+        <div className="user-profile-form__field">
+          <label htmlFor="address" className="user-profile-form__label">
             Địa chỉ
           </label>
           <input
@@ -155,31 +103,15 @@ export default function UserProfileForm() {
             name="address"
             value={profile.address}
             onChange={handleChange}
-            className="border rounded-lg p-2.5 w-full transition-all duration-200 text-sm md:text-base"
-            style={{
-              borderColor: "#d4a574",
-              outline: "none",
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = THEME_COLOR;
-              e.target.style.boxShadow = "0 0 0 3px rgba(185, 123, 72, 0.1)";
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = "#d4a574";
-              e.target.style.boxShadow = "none";
-            }}
+            className="user-profile-form__input"
             placeholder="Nhập địa chỉ"
             required
           />
         </div>
 
         {/* Gender Field (Select) */}
-        <div>
-          <label
-            htmlFor="gender"
-            className="block text-sm font-medium mb-2"
-            style={{ color: "#4b3a2b" }}
-          >
+        <div className="user-profile-form__field">
+          <label htmlFor="gender" className="user-profile-form__label">
             Giới tính
           </label>
           <select
@@ -187,19 +119,7 @@ export default function UserProfileForm() {
             name="gender"
             value={profile.gender}
             onChange={handleChange}
-            className="border rounded-lg p-2.5 w-full transition-all duration-200 text-sm md:text-base"
-            style={{
-              borderColor: "#d4a574",
-              outline: "none",
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = THEME_COLOR;
-              e.target.style.boxShadow = "0 0 0 3px rgba(185, 123, 72, 0.1)";
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = "#d4a574";
-              e.target.style.boxShadow = "none";
-            }}
+            className="user-profile-form__select"
           >
             <option value="male">Nam</option>
             <option value="female">Nữ</option>
@@ -208,29 +128,8 @@ export default function UserProfileForm() {
         </div>
 
         {/* Submit Button */}
-        <div className="pt-4">
-          <button
-            type="submit"
-            className="w-full font-medium px-4 py-2.5 md:py-3 rounded-lg text-white transition-all duration-200 text-sm md:text-base"
-            style={{
-              background: "linear-gradient(135deg, #B97B48 0%, #a06a3e 100%)",
-              boxShadow: "0 4px 12px rgba(185, 123, 72, 0.3)",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background =
-                "linear-gradient(135deg, #c99d7d 0%, #b07a52 100%)";
-              e.currentTarget.style.transform = "translateY(-2px)";
-              e.currentTarget.style.boxShadow =
-                "0 6px 20px rgba(185, 123, 72, 0.4)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background =
-                "linear-gradient(135deg, #B97B48 0%, #a06a3e 100%)";
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow =
-                "0 4px 12px rgba(185, 123, 72, 0.3)";
-            }}
-          >
+        <div className="user-profile-form__submit-wrapper">
+          <button type="submit" className="user-profile-form__submit-button">
             Lưu thay đổi
           </button>
         </div>

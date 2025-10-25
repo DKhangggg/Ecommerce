@@ -1,0 +1,150 @@
+/* OrderStatusPage.css - Shared styles for all order status pages */
+/* Using theme colors: brand1: #F7E6CA, brand2: #E8D59E, brand3: #D9BBB0, brand4: #AD9C8E */
+
+.order-status-page {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .order-status-page {
+    padding: 4rem 1rem;
+  }
+}
+
+/* Icon wrapper */
+.order-status-page__icon-wrapper {
+  border-radius: 50%;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-status-page__icon {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* All orders - brand colors */
+.order-status-page__icon-wrapper--all {
+  background: linear-gradient(135deg, #f7e6ca 0%, #e8d59e 100%);
+}
+
+.order-status-page__icon--all {
+  color: #ad9c8e;
+}
+
+/* Pending - orange/brand2 */
+.order-status-page__icon-wrapper--pending {
+  background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%);
+}
+
+.order-status-page__icon--pending {
+  color: #f97316;
+}
+
+/* Shipping - blue */
+.order-status-page__icon-wrapper--shipping {
+  background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%);
+}
+
+.order-status-page__icon--shipping {
+  color: #3b82f6;
+}
+
+/* Delivering - indigo */
+.order-status-page__icon-wrapper--delivering {
+  background: linear-gradient(135deg, #eef2ff 0%, #c7d2fe 100%);
+}
+
+.order-status-page__icon--delivering {
+  color: #6366f1;
+}
+
+/* Completed - green */
+.order-status-page__icon-wrapper--completed {
+  background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%);
+}
+
+.order-status-page__icon--completed {
+  color: #22c55e;
+}
+
+/* Cancelled - red */
+.order-status-page__icon-wrapper--cancelled {
+  background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+}
+
+.order-status-page__icon--cancelled {
+  color: #ef4444;
+}
+
+/* Refunds - purple */
+.order-status-page__icon-wrapper--refunds {
+  background: linear-gradient(135deg, #faf5ff 0%, #e9d5ff 100%);
+}
+
+.order-status-page__icon--refunds {
+  color: #a855f7;
+}
+
+/* Text content */
+.order-status-page__title {
+  color: #6b7280;
+  font-size: 0.875rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .order-status-page__title {
+    font-size: 1rem;
+  }
+}
+
+.order-status-page__description {
+  color: #9ca3af;
+  font-size: 0.75rem;
+  text-align: center;
+  margin-top: 0.5rem;
+  max-width: 28rem;
+}
+
+@media (min-width: 768px) {
+  .order-status-page__description {
+    font-size: 0.875rem;
+  }
+}
+
+/* Button for AllOrdersPage */
+.order-status-page__button {
+  margin-top: 1.5rem;
+  padding: 0.5rem 1.5rem;
+  background: linear-gradient(135deg, #e8d59e 0%, #d9bbb0 100%);
+  color: #2b2b2b;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-status-page__button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  background: linear-gradient(135deg, #d9bbb0 0%, #ad9c8e 100%);
+}
+
+.order-status-page__button:active {
+  transform: translateY(0);
+}

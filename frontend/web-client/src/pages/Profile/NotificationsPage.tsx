@@ -1,49 +1,175 @@
-import { Bell } from "lucide-react";
+import { Bell, X, Clock } from "lucide-react";
+import "./NotificationsPage.css";
 
-/**
- * NotificationsPage Component
- *
- * Displays user notifications in Shopee style
- * Shows empty state when no notifications are available
- */
-export default function NotificationsPage() {
+type NotificationType =
+  | "new_user"
+  | "message"
+  | "comment"
+  | "connect"
+  | "promotion"
+  | "system";
+
+interface Notification {
+  id: string;
+  type: NotificationType;
+  badge: string;
+  badgeColor: string;
+  title: string;
+  description: string;
+  author: string;
+  timestamp: string;
+  isRead: boolean;
+}
+
+interface NotificationItemProps {
+  notification: Notification;
+}
+
+const notifications: Notification[] = [
+  {
+    id: "1",
+    type: "new_user",
+    badge: "Joined New User",
+    badgeColor: "green",
+    title: "New Registration: Finibus Bonorum et Malorum",
+    description:
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium",
+    author: "Allen Deu",
+    timestamp: "24 Nov 2018 at 9:30 AM",
+    isRead: false,
+  },
+  {
+    id: "2",
+    type: "message",
+    badge: "Message",
+    badgeColor: "orange",
+    title: "Darren Smith sent new message",
+    description:
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium",
+    author: "Darren",
+    timestamp: "24 Nov 2018 at 9:30 AM",
+    isRead: false,
+  },
+  {
+    id: "3",
+    type: "comment",
+    badge: "Comment",
+    badgeColor: "purple",
+    title: "Arin Gansihram Commented on post",
+    description:
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium",
+    author: "Arin Gansihram",
+    timestamp: "24 Nov 2018 at 9:30 AM",
+    isRead: false,
+  },
+  {
+    id: "4",
+    type: "connect",
+    badge: "Connect",
+    badgeColor: "cyan",
+    title: "Juliet Den Connect Allen Depk",
+    description:
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium",
+    author: "Juliet Den",
+    timestamp: "24 Nov 2018 at 9:30 AM",
+    isRead: false,
+  },
+  {
+    id: "5",
+    type: "connect",
+    badge: "Connect",
+    badgeColor: "cyan",
+    title: "Juliet Den Connect Allen Depk",
+    description:
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium",
+    author: "Juliet Den",
+    timestamp: "24 Nov 2018 at 9:30 AM",
+    isRead: true,
+  },
+  {
+    id: "6",
+    type: "message",
+    badge: "Message",
+    badgeColor: "orange",
+    title: "Darren Smith sent new message",
+    description:
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium",
+    author: "Juliet Den",
+    timestamp: "24 Nov 2018 at 9:30 AM",
+    isRead: true,
+  },
+];
+
+function NotificationItem({ notification }: NotificationItemProps) {
+  const itemClass = notification.isRead
+    ? "notification-item notification-item--read"
+    : "notification-item notification-item--unread";
+
   return (
-    <div className="w-full h-auto">
-      {/* Page Header */}
-      <h2 className="text-xl font-semibold text-gray-800 border-b border-gray-100 pb-3 mb-6">
-        Thông Báo
-      </h2>
-
-      {/* Empty State */}
-      <div className="flex flex-col items-center justify-center py-12 md:py-16">
-        <div className="bg-gray-50 rounded-full p-6 mb-4">
-          <Bell className="w-12 h-12 text-gray-400" />
+    <div className={itemClass}>
+      <div className="notification-item__content">
+        <div className="notification-item__meta">
+          <span
+            className={`notification-item__badge notification-item__badge--${notification.badgeColor}`}
+          >
+            {notification.badge}
+          </span>
+          <span className="notification-item__author">
+            {notification.author}
+          </span>
         </div>
-        <p className="text-gray-500 text-sm md:text-base text-center">
-          Hiện chưa có thông báo nào
-        </p>
-        <p className="text-gray-400 text-xs md:text-sm text-center mt-2">
-          Các thông báo về đơn hàng và khuyến mãi sẽ được hiển thị tại đây
-        </p>
+
+        <div className="notification-item__body">
+          <h3 className="notification-item__title">{notification.title}</h3>
+          <p className="notification-item__description">
+            {notification.description}
+          </p>
+        </div>
       </div>
 
-      {/* TODO: Add notification list when data is available */}
-      {/* Example notification structure:
-      <div className="space-y-3">
-        {notifications.map((notif) => (
-          <div key={notif.id} className="flex gap-3 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer">
-            <div className="flex-shrink-0">
-              <Bell className="w-5 h-5 text-primary" />
-            </div>
-            <div className="flex-1">
-              <h4 className="font-medium text-gray-800 text-sm">{notif.title}</h4>
-              <p className="text-gray-600 text-xs mt-1">{notif.message}</p>
-              <span className="text-gray-400 text-xs mt-2 block">{notif.time}</span>
-            </div>
-          </div>
-        ))}
+      <div className="notification-item__actions">
+        <div className="notification-item__timestamp">
+          <Clock className="notification-item__clock-icon" />
+          <span>{notification.timestamp}</span>
+        </div>
+
+        <button className="notification-item__delete-btn">
+          <X className="notification-item__delete-icon" />
+        </button>
       </div>
-      */}
+    </div>
+  );
+}
+
+export default function NotificationsPage() {
+  const hasNotifications = notifications.length > 0;
+
+  return (
+    <div className="notification-page">
+      <div className="notification-header">
+        <h1 className="notification-header__title">Danh Sách Thông Báo</h1>
+      </div>
+
+      {hasNotifications ? (
+        <div className="notification-list">
+          {notifications.map((notification) => (
+            <NotificationItem
+              key={notification.id}
+              notification={notification}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="notification-empty">
+          <div className="notification-empty__icon-wrapper">
+            <Bell className="notification-empty__icon" />
+          </div>
+          <h3 className="notification-empty__title">Không có thông báo</h3>
+          <p className="notification-empty__text">
+            Các thông báo mới sẽ xuất hiện ở đây
+          </p>
+        </div>
+      )}
     </div>
   );
 }

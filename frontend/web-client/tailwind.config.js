@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#B97B48", 
+        primary: "#B97B48",
         "brand-1": "#f7e6ca",
         "brand-2": "#e8d59e",
         "brand-3": "#d9bbb0",
@@ -20,4 +20,5 @@ export default {
     },
   },
   plugins: [],
+  safelist: ["bg-green-500", "bg-orange-500", "bg-purple-500", "bg-cyan-500"],
 };

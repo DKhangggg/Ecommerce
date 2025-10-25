@@ -1,14 +1,9 @@
 import UserProfileForm from "../../components/profiles/UserProfileForm.tsx";
+import "./UserProfilePage.css";
 
-/**
- * UserProfilePage Component
- *
- * Page wrapper for user profile form
- * Displays and manages user account information
- */
 export default function UserProfilePage() {
   return (
-    <div className="w-full h-auto">
+    <div className="user-profile-page">
       <UserProfileForm />
     </div>
   );

@@ -11,7 +11,6 @@ import SellerProfilePage from "../pages/Profile/SellerProfilePage";
 import NotificationsPage from "../pages/Profile/NotificationsPage";
 import OrdersPage from "../pages/Profile/OrdersPage";
 import VouchersPage from "../pages/Profile/VouchersPage";
-import CoinsPage from "../pages/Profile/CoinsPage";
 import AllOrdersPage from "../pages/Profile/Orders/AllOrdersPage";
 import PendingOrdersPage from "../pages/Profile/Orders/PendingOrdersPage";
 import ShippingOrdersPage from "../pages/Profile/Orders/ShippingOrdersPage";
@@ -19,6 +18,8 @@ import DeliveringOrdersPage from "../pages/Profile/Orders/DeliveringOrdersPage";
 import CompletedOrdersPage from "../pages/Profile/Orders/CompletedOrdersPage";
 import CancelledOrdersPage from "../pages/Profile/Orders/CancelledOrdersPage";
 import RefundsOrdersPage from "../pages/Profile/Orders/RefundsOrdersPage";
+import CartPage from "../pages/Profile/CartPage";
+import { ProtectedRoute } from "./protectedRouter";
 
 export const router = createBrowserRouter([
   {
@@ -36,14 +37,18 @@ export const router = createBrowserRouter([
   },
   {
     path: "/profile",
-    element: <ProfileLayout />,
+    element: (
+      <ProtectedRoute>
+        <ProfileLayout />
+      </ProtectedRoute>
+    ),
     children: [
       { index: true, element: <UserProfilePage /> },
       { path: "user", element: <UserProfilePage /> },
       { path: "seller", element: <SellerProfilePage /> },
       { path: "notifications", element: <NotificationsPage /> },
       { path: "vouchers", element: <VouchersPage /> },
-      { path: "coins", element: <CoinsPage /> },
+      { path: "cart", element: <CartPage /> },
       {
         path: "orders",
         element: <OrdersPage />,

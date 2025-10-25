@@ -1,0 +1,134 @@
+/* UserProfileForm.css - BEM naming convention */
+/* Using theme colors: brand1: #F7E6CA, brand2: #E8D59E, brand3: #D9BBB0, brand4: #AD9C8E */
+
+.user-profile-form {
+  width: 100%;
+  height: auto;
+}
+
+.user-profile-form__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.75rem;
+  color: #2b2b2b;
+}
+
+@media (min-width: 768px) {
+  .user-profile-form__title {
+    font-size: 1.5rem;
+  }
+}
+
+.user-profile-form__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Form field wrapper */
+.user-profile-form__field {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-profile-form__label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #2b2b2b;
+}
+
+.user-profile-form__input {
+  border: 1px solid #d9bbb0;
+  border-radius: 0.5rem;
+  padding: 0.625rem;
+  width: 100%;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+  outline: none;
+}
+
+@media (min-width: 768px) {
+  .user-profile-form__input {
+    font-size: 1rem;
+  }
+}
+
+.user-profile-form__input:focus {
+  border-color: #ad9c8e;
+  box-shadow: 0 0 0 3px rgba(173, 156, 142, 0.1);
+}
+
+.user-profile-form__input--disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+  border-color: #e5e7eb;
+  color: #9ca3af;
+}
+
+.user-profile-form__select {
+  border: 1px solid #d9bbb0;
+  border-radius: 0.5rem;
+  padding: 0.625rem;
+  width: 100%;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+  outline: none;
+  background-color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .user-profile-form__select {
+    font-size: 1rem;
+  }
+}
+
+.user-profile-form__select:focus {
+  border-color: #ad9c8e;
+  box-shadow: 0 0 0 3px rgba(173, 156, 142, 0.1);
+}
+
+.user-profile-form__hint {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  color: #6b7280;
+}
+
+/* Submit button */
+.user-profile-form__submit-wrapper {
+  padding-top: 1rem;
+}
+
+.user-profile-form__submit-button {
+  width: 100%;
+  font-weight: 500;
+  padding: 0.625rem 1rem;
+  border-radius: 0.5rem;
+  color: #2b2b2b;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+  background: linear-gradient(135deg, #e8d59e 0%, #d9bbb0 100%);
+  box-shadow: 0 4px 12px rgba(173, 156, 142, 0.3);
+  border: none;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .user-profile-form__submit-button {
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+  }
+}
+
+.user-profile-form__submit-button:hover {
+  background: linear-gradient(135deg, #d9bbb0 0%, #ad9c8e 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(173, 156, 142, 0.4);
+}
+
+.user-profile-form__submit-button:active {
+  transform: translateY(0);
+}

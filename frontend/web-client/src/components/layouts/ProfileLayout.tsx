@@ -4,7 +4,6 @@ import { SideBar } from "../Sidebar/SideBar";
 import Header from "../Header/Header";
 import "./ProfileLayout.css";
 
-
 export default function ProfileLayout() {
   return (
     <div className="min-h-screen bg-gray-50 w-full overflow-x-hidden">
@@ -29,7 +28,7 @@ export default function ProfileLayout() {
             }}
             className="w-full md:w-64"
           >
-            <div className="md:sticky md:top-24 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="sidebar-wrapper">
               <SideBar
                 title="Tài khoản"
                 useLink
@@ -60,9 +59,9 @@ export default function ProfileLayout() {
                   },
                   {
                     id: 5,
-                    name: "Shopee Xu",
+                    name: "Giỏ hàng của bạn",
                     icon: Coins,
-                    to: "/profile/coins",
+                    to: "/profile/cart",
                   },
                   {
                     id: 6,
@@ -83,7 +82,7 @@ export default function ProfileLayout() {
             }}
             className="flex-1 min-w-0"
           >
-            <div className="profile-content-wrapper bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6">
+            <div className="profile-content-wrapper">
               <Outlet />
             </div>
           </div>

@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useLocation, useNavigate } from "react-router-dom";
+import { apiService } from "../services/apiService";
 
 const GOOGLE_SVG = (
   <svg width="20" height="20" viewBox="0 0 48 48">
@@ -30,10 +33,32 @@ const GITHUB_SVG = (
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const onSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log({ username, password });
+    if (!username || !password) {
+      setError("Vui lòng nhập cả username và password");
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      const userData = await apiService.login(username, password);
+
+      login(userData);
+
+      navigate(from, { replace: true });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Đã có lỗi xảy ra");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -109,7 +134,7 @@ export default function LoginPage() {
         </p>
 
         {/* Form */}
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleLogin}>
           {/* Username field */}
           <div style={{ marginBottom: "25px" }}>
             <label

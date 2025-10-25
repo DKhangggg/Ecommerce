@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
-import { ShoppingBag } from "lucide-react";
-
+import { ShoppingBag, Search } from "lucide-react";
+import "./OrdersPage.css";
 
 export default function OrdersPage() {
   const location = useLocation();
@@ -18,20 +18,34 @@ export default function OrdersPage() {
   const isBaseRoute = location.pathname === "/profile/orders";
 
   return (
-    <div className="w-full h-auto">
-      <div className="border-b border-gray-200 -mx-4 md:-mx-6 px-4 md:px-6 mb-6">
-        <div className="flex overflow-x-auto scrollbar-hide -mb-px">
-          <div className="flex gap-6 md:gap-8 min-w-max">
+    <div className="orders-page">
+      <div className="orders-header">
+        <div className="orders-header__top">
+          <h1 className="orders-header__title">Đơn Mua</h1>
+          <div className="orders-search">
+            <Search className="orders-search__icon" />
+            <input
+              type="text"
+              placeholder="Tìm đơn hàng..."
+              className="orders-search__input"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="orders-tabs">
+        <div className="orders-tabs__wrapper">
+          <div className="orders-tabs__list">
             {orderTabs.map((tab) => (
               <NavLink
                 key={tab.path}
                 to={tab.path}
                 end
                 className={({ isActive }) =>
-                  `pb-3 px-1 text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+                  `orders-tabs__link ${
                     isActive
-                      ? "border-b-2 border-primary text-primary"
-                      : "text-gray-600 hover:text-gray-800 hover:text-primary/70"
+                      ? "orders-tabs__link--active"
+                      : "orders-tabs__link--inactive"
                   }`
                 }
               >
@@ -42,18 +56,17 @@ export default function OrdersPage() {
         </div>
       </div>
 
-      <div className="w-full">
+      <div className="orders-content">
         {isBaseRoute ? (
-          <div className="flex flex-col items-center justify-center py-12 md:py-16">
-            <div className="bg-gray-50 rounded-full p-6 mb-4">
-              <ShoppingBag className="w-12 h-12 text-gray-400" />
+          <div className="orders-empty">
+            <div className="orders-empty__icon-wrapper">
+              <ShoppingBag className="orders-empty__icon" />
             </div>
-            <p className="text-gray-500 text-sm md:text-base text-center">
-              Chưa có đơn hàng nào
-            </p>
-            <p className="text-gray-400 text-xs md:text-sm text-center mt-2">
+            <p className="orders-empty__title">Chưa có đơn hàng nào</p>
+            <p className="orders-empty__text">
               Hãy chọn một tab để xem đơn hàng của bạn
             </p>
+            <button className="orders-empty__button">Mua sắm ngay</button>
           </div>
         ) : (
           <Outlet />
