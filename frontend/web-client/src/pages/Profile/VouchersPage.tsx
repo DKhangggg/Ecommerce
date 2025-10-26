@@ -1,153 +1,142 @@
 import { Ticket, Gift, Percent, Clock } from "lucide-react";
+import "./VouchersPage.css";
 
 export default function VouchersPage() {
   return (
-    <div className="w-full">
-      <div className="mb-6">
-        <div className="flex items-center justify-between pb-4 border-b border-gray-200">
-          <h1 className="text-xl md:text-2xl font-semibold text-gray-800">
-            Kho Voucher
-          </h1>
-          <button className="px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition-colors">
-            Tìm voucher
-          </button>
+    <div className="vouchers-page">
+      <div className="vouchers-page__header">
+        <div className="vouchers-page__header-content">
+          <h1 className="vouchers-page__title">Kho Voucher</h1>
+          <button className="vouchers-page__search-button">Tìm voucher</button>
         </div>
       </div>
 
-      <div className="mb-6">
-        <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-2">
-          <button className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium whitespace-nowrap">
+      <div className="vouchers-page__filters">
+        <div className="vouchers-page__filter-list">
+          <button className="vouchers-page__filter-button vouchers-page__filter-button--active">
             Tất cả
           </button>
-          <button className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-gray-200 transition-colors">
+          <button className="vouchers-page__filter-button vouchers-page__filter-button--inactive">
             Giảm giá
           </button>
-          <button className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-gray-200 transition-colors">
+          <button className="vouchers-page__filter-button vouchers-page__filter-button--inactive">
             Miễn phí ship
           </button>
-          <button className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-gray-200 transition-colors">
+          <button className="vouchers-page__filter-button vouchers-page__filter-button--inactive">
             Hoàn xu
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div className="bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200 rounded-xl p-5 hover:shadow-lg transition-shadow duration-200">
-          <div className="flex gap-4">
-            <div className="flex-shrink-0">
-              <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                <Percent className="w-8 h-8 text-primary" />
+      <div className="vouchers-page__grid">
+        <div className="voucher-card voucher-card--orange">
+          <div className="voucher-card__content">
+            <div className="voucher-card__icon-wrapper">
+              <div className="voucher-card__icon-box">
+                <Percent className="voucher-card__icon voucher-card__icon--orange" />
               </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-gray-900 text-base mb-1">
-                Giảm 50.000đ
-              </h3>
-              <p className="text-sm text-gray-600 mb-3">
+            <div className="voucher-card__info">
+              <h3 className="voucher-card__title">Giảm 50.000đ</h3>
+              <p className="voucher-card__description">
                 Đơn tối thiểu 300.000đ
               </p>
-              <div className="flex items-center gap-2 text-xs text-gray-500">
-                <Clock className="w-3.5 h-3.5" />
+              <div className="voucher-card__expiry">
+                <Clock className="voucher-card__expiry-icon" />
                 <span>HSD: 31/12/2025</span>
               </div>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-orange-200/50">
-            <button className="w-full py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
+          <div className="voucher-card__footer">
+            <button className="voucher-card__button voucher-card__button--orange">
               Sử dụng ngay
             </button>
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-5 hover:shadow-lg transition-shadow duration-200">
-          <div className="flex gap-4">
-            <div className="flex-shrink-0">
-              <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                <Gift className="w-8 h-8 text-blue-600" />
+        <div className="voucher-card voucher-card--blue">
+          <div className="voucher-card__content">
+            <div className="voucher-card__icon-wrapper">
+              <div className="voucher-card__icon-box">
+                <Gift className="voucher-card__icon voucher-card__icon--blue" />
               </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-gray-900 text-base mb-1">
-                Miễn phí vận chuyển
-              </h3>
-              <p className="text-sm text-gray-600 mb-3">
+            <div className="voucher-card__info">
+              <h3 className="voucher-card__title">Miễn phí vận chuyển</h3>
+              <p className="voucher-card__description">
                 Không giới hạn đơn hàng
               </p>
-              <div className="flex items-center gap-2 text-xs text-gray-500">
-                <Clock className="w-3.5 h-3.5" />
+              <div className="voucher-card__expiry">
+                <Clock className="voucher-card__expiry-icon" />
                 <span>HSD: 25/11/2025</span>
               </div>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-blue-200/50">
-            <button className="w-full py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+          <div className="voucher-card__footer">
+            <button className="voucher-card__button voucher-card__button--blue">
               Sử dụng ngay
             </button>
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-xl p-5 hover:shadow-lg transition-shadow duration-200">
-          <div className="flex gap-4">
-            <div className="flex-shrink-0">
-              <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                <Ticket className="w-8 h-8 text-green-600" />
+        <div className="voucher-card voucher-card--green">
+          <div className="voucher-card__content">
+            <div className="voucher-card__icon-wrapper">
+              <div className="voucher-card__icon-box">
+                <Ticket className="voucher-card__icon voucher-card__icon--green" />
               </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-gray-900 text-base mb-1">
-                Giảm 15%
-              </h3>
-              <p className="text-sm text-gray-600 mb-3">Giảm tối đa 100.000đ</p>
-              <div className="flex items-center gap-2 text-xs text-gray-500">
-                <Clock className="w-3.5 h-3.5" />
+            <div className="voucher-card__info">
+              <h3 className="voucher-card__title">Giảm 15%</h3>
+              <p className="voucher-card__description">Giảm tối đa 100.000đ</p>
+              <div className="voucher-card__expiry">
+                <Clock className="voucher-card__expiry-icon" />
                 <span>HSD: 20/12/2025</span>
               </div>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-green-200/50">
-            <button className="w-full py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
+          <div className="voucher-card__footer">
+            <button className="voucher-card__button voucher-card__button--green">
               Sử dụng ngay
             </button>
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-xl p-5 hover:shadow-lg transition-shadow duration-200">
-          <div className="flex gap-4">
-            <div className="flex-shrink-0">
-              <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                <Gift className="w-8 h-8 text-purple-600" />
+        <div className="voucher-card voucher-card--purple">
+          <div className="voucher-card__content">
+            <div className="voucher-card__icon-wrapper">
+              <div className="voucher-card__icon-box">
+                <Gift className="voucher-card__icon voucher-card__icon--purple" />
               </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-gray-900 text-base mb-1">
-                Hoàn 50 Xu
-              </h3>
-              <p className="text-sm text-gray-600 mb-3">
+            <div className="voucher-card__info">
+              <h3 className="voucher-card__title">Hoàn 50 Xu</h3>
+              <p className="voucher-card__description">
                 Đơn tối thiểu 200.000đ
               </p>
-              <div className="flex items-center gap-2 text-xs text-gray-500">
-                <Clock className="w-3.5 h-3.5" />
+              <div className="voucher-card__expiry">
+                <Clock className="voucher-card__expiry-icon" />
                 <span>HSD: 15/01/2026</span>
               </div>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-purple-200/50">
-            <button className="w-full py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors">
+          <div className="voucher-card__footer">
+            <button className="voucher-card__button voucher-card__button--purple">
               Sử dụng ngay
             </button>
           </div>
         </div>
       </div>
 
-      <div className="bg-gray-50 rounded-xl p-8 text-center">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white shadow-sm mb-4">
-          <Ticket className="w-8 h-8 text-gray-300" />
+      <div className="vouchers-page__empty">
+        <div className="vouchers-page__empty-icon-wrapper">
+          <Ticket className="vouchers-page__empty-icon" />
         </div>
-        <p className="text-gray-500 text-sm mb-1">Không còn voucher nào khác</p>
-        <p className="text-gray-400 text-xs mb-5">
+        <p className="vouchers-page__empty-title">Không còn voucher nào khác</p>
+        <p className="vouchers-page__empty-description">
           Hãy quay lại sau để nhận thêm ưu đãi
         </p>
-        <button className="px-6 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm">
+        <button className="vouchers-page__empty-button">
           Khám phá voucher mới
         </button>
       </div>
