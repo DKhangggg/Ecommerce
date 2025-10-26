@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "./SellerProfileForm.css";
 
-// Seller profile data interface
 interface SellerProfile {
   storeName: string;
   storeDescription: string;
@@ -10,7 +9,6 @@ interface SellerProfile {
 }
 
 export default function SellerProfileForm() {
-  // Internal state for form data
   const [profile, setProfile] = useState<SellerProfile>({
     storeName: "",
     storeDescription: "",
@@ -18,7 +16,6 @@ export default function SellerProfileForm() {
     contactEmail: "",
   });
 
-  // Handle input changes
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -28,21 +25,16 @@ export default function SellerProfileForm() {
     setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Seller profile saved:", profile);
-    // TODO: Add API call to save profile
   };
 
   return (
     <div className="seller-profile-form">
-      {/* Card Title */}
       <h2 className="seller-profile-form__title">Hồ sơ người bán</h2>
 
-      {/* Form */}
       <form onSubmit={handleSubmit} className="seller-profile-form__form">
-        {/* Store Name Field */}
         <div className="seller-profile-form__field">
           <label htmlFor="storeName" className="seller-profile-form__label">
             Tên cửa hàng
@@ -58,8 +50,6 @@ export default function SellerProfileForm() {
             required
           />
         </div>
-
-        {/* Store Description Field (Textarea) */}
         <div className="seller-profile-form__field">
           <label
             htmlFor="storeDescription"
@@ -82,7 +72,6 @@ export default function SellerProfileForm() {
           </p>
         </div>
 
-        {/* Payment Method Field (Select) */}
         <div className="seller-profile-form__field">
           <label htmlFor="paymentMethod" className="seller-profile-form__label">
             Phương thức thanh toán
@@ -101,7 +90,6 @@ export default function SellerProfileForm() {
           </select>
         </div>
 
-        {/* Contact Email Field */}
         <div className="seller-profile-form__field">
           <label htmlFor="contactEmail" className="seller-profile-form__label">
             Email liên hệ
@@ -121,7 +109,6 @@ export default function SellerProfileForm() {
           </p>
         </div>
 
-        {/* Additional Info Box */}
         <div className="seller-profile-form__info-box">
           <h4 className="seller-profile-form__info-title">
             📋 Lưu ý quan trọng
@@ -133,7 +120,6 @@ export default function SellerProfileForm() {
           </ul>
         </div>
 
-        {/* Submit Button */}
         <div className="seller-profile-form__submit-wrapper">
           <button type="submit" className="seller-profile-form__submit-button">
             Lưu hồ sơ
