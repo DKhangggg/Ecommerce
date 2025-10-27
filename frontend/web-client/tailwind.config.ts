@@ -1,5 +1,6 @@
-/** @type {import('tailwindcss').Config} */
-export default {
+import type { Config } from "tailwindcss";
+
+const config: Config = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
@@ -20,5 +21,5 @@ export default {
     },
   },
   plugins: [],
-  safelist: ["bg-green-500", "bg-orange-500", "bg-purple-500", "bg-cyan-500"],
 };
+export default config;

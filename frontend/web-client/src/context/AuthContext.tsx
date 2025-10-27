@@ -1,5 +1,4 @@
 import {
-  Children,
   createContext,
   useContext,
   useMemo,
@@ -7,11 +6,13 @@ import {
   type ReactNode,
 } from "react";
 import type { User } from "../types/user";
-
+import type {LoginPayload} from "../types/auth.ts";
+import * as authService from "../services/authService.ts"
 type AuthContextType = {
   user: User | null;
-  login: (userData: User) => void;
+  login: (payload: LoginPayload) => void;
   isAuthenticated: boolean;
+  logout:()=>void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -21,18 +22,19 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null>(() => {
-    const storedUser = localStorage.getItem("user");
-    try {
-      return storedUser ? (JSON.parse(storedUser) as User) : null;
-    } catch (error) {
-      console.error("Failed to parse user from localStorage", error);
-      return null;
+    const [user, setUser] = useState<User | null>(() => {
+        return authService.getStoredUser();
+    });
+  const login = async (payload:LoginPayload)=>{
+      try{
+    const authData = await authService.login(payload);
+    if(authData){
+        setUser(authData.user);
     }
-  });
-  const login = async (userData: User) => {
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
+      } catch(error){
+          console.log("Loi")
+          throw error
+      }
   };
   const logout = () => {
     setUser(null);

@@ -42,6 +42,6 @@ public class Account {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @Column(name="refresh_token")
+    @Column(name="refresh_token",length = 1000)
     private String refreshToken;
 }

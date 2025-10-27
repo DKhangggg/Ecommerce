@@ -6,6 +6,7 @@ import com.em.authservice.dto.request.RegisterRequest;
 import com.em.authservice.dto.request.UserCreate;
 import com.em.authservice.dto.response.AuthResponse;
 import com.em.authservice.dto.response.TokenValidResponse;
+import com.em.authservice.dto.response.UserInfo;
 import com.em.common.exception.InvalidRequestException;
 import com.em.authservice.exception.InvalidTokenException;
 import com.em.authservice.model.Account;
@@ -22,6 +23,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class AccountService implements UserDetailsService {
@@ -59,17 +65,24 @@ public class AccountService implements UserDetailsService {
 
         UserDetails accountDetail = loadUserByUsername(request.getUsername());
         Account account = ((CustomAccountDetail) accountDetail).getAccount();
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUsername(account.getUsername());
+        userInfo.setId(account.getId());
+        Set<String> roleNames = account.getRoles().stream()
+                .map(Role::getRoleName)
+                .collect(Collectors.toSet());
+        userInfo.setRoles(roleNames);
         if (account.getRefreshToken() != null && !account.getRefreshToken().isEmpty()) {
             String refreshTokenFromDb = account.getRefreshToken();
             if (jwtService.isTokenValid(refreshTokenFromDb)) {
-                return new AuthResponse(jwtService.generateToken(accountDetail), refreshTokenFromDb);
+                return new AuthResponse(refreshTokenFromDb, jwtService.generateToken(accountDetail),userInfo);
             }
         }
             String token = jwtService.generateToken(accountDetail);
             String refreshToken = jwtService.generateRefreshToken(accountDetail);
             account.setRefreshToken(refreshToken);
             accountRepo.save(account);
-            return new AuthResponse(token, refreshToken);
+            return new AuthResponse(token, refreshToken,userInfo);
 
     }
 
@@ -91,8 +104,14 @@ public class AccountService implements UserDetailsService {
         String newRefreshToken = jwtService.generateRefreshToken(accountDetail);
         account.setRefreshToken(newRefreshToken);
         accountRepo.save(account);
-
-        return new AuthResponse(newAccessToken, newRefreshToken);
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUsername(account.getUsername());
+        userInfo.setId(account.getId());
+        Set<String> roleNames = account.getRoles().stream()
+                .map(Role::getRoleName)
+                .collect(Collectors.toSet());
+        userInfo.setRoles(roleNames);
+        return new AuthResponse(newAccessToken, newRefreshToken,userInfo);
     }
 
     public void logout(String username) {
@@ -136,8 +155,14 @@ public class AccountService implements UserDetailsService {
         String refreshToken = jwtService.generateRefreshToken(accountDetail);
         savedAccount.setRefreshToken(refreshToken);
         accountRepo.save(savedAccount);
-
-        return new AuthResponse(token, refreshToken);
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUsername(account.getUsername());
+        userInfo.setId(account.getId());
+        Set<String> roleNames = account.getRoles().stream()
+                .map(Role::getRoleName)
+                .collect(Collectors.toSet());
+        userInfo.setRoles(roleNames);
+        return new AuthResponse(token, refreshToken,userInfo);
     }
     public TokenValidResponse introspectToken(String token){
         if(token==null || token.isEmpty()){
