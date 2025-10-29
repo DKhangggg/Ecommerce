@@ -6,7 +6,12 @@ export interface LoginPayload {
 export interface RegisterPayload {
     username: string;
     password: string;
-    role: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber?: string;
+    gender?: string | null;
+    dateOfBirth?: string | null;
 }
 
 export interface AuthResponse {

@@ -20,6 +20,7 @@ import CancelledOrdersPage from "../pages/Profile/Orders/CancelledOrdersPage";
 import RefundsOrdersPage from "../pages/Profile/Orders/RefundsOrdersPage";
 import CartPage from "../pages/Profile/CartPage";
 import { ProtectedRoute } from "./protectedRouter";
+import RegisterPage from "../pages/RegisterPage.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +34,8 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <AuthLayout />,
-    children: [{ path: "login", element: <LoginPage /> }],
+    children: [{ path: "Login", element: <LoginPage /> },{path:"Register",element:<RegisterPage/>}],
+
   },
   {
     path: "/profile",

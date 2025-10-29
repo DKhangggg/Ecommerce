@@ -6,13 +6,14 @@ import {
   type ReactNode,
 } from "react";
 import type { User } from "../types/user";
-import type {LoginPayload} from "../types/auth.ts";
+import type {LoginPayload, RegisterPayload} from "../types/auth.ts";
 import * as authService from "../services/authService.ts"
 type AuthContextType = {
   user: User | null;
   login: (payload: LoginPayload) => void;
   isAuthenticated: boolean;
   logout:()=>void;
+  register:(payload:RegisterPayload)=>void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -36,6 +37,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           throw error
       }
   };
+  const register= async (payload:RegisterPayload)=>{
+      try{
+          const authData = await authService.register(payload);
+          if(authData){
+              setUser(authData.user);
+          }
+      } catch(error){
+          console.log("Loi"+error)
+          throw error
+      }
+  }
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
@@ -45,7 +57,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     () => ({
       user,
       login,
-      logout,
+      logout, register,
       isAuthenticated,
     }),
     [user]

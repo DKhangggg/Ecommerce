@@ -65,14 +65,12 @@ export default function LoginPage() {
     // Social & helper handlers
     const handleGoogleLogin = () => {
         if (loading) return;
-        // Tùy vào backend, bạn có thể chuyển hướng tới endpoint OAuth của bạn
-        // window.location.href = "/oauth2/authorization/google";
+
         setError("Đăng nhập bằng Google hiện chưa được cấu hình.");
     };
 
     const handleGithubLogin = () => {
         if (loading) return;
-        // window.location.href = "/oauth2/authorization/github";
         setError("Đăng nhập bằng GitHub hiện chưa được cấu hình.");
     };
 
@@ -85,9 +83,7 @@ export default function LoginPage() {
         <div
             className="min-h-screen w-full flex items-center justify-center p-4"
             style={{
-                // Fallback color
                 backgroundColor: "#d4a574",
-                // Background image with soft overlay for readability
                 backgroundImage: `linear-gradient(rgba(245,230,211,0.4), rgba(212,165,116,0.4)), url(${loginBg})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -159,7 +155,6 @@ export default function LoginPage() {
             `}</style>
 
             <div className="w-full max-w-[600px] login-card">
-                {/* ...logo area (optional) ... */}
                 <h2 className="login-title">Welcome Back</h2>
                 <p className="login-subtitle">Sign in to continue to your account</p>
 
@@ -211,7 +206,7 @@ export default function LoginPage() {
                         />
                         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 10 }}>
                             <Link to="/forgot-password" style={{ color: '#a06a3e', fontSize: 13, fontWeight: 700, textDecoration: 'none' }} onClick={(e) => { if (loading) e.preventDefault(); }}>
-                                Quên mật khẩu?
+                                Forget Password?
                             </Link>
                         </div>
                     </div>
@@ -225,7 +220,7 @@ export default function LoginPage() {
                 {/* Divider */}
                 <div className="flex items-center" style={{ margin: '28px 0' }}>
                     <div style={{ flex: 1, height: 1, backgroundColor: '#e5e7eb' }} />
-                    <span style={{ padding: '0 12px', fontSize: 12, color: '#9ca3af', background: 'rgba(255,255,255,0.6)', borderRadius: 9999 }}>Hoặc</span>
+                    <span style={{ padding: '0 12px', fontSize: 12, color: '#9ca3af', background: 'rgba(255,255,255,0.6)', borderRadius: 9999 }}>Or</span>
                     <div style={{ flex: 1, height: 1, backgroundColor: '#e5e7eb' }} />
                 </div>
 
@@ -252,7 +247,7 @@ export default function LoginPage() {
                         disabled={loading}
                     >
                         {GOOGLE_SVG}
-                        <span>Tiếp tục với Google</span>
+                        <span>Continue with Google</span>
                     </button>
 
                     <button
@@ -276,10 +271,21 @@ export default function LoginPage() {
                         disabled={loading}
                     >
                         {GITHUB_SVG}
-                        <span>Tiếp tục với GitHub</span>
+                        <span>Continue with GitHub</span>
                     </button>
                 </div>
-
+                {/*register*/}
+                <div className="form-section mt-2.5 text-sm">
+                    <p>
+                        Don't have an account?{' '}
+                        <Link
+                            to="/Register"
+                            className="font-bold text-blue-600 underline hover:text-blue-700"
+                        >
+                            Sign up
+                        </Link>
+                    </p>
+                </div>
                 {/* Back */}
                 <div style={{ marginTop: '26px', textAlign: 'center' }}>
                     <button
@@ -296,7 +302,7 @@ export default function LoginPage() {
                         }}
                         disabled={loading}
                     >
-                        Quay lại trang trước
+                        Go Back
                     </button>
                 </div>
 

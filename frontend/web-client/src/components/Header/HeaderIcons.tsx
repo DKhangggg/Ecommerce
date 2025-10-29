@@ -1,9 +1,9 @@
-import { ShoppingCart, Heart, User, LogOut, LogIn } from "lucide-react"; // 1. Thêm LogIn
-import { Link, useNavigate } from "react-router-dom";
+import {Heart, LogIn, LogOut, ShoppingCart, User} from "lucide-react"; // 1. Thêm LogIn
+import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../../context/AuthContext.tsx";
 
 export default function HeaderIcons() {
-    const { isAuthenticated, logout } = useAuth();
+    const {isAuthenticated, logout} = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -17,25 +17,23 @@ export default function HeaderIcons() {
                 to="/wishlist"
                 className="relative flex items-center gap-1 opacity-90 hover:opacity-100"
             >
-                <Heart />
+                <Heart/>
                 Yêu Thích
             </Link>
-
             {isAuthenticated ? (
                 <>
                     <Link
                         to="/profile"
                         className="flex items-center gap-1 opacity-90 hover:opacity-100"
                     >
-                        <User />
+                        <User/>
                         Tài khoản
                     </Link>
-
                     <Link
                         to="/profile/cart"
                         className="relative flex items-center gap-1 opacity-90 hover:opacity-100"
                     >
-                        <ShoppingCart />
+                        <ShoppingCart/>
                         Giỏ hàng
                     </Link>
 
@@ -43,7 +41,7 @@ export default function HeaderIcons() {
                         onClick={handleLogout}
                         className="flex items-center gap-1 opacity-90 hover:opacity-100"
                     >
-                        <LogOut />
+                        <LogOut/>
                         Đăng xuất
                     </button>
                 </>
@@ -53,8 +51,15 @@ export default function HeaderIcons() {
                         to="/login"
                         className="flex items-center gap-1 opacity-90 hover:opacity-100"
                     >
-                        <LogIn />
+                        <LogIn/>
                         Đăng nhập
+                    </Link>
+                    <Link
+                        to="/Register"
+                        className="flex items-center gap-1 opacity-90 hover:opacity-100"
+                    >
+                        <LogIn/>
+                        Đăng Ký
                     </Link>
                 </>
             )}

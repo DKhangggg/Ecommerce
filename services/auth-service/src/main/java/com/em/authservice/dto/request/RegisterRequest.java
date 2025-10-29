@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RegisterRequest {
-    @NotBlank(message = "Username is required")
     private String username;
     @NotBlank(message = "Password is required")
     private String password;
