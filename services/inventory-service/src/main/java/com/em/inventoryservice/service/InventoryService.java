@@ -2,9 +2,9 @@ package com.em.inventoryservice.service;
 
 import com.em.commonevent.ProductCreatedEvent;
 import com.em.inventoryservice.dto.request.InRequest;
+import com.em.inventoryservice.exception.InsufficientStockException;
 import com.em.inventoryservice.exception.InvalidQuantityException;
 import com.em.inventoryservice.exception.InventoryNotFoundException;
-import com.em.inventoryservice.exception.InsufficientStockException;
 import com.em.inventoryservice.model.Inventory;
 import com.em.inventoryservice.model.STATUS;
 import com.em.inventoryservice.repository.InventoryRepository;
@@ -43,6 +43,7 @@ public class InventoryService {
 
         return inventoryRepo.save(newInventory);
     }
+
     public void createInventoryByEvent(ProductCreatedEvent event) {
         log.info("Received ProductCreatedEvent: {}", event);
 
@@ -160,7 +161,10 @@ public class InventoryService {
     }
 
     private void recordTransaction(Inventory inventory, String action, int quantity) {
-        // TODO: Implement transaction recording logic
         log.info("Recording transaction: {} {} units for inventory {}", action, quantity, inventory.getId());
+    }
+
+    public List<Inventory> findAllBySellerId(String sellerId) {
+        return inventoryRepo.findAllBySellerId(sellerId);
     }
 }

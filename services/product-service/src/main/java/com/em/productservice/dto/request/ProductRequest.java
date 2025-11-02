@@ -5,9 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @Getter
@@ -33,5 +31,5 @@ public class ProductRequest {
 
     private List<String> imageUrls;
 
-    private Map<String, Object> attributes;
+    private List<AttributeDto> attributes;
 }

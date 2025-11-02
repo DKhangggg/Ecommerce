@@ -1,6 +1,6 @@
 package com.em.productservice.dto.response;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.em.productservice.dto.request.AttributeDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @Builder
@@ -23,7 +22,7 @@ public class ProductResponse {
     private int stock;
     private List<CategoryResponse> categories;  // Return full category info instead of just IDs
     private List<String> imageUrls;
-    private Map<String, Object> attributes;
+    private List<AttributeDto> attributes;
     private Instant createdAt;
     private Instant updatedAt;
 }

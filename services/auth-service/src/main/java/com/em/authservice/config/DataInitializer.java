@@ -14,9 +14,11 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if(roleRepo.findAll().isEmpty()) {
+        if (roleRepo.findAll().isEmpty()) {
             Role role = new Role();
             role.setRoleName("ROLE_USER");
+            Role role4 = new Role();
+            role4.setRoleName("ROLE_SELLER");
             Role role1 = new Role();
             role1.setRoleName("ROLE_ADMIN");
             Role role2 = new Role();
@@ -24,6 +26,7 @@ public class DataInitializer implements CommandLineRunner {
             roleRepo.save(role);
             roleRepo.save(role1);
             roleRepo.save(role2);
+            roleRepo.save(role4);
         }
     }
 }

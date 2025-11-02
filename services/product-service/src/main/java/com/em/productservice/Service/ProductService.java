@@ -9,11 +9,10 @@ import com.em.productservice.dto.request.ProductRequest;
 import com.em.productservice.dto.response.CategoryResponse;
 import com.em.productservice.dto.response.ProductResponse;
 import com.em.productservice.events.EventPublisherService;
+import com.em.productservice.exception.CategoryNotFoundException;
 import com.em.productservice.exception.DuplicateProductException;
 import com.em.productservice.exception.InvalidProductDataException;
 import com.em.productservice.exception.ProductNotFoundException;
-import com.em.productservice.exception.InsufficientStockException;
-import com.em.productservice.exception.CategoryNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -57,9 +56,9 @@ public class ProductService {
     private ProductResponse mapToProductResponse(Product product) {
         // Convert Category objects to CategoryResponse DTOs
         List<CategoryResponse> categoryResponses = product.getCategories() != null ?
-            product.getCategories().stream()
-                .map(this::mapToCategoryResponse)
-                .toList() : List.of();
+                product.getCategories().stream()
+                        .map(this::mapToCategoryResponse)
+                        .toList() : List.of();
 
         return ProductResponse.builder()
                 .id(product.getId())
@@ -82,13 +81,13 @@ public class ProductService {
                 .status(category.getStatus())
                 .products(category.getProducts())
                 .createdAt(category.getCreatedAt() != null ?
-                    LocalDateTime.ofInstant(category.getCreatedAt(), java.time.ZoneOffset.UTC) : null)
+                        LocalDateTime.ofInstant(category.getCreatedAt(), java.time.ZoneOffset.UTC) : null)
                 .updatedAt(category.getUpdatedAt() != null ?
-                    LocalDateTime.ofInstant(category.getUpdatedAt(), java.time.ZoneOffset.UTC) : null)
+                        LocalDateTime.ofInstant(category.getUpdatedAt(), java.time.ZoneOffset.UTC) : null)
                 .build();
     }
 
-    public void createProduct(String sellerId,String roles,ProductRequest productRequest) {
+    public void createProduct(String sellerId, String roles, ProductRequest productRequest) {
         log.info("Creating new product: {}", productRequest.getName());
         String roleHeader = roles.toUpperCase();
         List<String> rolesList = Arrays.stream(roleHeader.split(","))
@@ -127,7 +126,7 @@ public class ProductService {
         productCreatedEvent.setDescription(savedProduct.getDescription());
         productCreatedEvent.setSellerId(sellerId);
         productCreatedEvent.setQuantity(productRequest.getStock());
-        eventPublisher.publishEvent("PRODUCT_CREATED_EVENT",savedProduct.getId(), productCreatedEvent);
+        eventPublisher.publishEvent("PRODUCT_CREATED_EVENT", savedProduct.getId(), productCreatedEvent);
     }
 
     public void updateProduct(String id, ProductRequest productRequest) {
@@ -172,5 +171,10 @@ public class ProductService {
 
         productRepository.delete(product);
         log.info("Product deleted successfully: {}", product.getName());
+    }
+
+
+    public List<Product> findProductsByIdsAndSellerId(List<String> ids, String sellerId) {
+        return productRepository.findAllByIdInAndSellerId(ids, sellerId);
     }
 }

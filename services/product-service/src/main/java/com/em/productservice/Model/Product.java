@@ -1,6 +1,7 @@
 package com.em.productservice.Model;
 
 
+import com.em.productservice.dto.request.AttributeDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -28,10 +28,10 @@ public class Product {
     private String sellerId;
 
     @DBRef(lazy = true)
-    private List<Category> categories;  // Reference to actual Category documents
+    private List<Category> categories;
 
     private List<String> imageUrls;
-    private Map<String, Object> attributes;
+    private List<AttributeDto> attributes;
 
     @CreatedDate
     private Instant createdAt;

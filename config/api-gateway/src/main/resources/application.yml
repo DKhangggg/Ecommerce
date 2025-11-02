@@ -1,42 +1,73 @@
 server:
-  port: 8080
+  port: 8080 # Cổng chính mà Frontend sẽ gọi
+
 spring:
   application:
     name: api-gateway
+
   cloud:
     gateway:
+      # GIỮ LẠI server.webflux VÌ BẠN DÙNG BẢN MỚI
       server:
         webflux:
           routes:
-            - id: auth-service
+
+            # === 1. CỔNG PUBLIC ===
+            - id: auth-public
               uri: lb://auth-service
               predicates:
-              - Path=/api/auth-service/**
-              metadata:
-                  auth: public
+                - Path=/api/public/auth/**
+              filters:
+                - StripPrefix=3
 
-            - id: user-service
+            - id: product-public
+              uri: lb://product-service
+              predicates:
+                - Path=/api/public/product/**
+              filters:
+                - StripPrefix=3
+
+            # === 2. CỔNG PRIVATE ===
+            - id: auth-private
+              uri: lb://auth-service
+              predicates:
+                - Path=/api/private/auth/**
+              filters:
+                - StripPrefix=3
+
+            - id: product-private
+              uri: lb://product-service
+              predicates:
+                - Path=/api/private/product/**
+              filters:
+                - StripPrefix=3
+
+            - id: inventory-private
+              uri: lb://inventory-service
+              predicates:
+                - Path=/api/private/inventory/**
+              filters:
+                - StripPrefix=3
+
+            - id: user-private
               uri: lb://user-service
               predicates:
-              - Path=/api/user-service/**
-              metadata:
-                auth: private
+                - Path=/api/private/user/**
+              filters:
+                - StripPrefix=3
 
-            - id: product-service-public
-              uri: lb://product-service
-              predicates:
-                - Path=/api/product-service/public/**
-              metadata:
-                auth: public
-            - id: product-service-private
-              uri: lb://product-service
-              predicates:
-                - Path=/api/product-service/private/**
-              metadata:
-                auth: private
+# --- Cấu hình Eureka ---
 eureka:
   instance:
     prefer-ip-address: true
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
+# --- Cấu hình Logging ---
+logging:
+  level:
+    root: INFO
+    com.em.apigateway.Config: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.cloud.gateway: DEBUG

@@ -26,8 +26,17 @@
         <module name="common-data" />
         <module name="inventory-service" />
       </profile>
+      <profile name="Annotation profile for composite-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+        </processorPath>
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="composite-service" target="21" />
       <module name="proto" target="17" />
     </bytecodeTargetLevel>
   </component>
@@ -37,6 +46,7 @@
       <module name="api-gateway" options="-parameters" />
       <module name="auth-service" options="-parameters" />
       <module name="common-data" options="-parameters" />
+      <module name="composite-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="inventory-service" options="-parameters" />
       <module name="inventory-service (1)" options="-parameters" />

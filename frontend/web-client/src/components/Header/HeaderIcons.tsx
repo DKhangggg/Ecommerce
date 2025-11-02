@@ -1,11 +1,13 @@
-import {Heart, LogIn, LogOut, ShoppingCart, User} from "lucide-react"; // 1. Thêm LogIn
-import {Link, useNavigate} from "react-router-dom";
+import {Gem, Heart, LogIn, LogOut, ShoppingCart, Store, User} from "lucide-react"; // 1. Thêm LogIn
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useAuth} from "../../context/AuthContext.tsx";
 
 export default function HeaderIcons() {
-    const {isAuthenticated, logout} = useAuth();
+    const {isAuthenticated, logout, user} = useAuth();
     const navigate = useNavigate();
-
+    const location = useLocation();
+    const isSeller = user?.roles.includes("ROLE_SELLER") ?? false;
+    const isSellerArea = location.pathname.startsWith("/seller");
     const handleLogout = () => {
         logout();
         navigate("/login");
@@ -36,7 +38,26 @@ export default function HeaderIcons() {
                         <ShoppingCart/>
                         Giỏ hàng
                     </Link>
+                    {isSeller && (
+                        isSellerArea ? (
 
+                            <Link
+                                to="/"
+                                className="relative flex items-center gap-1 opacity-90 hover:opacity-100"
+                            >
+                                <Store/>
+                                Trang Mua
+                            </Link>
+                        ) : (
+                            <Link
+                                to="/seller"
+                                className="relative flex items-center gap-1 opacity-90 hover:opacity-100"
+                            >
+                                <Gem/>
+                                Kênh Người Bán
+                            </Link>
+                        )
+                    )}
                     <button
                         onClick={handleLogout}
                         className="flex items-center gap-1 opacity-90 hover:opacity-100"
