@@ -24,6 +24,7 @@
         <option value="$PROJECT_DIR$/inventory-service/pom.xml" />
         <option value="$PROJECT_DIR$/common-event/pom.xml" />
         <option value="$PROJECT_DIR$/config/composite-service/pom.xml" />
+        <option value="$PROJECT_DIR$/services/aggregator-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

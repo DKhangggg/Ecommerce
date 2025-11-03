@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="auth-service" />
         <module name="discovery-server" />
+        <module name="aggregator-service" />
         <module name="Product-service" />
         <module name="api-gateway" />
         <module name="product-service" />
@@ -26,14 +27,6 @@
         <module name="common-data" />
         <module name="inventory-service" />
       </profile>
-      <profile name="Annotation profile for composite-service" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
-        </processorPath>
-      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="composite-service" target="21" />
@@ -43,6 +36,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Product-service" options="-parameters -parameters" />
+      <module name="aggregator-service" options="-parameters" />
       <module name="api-gateway" options="-parameters" />
       <module name="auth-service" options="-parameters" />
       <module name="common-data" options="-parameters" />

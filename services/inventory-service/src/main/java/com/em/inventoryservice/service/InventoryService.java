@@ -153,7 +153,7 @@ public class InventoryService {
 
         if (availableStock <= 0) {
             inventory.setStatus(STATUS.OUT_OF_STOCK);
-        } else if (availableStock < 5) { // Low stock threshold
+        } else if (availableStock < 5) {
             inventory.setStatus(STATUS.LOW_STOCK);
         } else {
             inventory.setStatus(STATUS.IN_STOCK);
@@ -165,6 +165,13 @@ public class InventoryService {
     }
 
     public List<Inventory> findAllBySellerId(String sellerId) {
+        log.info("Fetching inventories for sellerId: {}", sellerId);
+        List<Inventory> response = inventoryRepo.findAllBySellerId(sellerId);
+        if (response.isEmpty()) {
+            log.info("No inventories found for sellerId: {}", sellerId);
+        } else {
+            log.info("Found {} inventories for sellerId: {}", response.size(), sellerId);
+        }
         return inventoryRepo.findAllBySellerId(sellerId);
     }
 }

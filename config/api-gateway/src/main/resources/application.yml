@@ -56,7 +56,13 @@ spring:
               filters:
                 - StripPrefix=3
 
-# --- Cấu hình Eureka ---
+            - id: aggregator-private
+              uri: lb://aggregator-service
+              predicates:
+                - Path=/api/private/aggregate/**
+              filters:
+                - StripPrefix=3
+
 eureka:
   instance:
     prefer-ip-address: true

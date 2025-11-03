@@ -11,6 +11,7 @@
     <file url="file://$PROJECT_DIR$/proto-contract/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/proto/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/proto/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/services/aggregator-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/user-service/src/main/java" charset="UTF-8" />
   </component>
 </project>

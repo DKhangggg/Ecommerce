@@ -4,6 +4,7 @@ import com.em.inventoryservice.dto.request.InRequest;
 import com.em.inventoryservice.model.Inventory;
 import com.em.inventoryservice.service.InventoryService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/inventory")
 @AllArgsConstructor
+@Slf4j
 public class InventoryController {
     private InventoryService inventoryService;
 
@@ -38,6 +40,7 @@ public class InventoryController {
     public ResponseEntity<List<Inventory>> getMyInventory(
             @RequestHeader("X-User-Id") String sellerId
     ) {
+        log.info("Vào được inventoryservice - Lấy inventory cho sellerId: {}", sellerId);
         List<Inventory> inventories = inventoryService.findAllBySellerId(sellerId);
         return ResponseEntity.ok(inventories);
     }
