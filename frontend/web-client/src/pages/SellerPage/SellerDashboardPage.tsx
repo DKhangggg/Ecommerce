@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {DollarSign, TrendingUp, Users, ShoppingBag, Package, Activity} from 'lucide-react';
+import {DollarSign, TrendingUp, Users} from 'lucide-react';
 import {
     Area,
     AreaChart,
@@ -129,115 +129,85 @@ export function SellerDashboardPage() {
     ];
 
     return (
-        <div className="w-full max-w-full p-6 min-h-screen"
-             style={{
-                 fontFamily: 'Inter, Poppins, sans-serif',
-                 background: 'linear-gradient(135deg, #faf8f6 0%, #f5f1ed 50%, #faf8f6 100%)'
-             }}>
+        <div className="w-full min-h-screen bg-gray-50 p-8" style={{fontFamily: 'Inter, Poppins, sans-serif'}}>
             {/* Header */}
-            <div className="mb-8">
-                <div
-                    className="rounded-3xl p-8 shadow-lg backdrop-blur-xl border border-white/50 relative overflow-hidden"
-                    style={{
-                        background: 'linear-gradient(135deg, rgba(185, 123, 72, 0.15) 0%, rgba(139, 90, 52, 0.12) 100%)',
-                        boxShadow: '0 8px 32px rgba(185, 123, 72, 0.1)'
-                    }}>
-                    <div
-                        className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/30 to-transparent rounded-full blur-3xl"></div>
-                    <h1 className="text-5xl font-bold tracking-tight relative z-10"
-                        style={{
-                            color: '#8B5A34',
-                            letterSpacing: '-0.02em'
-                        }}>
-                        Business Performance Overview
-                    </h1>
-                    <p className="text-sm mt-2 relative z-10" style={{color: '#b97b48'}}>
-                        TỔNG QUAN HIỆU SUẤT KINH DOANH
-                    </p>
-                </div>
+            <div className="mb-10">
+                <h1 className="text-4xl font-bold text-center text-gray-800 mb-2">
+                    Business Performance Overview
+                </h1>
+                <p className="text-center text-gray-500 text-sm">Real-time metrics and analytics</p>
             </div>
 
             {/* Top Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                {/* New Customers Card */}
-                <div
-                    className="group rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 backdrop-blur-xl border border-white/50 relative overflow-hidden"
-                    style={{
-                        background: 'linear-gradient(135deg, rgba(185, 123, 72, 0.95) 0%, rgba(139, 90, 52, 0.95) 100%)',
-                        boxShadow: '0 8px 32px rgba(185, 123, 72, 0.25)'
-                    }}>
-                    <div
-                        className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
-                    <div className="relative z-10">
-                        <div className="flex items-start justify-between mb-6">
-                            <div
-                                className="w-14 h-14 rounded-2xl bg-white/25 backdrop-blur-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300"
-                                style={{border: '1px solid rgba(255, 255, 255, 0.3)'}}>
-                                <Users className="text-white" size={28}/>
-                            </div>
-                        </div>
-                        <p className="text-xs font-semibold text-white/80 tracking-wider uppercase mb-2">
-                            New Customers | YTD
-                        </p>
-                        <h3 className="text-5xl font-bold text-white mb-1 tracking-tight">
-                            {stats.newCustomers.toLocaleString()}
-                        </h3>
-                        <div className="h-1 w-16 bg-white/40 rounded-full mt-3"></div>
-                    </div>
-                </div>
+            <div className="max-w-7xl mx-auto mb-8">
+                <div className="flex flex-row gap-6 w-full">
 
-                {/* Sales Revenue Card */}
-                <div
-                    className="group rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 backdrop-blur-xl border border-white/50 relative overflow-hidden"
-                    style={{
-                        background: 'linear-gradient(135deg, rgba(185, 123, 72, 0.95) 0%, rgba(139, 90, 52, 0.95) 100%)',
-                        boxShadow: '0 8px 32px rgba(185, 123, 72, 0.25)'
-                    }}>
+                    {/* New Customers Card */}
                     <div
-                        className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
-                    <div className="relative z-10">
-                        <div className="flex items-start justify-between mb-6">
+                        className="flex-1 bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div className="flex items-center gap-4">
+                            {/* Icon */}
                             <div
-                                className="w-14 h-14 rounded-2xl bg-white/25 backdrop-blur-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300"
-                                style={{border: '1px solid rgba(255, 255, 255, 0.3)'}}>
-                                <TrendingUp className="text-white" size={28}/>
+                                className="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                                <Users className="text-amber-600" size={24}/>
                             </div>
-                        </div>
-                        <p className="text-xs font-semibold text-white/80 tracking-wider uppercase mb-2">
-                            Sales Revenue | YTD
-                        </p>
-                        <h3 className="text-5xl font-bold text-white mb-1 tracking-tight">
-                            {(stats.salesRevenueYTD / 1000000).toFixed(2)}M€
-                        </h3>
-                        <div className="h-1 w-16 bg-white/40 rounded-full mt-3"></div>
-                    </div>
-                </div>
 
-                {/* Profit Card */}
-                <div
-                    className="group rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 backdrop-blur-xl border border-white/50 relative overflow-hidden"
-                    style={{
-                        background: 'linear-gradient(135deg, rgba(185, 123, 72, 0.95) 0%, rgba(139, 90, 52, 0.95) 100%)',
-                        boxShadow: '0 8px 32px rgba(185, 123, 72, 0.25)'
-                    }}>
-                    <div
-                        className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
-                    <div className="relative z-10">
-                        <div className="flex items-start justify-between mb-6">
-                            <div
-                                className="w-14 h-14 rounded-2xl bg-white/25 backdrop-blur-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300"
-                                style={{border: '1px solid rgba(255, 255, 255, 0.3)'}}>
-                                <DollarSign className="text-white" size={28}/>
+                            {/* Content */}
+                            <div className="flex-1">
+                                <p className="text-sm font-medium text-gray-600 mb-1">
+                                    New Customers | YTD
+                                </p>
+                                <p className="text-3xl font-bold text-gray-900">
+                                    {stats.newCustomers.toLocaleString()}
+                                </p>
                             </div>
                         </div>
-                        <p className="text-xs font-semibold text-white/80 tracking-wider uppercase mb-2">
-                            Profit | YTD
-                        </p>
-                        <h3 className="text-5xl font-bold text-white mb-1 tracking-tight">
-                            {(stats.profitYTD / 1000000).toFixed(2)}M€
-                        </h3>
-                        <div className="h-1 w-16 bg-white/40 rounded-full mt-3"></div>
                     </div>
+
+                    {/* Sales Revenue Card */}
+                    <div
+                        className="flex-1 bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div className="flex items-center gap-4">
+                            {/* Icon */}
+                            <div
+                                className="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                                <TrendingUp className="text-amber-600" size={24}/>
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1">
+                                <p className="text-sm font-medium text-gray-600 mb-1">
+                                    Sales Revenue | YTD
+                                </p>
+                                <p className="text-3xl font-bold text-gray-900">
+                                    ${(stats.salesRevenue / 1000000).toFixed(2)}M
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Profit Card */}
+                    <div
+                        className="flex-1 bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div className="flex items-center gap-4">
+                            {/* Icon */}
+                            <div
+                                className="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                                <DollarSign className="text-amber-600" size={24}/>
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1">
+                                <p className="text-sm font-medium text-gray-600 mb-1">
+                                    Profit | YTD
+                                </p>
+                                <p className="text-3xl font-bold text-gray-900">
+                                    ${(stats.profit / 1000000).toFixed(2)}M
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
