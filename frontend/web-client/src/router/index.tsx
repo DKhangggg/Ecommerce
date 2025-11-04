@@ -27,9 +27,9 @@ import {SellerOrdersPage} from "../pages/SellerPage/SellerOrdersPage.tsx";
 import SellerLayout from "../components/layouts/SellerLayout.tsx";
 import {SellerFinancePage} from "../pages/SellerPage/FinancePage.tsx";
 import {SellerMarketingPage} from "../pages/SellerPage/Marketing.tsx";
-import {SellerMessPage} from "../pages/SellerPage/MessPage.tsx";
 import {SellerStarPage} from "../pages/SellerPage/StarPage.tsx";
 import {SellerSettingPage} from "../pages/SellerPage/SettingPage.tsx";
+import SellerMessPage from "@/pages/SellerPage/MessPage.tsx";
 
 export const router = createBrowserRouter([
     {
