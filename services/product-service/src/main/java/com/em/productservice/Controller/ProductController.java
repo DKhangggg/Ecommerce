@@ -73,7 +73,8 @@ public class ProductController {
             log.info("Request /by-ids nhận được ds ID rỗng, trả về ds rỗng.");
             return ResponseEntity.ok(List.of());
         }
-        List<Product> products = productService.findProductsByIdsAndSellerId(ids, sellerId);
+        log.info("Lấy products theo IDs: {} cho sellerId: {}", ids, sellerId);
+        List<Product> products = productService.findProductsByIdsAndSellerId(ids);
         return ResponseEntity.ok(products);
     }
 

@@ -1,6 +1,7 @@
 package com.em.aggregatorservice.dto.product;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true) // <-- THÊM DỊNG NÀY
 public class ProductResponse {
 
     private String id;

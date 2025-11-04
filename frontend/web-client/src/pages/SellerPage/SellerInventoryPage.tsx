@@ -18,7 +18,6 @@ import React, {useEffect, useState} from "react"; // 1. Thêm useEffect
 import type {CreateProductPayload, ProductRow, ProductRowStatus} from "../../types/product.ts";
 import {useAuth} from "../../context/AuthContext.tsx";
 import {type BackendStatus, productService} from "../../services/productService.ts";
-import type {EnrichedInventoryItem} from "../../types/Inventory.ts";
 
 const {Search} = Input;
 
@@ -214,32 +213,29 @@ export function SellerInventoryPage() {
         setIsLoading(true);
         try {
             // Gọi API gộp (chỉ 1 lần)
-            const data: EnrichedInventoryItem[] = await productService.getEnrichedInventories();
+            const response = await productService.getEnrichedInventories();
 
             // 7. Biến đổi (Map) data từ API sang kiểu ProductRow
-            const productRows: ProductRow[] = data.map(item => {
+            const productRows: ProductRow[] = response.map(item => {
 
                 const frontendStatus = mapBackendStatusToFrontendStatus(item.status);
 
                 return {
-                    // Dữ liệu từ Inventory
-                    id: item.productId, // Dùng productId làm id cho DataGrid
+                    id: item.productId,
                     quantity: item.quantity,
                     location: item.location || '',
                     status: frontendStatus,
 
-                    // Dữ liệu "làm giàu" từ Product
                     name: item.productName || 'N/A',
-                    price: item.productPrice || 0,
-                    imageUrls: item.productImageUrls || [],
+                    price: item.price || 0,
+                    imageUrls: item.imageUrls || [],
                     description: item.productDescription || '',
-                    categories: item.productCategories || [],
-                    attributes: item.productAttributes || [],
+                    categories: item.categories || [],
+                    attributes: item.attributes || [],
 
-                    // Dữ liệu giả (bạn nên lấy từ BE nếu có)
-                    reserved: 0,
-                    updatedAt: new Date(), // Nên dùng item.updatedAt từ BE
-                    createdAt: new Date(), // Nên dùng item.createdAt từ BE
+                    reserved: item.reserved || 0,
+                    updatedAt: new Date(item.inventoryUpdatedAt),
+                    createdAt: new Date(item.productCreatedAt),
                 };
             });
 

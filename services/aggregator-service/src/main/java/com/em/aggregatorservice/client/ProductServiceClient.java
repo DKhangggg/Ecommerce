@@ -1,9 +1,9 @@
 package com.em.aggregatorservice.client;
 
 import com.em.aggregatorservice.dto.product.ProductResponse;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -39,21 +39,13 @@ public class ProductServiceClient {
                 )
                 .header("X-User-Id", sellerId)
                 .retrieve()
-                .bodyToMono(String.class) // Tạm thời đọc body thành String
-                .doOnNext(jsonBody -> log.info("PRODUCT_SERVICE_RAW_RESPONSE: {}", jsonBody))
-
-                .flatMap(jsonBody -> {
-                    try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        JavaType type = mapper.getTypeFactory().constructCollectionType(List.class, ProductResponse.class);
-                        List<ProductResponse> list = mapper.readValue(jsonBody, type);
-
-                        return Mono.just(list);
-
-                    } catch (Exception e) {
-                        log.error("LỖI JSON DESERIALIZATION: {}", e.getMessage(), e);
-                        return Mono.error(new RuntimeException("Lỗi cấu trúc JSON từ Product Service"));
-                    }
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        clientResponse -> {
+                            log.error("<= (ProductServiceClient) Product Service báo lỗi 5xx");
+                            return Mono.error(new RuntimeException("Product Service (bulk) is down"));
+                        }
+                )
+                .bodyToMono(new ParameterizedTypeReference<List<ProductResponse>>() {
                 });
     }
 }

@@ -1,6 +1,7 @@
 import type {BackendStatus} from "../services/productService.ts";
 
 export type EnrichedInventoryItem = {
+    reserved?: number;
     productId: string;
     quantity: number;
     location?: string;

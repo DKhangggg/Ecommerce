@@ -23,9 +23,9 @@ const createProduct = async (createProduct: CreateProductPayload) => {
 
 export const getEnrichedInventories = async (): Promise<EnrichedInventoryItem[]> => {
     try {
-        const response = await PrivateApiClient.get<EnrichedInventoryItem[]>('/bff/enriched-inventories');
+        const response = await PrivateApiClient.get<apiResponse<EnrichedInventoryItem[]>>('private/aggregate/inventory');
         console.log("Lấy enriched inventories thành công:", response.data);
-        return response.data;
+        return response.data.data;
     } catch (error) {
         console.error("Lỗi khi lấy enriched inventories:", error);
         throw error;

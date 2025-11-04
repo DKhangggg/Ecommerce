@@ -20,7 +20,7 @@ public class ProductResponse {
     private String description;
     private double price;
     private int stock;
-    private List<CategoryResponse> categories;  // Return full category info instead of just IDs
+    private List<CategoryResponse> categories;
     private List<String> imageUrls;
     private List<AttributeDto> attributes;
     private Instant createdAt;

@@ -174,7 +174,14 @@ public class ProductService {
     }
 
 
-    public List<Product> findProductsByIdsAndSellerId(List<String> ids, String sellerId) {
-        return productRepository.findAllByIdInAndSellerId(ids, sellerId);
+    public List<Product> findProductsByIdsAndSellerId(List<String> ids) {
+        log.info("Finding products by IDs for seller ID: {}", ids);
+        List<Product> productList = productRepository.findAllByIdIn(ids);
+        if (productList.isEmpty()) {
+            log.warn("No products found for the given IDs: {}", ids);
+        } else {
+            log.info("Found {} products for the given IDs", productList.size());
+        }
+        return productList;
     }
 }
