@@ -19,6 +19,7 @@
     "@mui/x-charts": "^8.16.0",
     "@mui/x-data-grid": "^8.16.0",
     "@mui/x-date-pickers": "^8.15.0",
+    "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-slot": "^1.2.3",
     "antd": "^5.27.6",
     "axios": "^1.12.2",
