@@ -1,15 +1,14 @@
-import { PackageCheck } from "lucide-react";
-import "./OrderStatusPage.css";
+import { Truck } from "lucide-react";
 
 export default function DeliveringOrdersPage() {
   return (
-    <div className="order-status-page">
-      <div className="order-status-page__icon-wrapper order-status-page__icon-wrapper--delivering">
-        <PackageCheck className="order-status-page__icon order-status-page__icon--delivering" />
+    <div className="w-full flex flex-col items-center justify-center py-12 px-4">
+      <div className="w-24 h-24 rounded-full p-4 flex items-center justify-center mb-4 bg-gradient-to-br from-[#eef2ff] to-[#c7d2fe]">
+        <Truck className="w-8 h-8 text-[#6366f1]" />
       </div>
-      <p className="order-status-page__title">Không có đơn hàng đang giao</p>
-      <p className="order-status-page__description">
-        Các đơn hàng đang trên đường giao đến bạn sẽ hiển thị ở đây
+      <p className="text-sm text-gray-600 mb-2">Không có đơn hàng đang giao</p>
+      <p className="text-sm text-gray-400">
+        Đơn hàng đang trên đường đến bạn sẽ xuất hiện ở đây
       </p>
     </div>
   );

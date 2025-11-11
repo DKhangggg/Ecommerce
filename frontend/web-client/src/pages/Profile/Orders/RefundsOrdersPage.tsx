@@ -1,16 +1,15 @@
 import { RefreshCcw } from "lucide-react";
-import "./OrderStatusPage.css";
 
 export default function RefundsOrdersPage() {
   return (
-    <div className="order-status-page">
-      <div className="order-status-page__icon-wrapper order-status-page__icon-wrapper--refunds">
-        <RefreshCcw className="order-status-page__icon order-status-page__icon--refunds" />
+    <div className="w-full flex flex-col items-center justify-center py-12 px-4">
+      <div className="w-24 h-24 rounded-full p-4 flex items-center justify-center mb-4 bg-gradient-to-br from-[#faf5ff] to-[#e9d5ff]">
+        <RefreshCcw className="w-8 h-8 text-[#a855f7]" />
       </div>
-      <p className="order-status-page__title">
+      <p className="text-sm text-gray-600 mb-2">
         Không có yêu cầu trả hàng/hoàn tiền
       </p>
-      <p className="order-status-page__description">
+      <p className="text-sm text-gray-400">
         Các yêu cầu trả hàng và hoàn tiền sẽ hiển thị ở đây
       </p>
     </div>

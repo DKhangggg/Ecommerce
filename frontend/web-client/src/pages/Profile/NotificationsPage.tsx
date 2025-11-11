@@ -1,5 +1,4 @@
 import { Bell, X, Clock } from "lucide-react";
-import "./NotificationsPage.css";
 
 type NotificationType =
   | "new_user"
@@ -101,40 +100,67 @@ const notifications: Notification[] = [
 ];
 
 function NotificationItem({ notification }: NotificationItemProps) {
-  const itemClass = notification.isRead
-    ? "notification-item notification-item--read"
-    : "notification-item notification-item--unread";
-
   return (
-    <div className={itemClass}>
-      <div className="notification-item__content">
-        <div className="notification-item__meta">
+    <div
+      className={`flex gap-4 p-4 border-b last:border-b-0 rounded-md transition-colors ${
+        notification.isRead ? "bg-white" : "bg-[rgba(255,251,245,1)]"
+      }`}
+    >
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-3 mb-2">
           <span
-            className={`notification-item__badge notification-item__badge--${notification.badgeColor}`}
+            className={`text-xs font-semibold px-3 py-1 rounded-md ${
+              notification.badgeColor === "green"
+                ? "bg-gradient-to-br from-[#10b981] to-[#059669] text-white"
+                : ""
+            } ${
+              notification.badgeColor === "orange"
+                ? "bg-gradient-to-br from-[#e8d59e] to-[#d9bbb0] text-[#2b2b2b]"
+                : ""
+            } ${
+              notification.badgeColor === "purple"
+                ? "bg-gradient-to-br from-[#a855f7] to-[#9333ea] text-white"
+                : ""
+            } ${
+              notification.badgeColor === "cyan"
+                ? "bg-gradient-to-br from-[#06b6d4] to-[#0891b2] text-white"
+                : ""
+            }`}
           >
             {notification.badge}
           </span>
-          <span className="notification-item__author">
+          <span className="text-xs font-medium text-[#ef4444]">
             {notification.author}
           </span>
         </div>
 
-        <div className="notification-item__body">
-          <h3 className="notification-item__title">{notification.title}</h3>
-          <p className="notification-item__description">
+        <div className="mb-2">
+          <h3
+            className={`text-sm ${
+              notification.isRead
+                ? "font-medium text-[#374151]"
+                : "font-semibold text-[#111827]"
+            }`}
+          >
+            {notification.title}
+          </h3>
+          <p
+            className={`text-sm ${
+              notification.isRead ? "text-gray-500" : "text-gray-700"
+            }`}
+          >
             {notification.description}
           </p>
         </div>
       </div>
 
-      <div className="notification-item__actions">
-        <div className="notification-item__timestamp">
-          <Clock className="notification-item__clock-icon" />
+      <div className="flex flex-col items-end gap-3 min-w-[120px]">
+        <div className="flex items-center gap-2 text-xs text-gray-400">
+          <Clock className="w-4 h-4" />
           <span>{notification.timestamp}</span>
         </div>
-
-        <button className="notification-item__delete-btn">
-          <X className="notification-item__delete-icon" />
+        <button className="w-7 h-7 rounded-md bg-gray-100 text-gray-600 hover:bg-rose-100 hover:text-rose-600">
+          <X className="w-4 h-4" />
         </button>
       </div>
     </div>
@@ -145,13 +171,13 @@ export default function NotificationsPage() {
   const hasNotifications = notifications.length > 0;
 
   return (
-    <div className="notification-page">
-      <div className="notification-header">
-        <h1 className="notification-header__title">Danh Sách Thông Báo</h1>
+    <div className="w-full">
+      <div className="pb-4 mb-4 border-b">
+        <h1 className="text-2xl font-semibold">Danh Sách Thông Báo</h1>
       </div>
 
       {hasNotifications ? (
-        <div className="notification-list">
+        <div className="flex flex-col gap-3">
           {notifications.map((notification) => (
             <NotificationItem
               key={notification.id}
@@ -160,12 +186,12 @@ export default function NotificationsPage() {
           ))}
         </div>
       ) : (
-        <div className="notification-empty">
-          <div className="notification-empty__icon-wrapper">
-            <Bell className="notification-empty__icon" />
+        <div className="bg-white border rounded-md p-8 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mx-auto mb-4">
+            <Bell className="w-8 h-8 text-gray-400" />
           </div>
-          <h3 className="notification-empty__title">Không có thông báo</h3>
-          <p className="notification-empty__text">
+          <h3 className="text-lg font-semibold">Không có thông báo</h3>
+          <p className="text-sm text-gray-500">
             Các thông báo mới sẽ xuất hiện ở đây
           </p>
         </div>

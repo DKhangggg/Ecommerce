@@ -7,145 +7,133 @@ import {
   Gift,
   TrendingUp,
 } from "lucide-react";
-import "./CartPage.css";
 
 export default function CartPage() {
   const coinBalance = 2450;
 
   return (
-    <div className="cart-page">
-      <div className="cart-header">
-        <h1 className="cart-header__title">Cart</h1>
-      </div>
+    <div className="w-full max-w-4xl mx-auto p-4 space-y-8">
+      <header className="">
+        <h1 className="text-2xl font-semibold">Cart</h1>
+      </header>
 
-      <div className="cart-balance">
-        <div className="cart-balance__header">
-          <div className="cart-balance__info">
-            <p className="cart-balance__label">Số dư hiện tại</p>
-            <div className="cart-balance__amount-wrapper">
-              <h2 className="cart-balance__amount">
+      <section className="bg-white rounded-lg shadow p-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm text-gray-500">Số dư hiện tại</p>
+            <div className="flex items-baseline gap-2">
+              <h2 className="text-2xl font-bold">
                 {coinBalance.toLocaleString()}
               </h2>
-              <span className="cart-balance__currency">Xu</span>
+              <span className="text-sm text-gray-500">Xu</span>
             </div>
           </div>
-          <div className="cart-balance__icon-wrapper">
-            <Coins className="cart-balance__icon" />
+          <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center">
+            <Coins className="w-6 h-6 text-yellow-500" />
           </div>
         </div>
-        <div className="cart-balance__actions">
-          <button className="cart-balance__button cart-balance__button--primary">
+
+        <div className="mt-4 flex gap-3">
+          <button className="px-4 py-2 rounded bg-gradient-to-br from-[#e8d59e] to-[#d9bbb0] text-sm font-medium">
             Lịch sử
           </button>
-          <button className="cart-balance__button cart-balance__button--secondary">
+          <button className="px-4 py-2 rounded border border-gray-200 text-sm text-gray-700">
             Quy đổi Xu
           </button>
         </div>
-      </div>
+      </section>
 
-      <div className="cart-transactions">
-        <div className="cart-transactions__header">
-          <h3 className="cart-transactions__title">Lịch Sử Giao Dịch</h3>
-          <button className="cart-transactions__view-all">Xem tất cả</button>
+      <section className="">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-medium">Lịch Sử Giao Dịch</h3>
+          <button className="text-sm text-indigo-600">Xem tất cả</button>
         </div>
 
-        <div className="cart-transactions__list">
-          <div className="cart-transaction-item cart-transaction-item--income">
-            <div className="cart-transaction-item__icon-wrapper">
-              <ArrowUpRight className="cart-transaction-item__icon" />
+        <div className="space-y-3">
+          <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
+            <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center mr-3">
+              <ArrowUpRight className="w-5 h-5 text-green-500" />
             </div>
-            <div className="cart-transaction-item__content">
-              <h4 className="cart-transaction-item__title">
-                Hoàn thành đơn hàng
-              </h4>
-              <p className="cart-transaction-item__date">25/10/2025 - 14:30</p>
+            <div className="flex-1">
+              <h4 className="text-sm font-medium">Hoàn thành đơn hàng</h4>
+              <p className="text-xs text-gray-400">25/10/2025 - 14:30</p>
             </div>
-            <div className="cart-transaction-item__amount">
-              <p className="cart-transaction-item__value">+150</p>
-            </div>
+            <div className="text-sm font-semibold text-green-600">+150</div>
           </div>
 
-          <div className="cart-transaction-item cart-transaction-item--expense">
-            <div className="cart-transaction-item__icon-wrapper">
-              <ArrowDownRight className="cart-transaction-item__icon" />
+          <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
+            <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center mr-3">
+              <ArrowDownRight className="w-5 h-5 text-red-400" />
             </div>
-            <div className="cart-transaction-item__content">
-              <h4 className="cart-transaction-item__title">
-                Đổi voucher giảm giá
-              </h4>
-              <p className="cart-transaction-item__date">24/10/2025 - 10:15</p>
+            <div className="flex-1">
+              <h4 className="text-sm font-medium">Đổi voucher giảm giá</h4>
+              <p className="text-xs text-gray-400">24/10/2025 - 10:15</p>
             </div>
-            <div className="cart-transaction-item__amount">
-              <p className="cart-transaction-item__value">-200</p>
-            </div>
+            <div className="text-sm font-semibold text-red-500">-200</div>
           </div>
 
-          <div className="cart-transaction-item cart-transaction-item--income">
-            <div className="cart-transaction-item__icon-wrapper">
-              <ArrowUpRight className="cart-transaction-item__icon" />
+          <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
+            <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center mr-3">
+              <ArrowUpRight className="w-5 h-5 text-green-500" />
             </div>
-            <div className="cart-transaction-item__content">
-              <h4 className="cart-transaction-item__title">
-                Viết đánh giá sản phẩm
-              </h4>
-              <p className="cart-transaction-item__date">23/10/2025 - 16:45</p>
+            <div className="flex-1">
+              <h4 className="text-sm font-medium">Viết đánh giá sản phẩm</h4>
+              <p className="text-xs text-gray-400">23/10/2025 - 16:45</p>
             </div>
-            <div className="cart-transaction-item__amount">
-              <p className="cart-transaction-item__value">+50</p>
-            </div>
+            <div className="text-sm font-semibold text-green-600">+50</div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="cart-earning">
-        <div className="cart-earning__header">
-          <div className="cart-earning__icon-wrapper">
-            <TrendingUp className="cart-earning__icon" />
+      <section>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center">
+            <TrendingUp className="w-5 h-5 text-indigo-500" />
           </div>
-          <h3 className="cart-earning__title">Cách Kiếm Xu</h3>
+          <h3 className="text-lg font-medium">Cách Kiếm Xu</h3>
         </div>
 
-        <div className="cart-earning__grid">
-          <div className="cart-earning-card">
-            <div className="cart-earning-card__icon-wrapper cart-earning-card__icon-wrapper--orange">
-              <ShoppingBag className="cart-earning-card__icon cart-earning-card__icon--orange" />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-white rounded-lg p-4 shadow">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#fff7ed] to-[#fed7aa] flex items-center justify-center mb-3">
+              <ShoppingBag className="w-6 h-6 text-orange-500" />
             </div>
-            <h4 className="cart-earning-card__title">Hoàn thành đơn hàng</h4>
-            <p className="cart-earning-card__description">
+            <h4 className="text-sm font-medium">Hoàn thành đơn hàng</h4>
+            <p className="text-xs text-gray-500 mt-1">
               Nhận Xu khi mua sắm và hoàn thành đơn hàng thành công
             </p>
-            <div className="cart-earning-card__reward cart-earning-card__reward--orange">
+            <div className="mt-3 inline-block text-sm font-semibold bg-gray-100 rounded px-2 py-1">
               +50 - 200 Xu
             </div>
           </div>
 
-          <div className="cart-earning-card">
-            <div className="cart-earning-card__icon-wrapper cart-earning-card__icon-wrapper--green">
-              <Star className="cart-earning-card__icon cart-earning-card__icon--green" />
+          <div className="bg-white rounded-lg p-4 shadow">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#ecfccb] to-[#bbf7d0] flex items-center justify-center mb-3">
+              <Star className="w-6 h-6 text-green-500" />
             </div>
-            <h4 className="cart-earning-card__title">Viết đánh giá</h4>
-            <p className="cart-earning-card__description">
+            <h4 className="text-sm font-medium">Viết đánh giá</h4>
+            <p className="text-xs text-gray-500 mt-1">
               Nhận Xu khi đánh giá sản phẩm và chia sẻ trải nghiệm
             </p>
-            <div className="cart-earning-card__reward cart-earning-card__reward--green">
+            <div className="mt-3 inline-block text-sm font-semibold bg-gray-100 rounded px-2 py-1">
               +20 - 100 Xu
             </div>
           </div>
 
-          <div className="cart-earning-card">
-            <div className="cart-earning-card__icon-wrapper cart-earning-card__icon-wrapper--purple">
-              <Gift className="cart-earning-card__icon cart-earning-card__icon--purple" />
+          <div className="bg-white rounded-lg p-4 shadow">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#faf5ff] to-[#e9d5ff] flex items-center justify-center mb-3">
+              <Gift className="w-6 h-6 text-purple-600" />
             </div>
-            <h4 className="cart-earning-card__title">Tham gia sự kiện</h4>
-            <p className="cart-earning-card__description">
+            <h4 className="text-sm font-medium">Tham gia sự kiện</h4>
+            <p className="text-xs text-gray-500 mt-1">
               Nhận thưởng Xu khi tham gia các chương trình khuyến mãi
             </p>
-            <div className="cart-earning-card__reward cart-earning-card__reward--purple">
+            <div className="mt-3 inline-block text-sm font-semibold bg-gray-100 rounded px-2 py-1">
               +100 - 500 Xu
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

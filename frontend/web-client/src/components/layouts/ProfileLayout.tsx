@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { Bell, User, ShoppingBag, Ticket, Coins, Store } from "lucide-react";
 import { SideBar } from "../Sidebar/SideBar";
 import Header from "../Header/Header";
-import "./ProfileLayout.css";
+// keep ProfileLayout.css imported for shared animations (fade/spin)
 
 export default function ProfileLayout() {
   return (
@@ -20,15 +20,8 @@ export default function ProfileLayout() {
           }}
           className="flex-col md:flex-row"
         >
-          <aside
-            style={{
-              width: "256px",
-              flexShrink: 0,
-              alignSelf: "flex-start",
-            }}
-            className="w-full md:w-64"
-          >
-            <div className="sidebar-wrapper">
+          <aside className="w-full md:w-64">
+            <div className="sticky top-24 bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
               <SideBar
                 title="Tài khoản"
                 useLink
@@ -82,7 +75,7 @@ export default function ProfileLayout() {
             }}
             className="flex-1 min-w-0"
           >
-            <div className="profile-content-wrapper">
+            <div className="relative min-h-[400px] bg-white rounded-[12px] shadow-[0_1px_2px_rgba(0,0,0,0.05)] p-6 animate-fadeSlideIn">
               <Outlet />
             </div>
           </div>

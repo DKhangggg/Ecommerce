@@ -1,3 +1,101 @@
+````markdown
+## Automated CSS → Tailwind Migration Rules (ENGLISH)
+
+These rules define how the automated CSS-to-Tailwind migration engine should behave. Follow them strictly to avoid layout regressions.
+
+Rule 1 — Inventory & Mapping (Scope discovery)
+
+- Scan the entire project for CSS and styling-related files: all `.tsx`, `.jsx`, `.css`, `.scss`, plus relevant config files (especially `tailwind.config.js`).
+- Classify styles into three categories:
+  - Global CSS: files imported at the app root that affect the whole project (e.g., `index.css`, `main.css`, `App.css`).
+  - Component-Scoped CSS: CSS files imported directly inside a component (e.g., `Button.css`).
+  - CSS Modules: files using local mappings (e.g., `Button.module.css`) where classes are referenced as `styles.someClass`.
+- Build a mapping of component -> stylesheet usage. Example map format:
+  - `App.tsx` -> `App.css` (Global)
+  - `Button.tsx` -> `Button.module.css` (CSS Module)
+  - `Card.tsx` -> uses `className="card-container"` (affected by Global CSS)
+
+Rule 2 — CSS Property Extraction (Parse CSS to structured data)
+
+- Parse each CSS file and extract selectors and their properties into a JSON/object structure.
+- Example input CSS:
+
+  .card-container {
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  Output JSON object:
+
+  {
+  ".card-container": {
+  "padding": "16px",
+  "border-radius": "8px",
+  "box-shadow": "0 4px 6px rgba(0, 0, 0, 0.1)"
+  }
+  }
+
+Rule 3 — Translation Engine (Core mapping rules: CSS → Tailwind)
+
+- The engine must map CSS properties to Tailwind classes conservatively.
+- Absolute mappings (examples):
+  - `padding: 16px` → `p-4`
+  - `border-radius: 8px` → `rounded-lg`
+  - `display: flex` → `flex`
+- Arbitrary / custom values: If a CSS value has no exact Tailwind token (or is not listed in `tailwind.config.js`), do NOT round or approximate. Use Tailwind arbitrary values instead.
+  - e.g. `padding: 17px` → `p-[17px]`
+  - `color: #123456` → `text-[#123456]`
+  - `box-shadow: 0 4px 6px rgba(0,0,0,0.1)` → `shadow-[0_4px_6px_rgba(0,0,0,0.1)]`
+- Respect the project's `tailwind.config.js` theme extensions when mapping named tokens.
+
+Rule 4 — Code Transformation (Apply translations to `.tsx` files)
+
+- Scan `.tsx` files for `className` usages and transform according to the classification from Rule 1.
+
+  CSS Modules:
+
+  - If `className={styles.cardContainer}` is used, look up `.cardContainer` in the corresponding CSS Module file, translate the properties using Rule 3, and replace the usage:
+    - Before: `className={styles.cardContainer}`
+    - After: `className="p-4 rounded-lg shadow-[0_4px_6px_rgba(0,0,0,0.1)]"`
+
+  Static Global className:
+
+  - If `className="card-container"` is used, find `.card-container` in global CSS, translate, and replace similarly.
+
+  Dynamic / conditional className:
+
+  - For dynamic expressions like `className={`card ${isActive ? "active" : ""}`}`, translate each class separately and recombine using a helper (`clsx` or `cn`). Example:
+    - Before: `className={`card ${isActive ? "active" : ""}`}`
+    - After: `className={cn("p-4 rounded-lg", isActive && "bg-blue-500")}`
+
+Rule 5 — Exception Handling (What NOT to translate)
+
+- Do NOT translate CSS that uses complex or structural selectors, or rules that cannot be reliably expressed as Tailwind utilities.
+
+  No-Translate flag (examples to keep as-is and flag for manual review):
+
+  - `@keyframes` and animation definitions.
+  - Complex pseudo-elements with `content` (`::before`, `::after`) or advanced selectors that rely on DOM structure.
+  - Structural selectors like `div > p`, `nav + main`, or selectors relying on sibling/child relations.
+
+  Action: When such rules are detected, preserve the original CSS file (or the affected selector block) and add a migration flag in the report for manual review.
+
+Execution notes and priorities
+
+- Start by building the inventory map (Rule 1) and extracting CSS into structured JSON (Rule 2). This reduces false positives when transforming components.
+- Use `tailwind.config.js` to determine which values are canonical tokens vs arbitrary values.
+- Prefer minimal, reviewable changes: transform individual components incrementally and surface a migration report listing files changed and selectors flagged for manual review.
+
+Migration report format (suggested):
+
+- `migrated`: list of components changed with from/to className snippets.
+- `flags`: list of selectors or files that require manual attention with a reason code (keyframes, structural-selector, pseudo-content).
+
+---
+
+# Project Rules and Conventions
+
 # Project Rules and Conventions
 
 Tech stack baseline: TypeScript + React 18 + Vite + Tailwind CSS (priority 9/10). All rules below aim for consistency, maintainability, and a clean UX.
@@ -234,3 +332,4 @@ export function mapInventoryStatus(s: string) {
   }
 }
 ```
+````
