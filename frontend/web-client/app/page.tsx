@@ -1,9 +1,10 @@
+import Container from "@/components/Container";
 import { Button } from "@/components/ui/button";
 import React from "react";
 
 const Home = () => {
   return (
-    <div className="p-10 bg-brand-4">
+    <Container className=" bg-brand-4">
       <h1 className="text-5xl font-semibold">Home</h1>
       <Button variant="link">CLICK ME</Button>
       <p>
@@ -14,7 +15,7 @@ const Home = () => {
         Illum sequi odio asperiores assumenda, alias unde minus est,
         consequuntur ea magnam sapiente deleniti facere tenetur.
       </p>
-    </div>
+    </Container>
   );
 };
 
