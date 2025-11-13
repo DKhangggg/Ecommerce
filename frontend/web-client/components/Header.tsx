@@ -5,16 +5,13 @@ import SearchBar from "./SearchBar";
 import FavoriteButton from "./FavoriteButton";
 import CartIcon from "./CartIcon";
 import MobileMenu from "./MobileMenu";
-import { currentUser } from "@clerk/nextjs/server";
-import { ClerkLoaded, SignedIn, UserButton } from "@clerk/nextjs";
 import SigninButton from "./SignInButton";
 
 const Header = async () => {
-  const user = await currentUser();
-  console.log(user, "user");
   return (
-    <header className="bg-brand-2 py-5 border-b border-b-black/50">
-      <Container className="flex items-center justify-between text-shadow-zinc-400">
+    <header className="bg-brand-1 py-4 border-b border-brand-4">
+      <Container className="flex items-center justify-between text-brand-6">
+        {" "}
         {/* Logo */}
         <div
           className="w-auto md:w-1/3 flex 
@@ -23,7 +20,6 @@ const Header = async () => {
           <MobileMenu />
           <Logo />
         </div>
-
         {/* NavButton */}
         <HeaderMenu />
         {/* NavIcon */}
@@ -31,12 +27,7 @@ const Header = async () => {
           <SearchBar />
           <CartIcon />
           <FavoriteButton />
-          <ClerkLoaded>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-            {!user && <SigninButton />}
-          </ClerkLoaded>
+          <SigninButton />
         </div>
       </Container>
     </header>

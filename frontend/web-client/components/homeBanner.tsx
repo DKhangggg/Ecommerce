@@ -7,9 +7,9 @@ const HomeBanner = () => {
   return (
     <div className="py-16 md:py-0 bg-brand-3 rounded-lg px-10 lg:px-24 flex items-center justify-between">
       <div>
-        <Title>
+        <Title className="mb-5">
           Grab Upto 50% off on <br />
-          Selected headphone
+          Selected Iphone
         </Title>
         <Link
           href="/shop"
@@ -22,7 +22,7 @@ const HomeBanner = () => {
       </div>
       <div>
         <Image
-          src="/Iphone17.webp"
+          src="/Iphone17-removebg-preview.png"
           alt="Iphone 17 Banner"
           width={800}
           height={600}
