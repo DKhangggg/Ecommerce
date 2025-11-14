@@ -16,7 +16,7 @@ const AuthButton = () => {
   if (user) {
     return (
       <div className="flex items-center gap-4">
-        <Link href="/profile" className="flex items-center gap-2">
+        <Link href="/account" className="flex items-center gap-2">
           <span className="text-sm font-semibold">
             <User className="h-6 w-6" />
           </span>

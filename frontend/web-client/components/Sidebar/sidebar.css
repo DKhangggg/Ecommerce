@@ -1,0 +1,217 @@
+.sidebar-mobile-toggle {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 20px;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-poppins);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-foreground);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 16px;
+}
+
+.sidebar-card {
+  position: sticky;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  background: var(--color-sidebar);
+  border: 1px solid var(--color-sidebar-border);
+  border-radius: var(--radius-xl);
+  z-index: 10;
+  font-family: var(--font-poppins);
+  transition: all 0.3s ease;
+  max-height: calc(100vh - 120px);
+  min-height: fit-content;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 24px;
+  /* DÙNG BIẾN CSS CỦA BẠN */
+  background: var(--color-sidebar-primary);
+  color: var(--color-sidebar-primary-foreground);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.3px;
+}
+
+.sidebar-header svg {
+  flex-shrink: 0;
+}
+
+.sidebar-list {
+  list-style: none;
+  margin: 0;
+  padding: 12px 12px; /* Giảm padding một chút */
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* Giảm gap */
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  /* DÙNG BIẾN CSS CỦA BẠN */
+  scrollbar-color: var(--color-sidebar-primary) transparent;
+}
+
+/* --- Style cho Scrollbar --- */
+.sidebar-list::-webkit-scrollbar {
+  width: 6px;
+}
+.sidebar-list::-webkit-scrollbar-thumb {
+  background: var(--color-sidebar-primary);
+  border-radius: 10px;
+}
+.sidebar-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* --- Style cho Item --- */
+.sidebar-item {
+  position: relative;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.sidebar-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--color-sidebar-primary);
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+  z-index: 1;
+}
+
+.sidebar-item:hover {
+  /* DÙNG BIẾN CSS CỦA BẠN */
+  background: var(--color-sidebar-accent);
+  border-color: var(--color-sidebar-border);
+}
+
+.sidebar-item-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 14px;
+  min-height: 48px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.sidebar-link:hover .sidebar-item-content {
+  transform: translateX(4px);
+}
+
+/* --- Style cho Item Active --- */
+.sidebar-link-active {
+  font-weight: 600;
+}
+.sidebar-link-active .sidebar-icon {
+  color: var(--color-sidebar-primary);
+}
+.sidebar-link-active .sidebar-text {
+  color: var(--color-sidebar-primary);
+  font-weight: 600;
+}
+.sidebar-item:has(.sidebar-link-active) {
+  background: var(--color-sidebar-accent);
+  border-color: var(--color-sidebar-border);
+}
+.sidebar-item:has(.sidebar-link-active)::before {
+  transform: scaleY(1);
+}
+
+/* --- Style cho Icon và Text --- */
+.sidebar-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--color-sidebar-foreground);
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+.sidebar-item:hover .sidebar-icon {
+  color: var(--color-sidebar-primary);
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.sidebar-text {
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--color-sidebar-foreground);
+  transition: color 0.3s ease;
+}
+.sidebar-item:hover .sidebar-text {
+  color: var(--color-sidebar-foreground);
+  font-weight: 500;
+}
+
+.sidebar-arrow {
+  flex-shrink: 0;
+  color: var(--color-sidebar-primary);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: all 0.3s ease;
+}
+.sidebar-item:hover .sidebar-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* --- Responsive (dùng CSS của bạn) --- */
+@media (max-width: 1024px) {
+  .sidebar-mobile-toggle {
+    display: flex;
+  }
+  .sidebar-card {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    width: calc(100% - 32px);
+    margin: 0 auto;
+    max-width: 500px;
+    max-height: calc(100vh - 100px);
+    transform: translateY(-120%) scale(0.95);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1000;
+  }
+  .sidebar-card.sidebar-open {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: all;
+  }
+}

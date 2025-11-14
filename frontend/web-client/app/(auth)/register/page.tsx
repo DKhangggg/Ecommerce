@@ -68,7 +68,6 @@ export default function RegisterPage() {
   };
 
   return (
-    // Dùng bg-card, border-border (hơi dài hơn để chứa form)
     <div className="relative w-full max-w-lg rounded-lg border border-border bg-card p-8 shadow-lg my-16">
       {/* Nút Quay Lại */}
       <Link

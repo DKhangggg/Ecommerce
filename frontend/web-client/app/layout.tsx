@@ -11,7 +11,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AuthProvider mock={isMock}>{children}</AuthProvider>
+        <AuthProvider mock={true}>{children}</AuthProvider>
       </body>
     </html>
   );
