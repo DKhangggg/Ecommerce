@@ -2,8 +2,8 @@
 
 import { useAuth } from "@/context/AuthProvider";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 // Biểu tượng (Icon) cho nút "Back"
 const BackArrowIcon = () => (
@@ -28,8 +28,17 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { login, loading } = useAuth();
+  const { user, login, loading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (!loading && user) {
+      const redirectUrl = searchParams.get("redirect") || "/";
+      console.log("Đã đăng nhập, đang chuyển hướng tới:", redirectUrl);
+      router.push(redirectUrl as string);
+    }
+  }, [loading, user, router, searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +46,7 @@ export default function LoginPage() {
 
     try {
       await login(username, password);
-      router.push("/"); // Chuyển hướng về trang chủ sau khi login
+      router.push("/");
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Tên đăng nhập hoặc mật khẩu không đúng.");
@@ -45,11 +54,10 @@ export default function LoginPage() {
   };
 
   return (
-    // 1. DÙNG BIẾN CSS: bg-card, border-border
     <div className="relative w-full max-w-md rounded-lg border border-border bg-card p-8 shadow-lg">
       {/* 2. NÚT QUAY LẠI (Back Button) */}
       <Link
-        href="/" // Điều hướng về trang chủ
+        href="/"
         className="hoverEffect absolute left-4 top-4 flex items-center gap-1 text-sm text-muted-foreground hover:text-primary"
       >
         <BackArrowIcon />

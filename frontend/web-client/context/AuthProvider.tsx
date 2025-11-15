@@ -92,6 +92,17 @@ export function AuthProvider({
     async function checkUserSession() {
       if (mock) {
         console.log("MOCK: Bỏ qua kiểm tra session khi tải trang.");
+        try {
+          const storedUser = localStorage.getItem("user");
+          const storedToken = localStorage.getItem("accessToken");
+          if (storedUser && storedToken) {
+            setUser(JSON.parse(storedToken));
+            accessTokenRef.current = storedToken;
+          }
+        } catch (e) {
+          console.error("MOCK: Lỗi khôi phục session:", e);
+          localStorage.clear();
+        }
         setLoading(false);
         return;
       }
@@ -115,7 +126,7 @@ export function AuthProvider({
       const mockUser: User = {
         id: "mock-id-123",
         username: username,
-        roles: ["USER", "ADMIN"],
+        roles: ["ROLE_USER", "ROLE_SELLER", "ROLE_ADMIN"],
       };
       const mockData: LoginResponse = {
         acessToken: "mock-access-token-12345",
@@ -126,6 +137,8 @@ export function AuthProvider({
       setUser(mockData.userInfo);
       accessTokenRef.current = mockData.acessToken;
       localStorage.setItem("refreshToken", mockData.refreshToken);
+      localStorage.setItem("acessToken", mockData.acessToken);
+      localStorage.setItem("user", JSON.stringify(mockData.userInfo));
       setLoading(false);
       console.log("MOCK: Logged in as", mockUser.username);
       return;
@@ -165,7 +178,7 @@ export function AuthProvider({
       const mockUser: User = {
         id: "mock-new-user-id",
         username: request.username,
-        roles: ["USER"],
+        roles: ["ROLE_USER", "ROLE_SELLER", "ROLE_ADMIN"],
       };
       const mockData: LoginResponse = {
         acessToken: "mock-access-token-new-user",
@@ -175,6 +188,7 @@ export function AuthProvider({
       setUser(mockData.userInfo);
       accessTokenRef.current = mockData.acessToken;
       localStorage.setItem("refreshToken", mockData.refreshToken);
+
       setLoading(false);
       console.log("MOCK: Registered and logged in as", mockUser.username);
       return;
@@ -184,7 +198,7 @@ export function AuthProvider({
       const response = await fetch(REGISTER_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(request), // <-- Gửi toàn bộ object request
+        body: JSON.stringify(request),
       });
 
       if (!response.ok) {
@@ -192,7 +206,6 @@ export function AuthProvider({
         throw new Error(errorData.message || "Đăng ký thất bại");
       }
 
-      // Giả định BE trả về LoginResponse (tự động login)
       const data: LoginResponse = await response.json();
 
       setUser(data.userInfo);
