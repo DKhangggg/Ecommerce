@@ -1,10 +1,12 @@
 import { SidebarItem } from "@/components/Sidebar/SideBar";
 import {
+  BadgeDollarSign,
   BarChart3,
   BellRing,
   ClipboardList,
   Heart,
   LayoutDashboard,
+  MessageCircle,
   Package,
   Paperclip,
   Settings,
@@ -56,7 +58,7 @@ export const SELLER_SIDEBAR_ITEMS: SidebarItem[] = [
   {
     id: "s1",
     name: "Tổng quan",
-    to: "/seller/dashboard",
+    to: "/seller",
     icon: LayoutDashboard,
   },
   {
@@ -79,6 +81,18 @@ export const SELLER_SIDEBAR_ITEMS: SidebarItem[] = [
   },
   {
     id: "s5",
+    name: "Tin nhắn Khách hàng",
+    to: "/seller/messages",
+    icon: MessageCircle,
+  },
+  {
+    id: "s6",
+    name: "Marketing",
+    to: "/seller/marketing",
+    icon: BadgeDollarSign,
+  },
+  {
+    id: "s7",
     name: "Cài đặt Cửa hàng",
     to: "/seller/settings",
     icon: Store,
