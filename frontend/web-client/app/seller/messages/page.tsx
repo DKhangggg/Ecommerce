@@ -1,6 +1,4 @@
-// app/seller/messages/page.tsx
 import React from "react";
-// import { Search, Send } from 'lucide-react';
 
 const MessagesPage = () => {
   return (
@@ -11,9 +9,7 @@ const MessagesPage = () => {
       {/* 2. GIAO DIỆN CHAT */}
       <div className="bg-card rounded-xl shadow-lg flex h-[75vh] overflow-hidden">
         {/* CỘT 1: DANH BẠ (Chat List) */}
-        {/* (THAY ĐỔI) Đổi chiều rộng từ md:w-1/3 -> md:w-1/4 */}
-        <div className="w-full md:w-1/4 flex-shrink-0 border-r border-border flex flex-col">
-          {/* Thanh tìm kiếm */}
+        <div className="w-full md:w-1/4 shrink-0 border-r border-border flex flex-col">
           <div className="p-4 border-b border-border">
             <input
               type="text"
@@ -22,7 +18,6 @@ const MessagesPage = () => {
             />
           </div>
 
-          {/* Danh sách chat (cho phép cuộn) */}
           <div className="flex-grow overflow-y-auto">
             {/* Item 1 (Active) */}
             <div className="flex items-center gap-3 p-4 bg-accent text-accent-foreground border-b border-border cursor-pointer">
@@ -56,24 +51,19 @@ const MessagesPage = () => {
         </div>
 
         {/* CỘT 2: CỬA SỔ CHAT (Chat Window) */}
-        {/* (THAY ĐỔI) Đổi chiều rộng từ md:w-2/3 -> md:w-1/2 (hoặc md:w-2/4) */}
         <div className="w-full md:w-1/2 flex flex-col">
-          {/* Header của Chat */}
-          <div className="p-4 border-b border-border flex-shrink-0">
+          <div className="p-4 border-b border-border shrink-0">
             <p className="font-semibold text-foreground">Nguyễn Văn A</p>
             <p className="text-xs text-green-500">Đang hoạt động</p>
           </div>
 
-          {/* Vùng nội dung (cuộn) */}
-          <div className="flex-grow p-4 space-y-4 overflow-y-auto bg-muted/20">
-            {/* Tin nhắn của Khách (Trái) */}
+          <div className="grow p-4 space-y-4 overflow-y-auto bg-muted/20">
             <div className="flex justify-start">
               <div className="bg-muted text-muted-foreground p-3 rounded-lg max-w-xs">
                 Sản phẩm này còn hàng không shop?
               </div>
             </div>
 
-            {/* Tin nhắn của Bạn (Phải) */}
             <div className="flex justify-end">
               <div className="bg-primary text-primary-foreground p-3 rounded-lg max-w-xs">
                 Chào bạn, sản phẩm này còn hàng ạ.
@@ -87,11 +77,11 @@ const MessagesPage = () => {
           </div>
 
           {/* Khung nhập tin nhắn */}
-          <div className="p-4 border-t border-border flex-shrink-0 flex gap-3">
+          <div className="p-4 border-t border-border shrink-0 flex gap-3">
             <input
               type="text"
               placeholder="Nhập tin nhắn..."
-              className="flex-grow p-2 bg-input border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+              className="grow p-2 bg-input border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <button className="bg-primary text-primary-foreground p-2 rounded-lg">
               {/* <Send className="w-5 h-5" /> */}

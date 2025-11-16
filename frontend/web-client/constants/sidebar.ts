@@ -8,7 +8,6 @@ import {
   LayoutDashboard,
   MessageCircle,
   Package,
-  Paperclip,
   Settings,
   ShoppingBag,
   Store,
@@ -19,7 +18,7 @@ export const ACCOUNT_SIDEBAR_ITEMS: SidebarItem[] = [
   {
     id: 1,
     name: "Tổng quan",
-    to: "/account", // URL gốc của account
+    to: "/account",
     icon: LayoutDashboard,
   },
   {

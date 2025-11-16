@@ -1,9 +1,6 @@
-// app/seller/settings/page.tsx
 import React from "react";
-// import { Save } from "lucide-react";
 
 const SettingsPage = () => {
-  // (State cho Active Tab sẽ được quản lý ở đây)
   const activeTab = "profile";
 
   return (
