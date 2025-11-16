@@ -1,3 +1,4 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import React from "react";
 
 const MessagesPage = () => {
@@ -18,14 +19,16 @@ const MessagesPage = () => {
             />
           </div>
 
-          <div className="flex-grow overflow-y-auto">
+          <div className="grow overflow-y-auto">
             {/* Item 1 (Active) */}
             <div className="flex items-center gap-3 p-4 bg-accent text-accent-foreground border-b border-border cursor-pointer">
-              <img
-                src="https://via.placeholder.com/40"
-                alt="Avatar"
-                className="w-10 h-10 rounded-full"
-              />
+              <Avatar>
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
               <div>
                 <p className="font-semibold">Nguyễn Văn A</p>
                 <p className="text-sm text-accent-foreground/80 truncate">
@@ -35,11 +38,13 @@ const MessagesPage = () => {
             </div>
             {/* Item 2 */}
             <div className="flex items-center gap-3 p-4 hover:bg-muted/50 border-b border-border cursor-pointer">
-              <img
-                src="https://via.placeholder.com/40"
-                alt="Avatar"
-                className="w-10 h-10 rounded-full"
-              />
+              <Avatar>
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
               <div>
                 <p className="font-semibold text-foreground">Trần Thị B</p>
                 <p className="text-sm text-muted-foreground truncate">
@@ -90,16 +95,12 @@ const MessagesPage = () => {
           </div>
         </div>
 
-        {/* (MỚI) CỘT 3: THÔNG TIN NGƯỜI DÙNG */}
-        {/* Ẩn trên mobile, hiện trên desktop với chiều rộng 1/4 */}
         <div className="hidden md:flex md:w-1/4 border-l border-border flex-col overflow-y-auto">
-          {/* Header */}
           <div className="p-4 border-b border-border text-center">
-            <img
-              src="https://via.placeholder.com/80"
-              alt="Avatar"
-              className="w-20 h-20 rounded-full mx-auto mb-2"
-            />
+            <Avatar>
+              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
             <p className="font-semibold text-foreground">Nguyễn Văn A</p>
             <p className="text-sm text-muted-foreground">khachhang@email.com</p>
             <button className="mt-2 text-sm text-primary font-semibold hover:underline">
