@@ -1,7 +1,9 @@
-import React from "react";
-
 const ShopPage = () => {
-  return <div>ShopPage</div>;
+  return (
+    <div>
+      <div>thanh search</div>
+    </div>
+  );
 };
 
 export default ShopPage;
