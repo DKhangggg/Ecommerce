@@ -33,15 +33,8 @@ const SwitchUiButton = () => {
   if (currentUI === isInAccountUI) {
     buttonContent = (
       <>
-        <Store className="sidebar-icon" />
-        <span className="sidebar-text">Cửa hàng của tôi</span>
-      </>
-    );
-  } else if (currentUI === isInSellerUI) {
-    buttonContent = (
-      <>
-        <User className="sidebar-icon" />
-        <span className="sidebar-text">Tài khoản của tôi</span>
+        <Store className="h-4 w-4" />
+        <span className="text-xs font-medium">Cửa hàng của tôi</span>
       </>
     );
   }
@@ -54,9 +47,9 @@ const SwitchUiButton = () => {
     <>
       <button
         onClick={handleSwitchClick}
-        className="sidebar-link switch-ui-button"
+        className="flex items-center gap-2 rounded bg-gray-100 px-4 py-2  font-medium text-gray-800"
       >
-        <div className="sidebar-item-content">{buttonContent}</div>
+        {buttonContent}
       </button>
 
       <ConfirmSellerModal
