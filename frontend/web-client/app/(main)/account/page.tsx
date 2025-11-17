@@ -5,10 +5,8 @@ import Link from "next/link";
 import {
   Heart,
   ShoppingBag,
-  Settings,
   User,
   Edit,
-  Package,
   Truck,
   CheckCircle,
   Star,
@@ -38,7 +36,6 @@ const mockStats = {
 export default function AccountDashboardPage() {
   const { user, loading } = useAuth();
 
-  // 3. Xử lý trạng thái Loading
   if (loading || !user) {
     return (
       <div className="flex h-60 items-center justify-center p-10">
@@ -47,9 +44,7 @@ export default function AccountDashboardPage() {
     );
   }
 
-  // 4. Giao diện chính của Dashboard
   return (
-    // Container chính cho nội dung bên phải sidebar
     <div className="flex flex-col gap-8 p-4 md:p-6">
       {/* (1) Phần Chào Mừng */}
       <div>

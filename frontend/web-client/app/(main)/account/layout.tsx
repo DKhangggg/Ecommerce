@@ -15,7 +15,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           items={ACCOUNT_SIDEBAR_ITEMS}
           className="w-64"
         />
-
         <div className="flex-1">{children}</div>
       </Container>
     </AuthGuard>

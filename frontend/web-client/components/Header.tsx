@@ -1,3 +1,4 @@
+"use client";
 import Container from "./Container";
 import Logo from "./Logo";
 import HeaderMenu from "./HeaderMenu";
@@ -6,8 +7,9 @@ import FavoriteButton from "./FavoriteButton";
 import CartIcon from "./CartIcon";
 import MobileMenu from "./MobileMenu";
 import SigninButton from "./SignInButton";
+import SwitchUiButton from "./SwitchUiButton";
 
-const Header = async () => {
+const Header = () => {
   return (
     <header className="bg-brand-1 py-4 border-b border-brand-4">
       <Container className="flex items-center justify-between text-brand-6">
@@ -27,6 +29,7 @@ const Header = async () => {
           <SearchBar />
           <CartIcon />
           <FavoriteButton />
+          <SwitchUiButton />
           <SigninButton />
         </div>
       </Container>

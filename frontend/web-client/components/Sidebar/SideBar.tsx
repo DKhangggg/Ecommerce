@@ -35,13 +35,11 @@ export function SideBar({
 
   return (
     <>
-      {/* Mobile Toggle Button */}
       <button
         className="sidebar-mobile-toggle"
         onClick={() => setIsOpen(!isOpen)}
         aria-label={`Toggle ${title}`}
       >
-        {/* Thêm lại icon cho mobile */}
         <svg
           width="20"
           height="20"
