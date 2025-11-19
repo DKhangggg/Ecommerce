@@ -15,12 +15,8 @@ const Header = () => {
   return (
     <header className="bg-brand-1 py-4 border-b border-brand-4">
       <Container className="flex items-center justify-between text-brand-6">
-        {" "}
         {/* Logo */}
-        <div
-          className="w-auto md:w-1/3 flex 
-          items-center gap-2.5 justify-start md:gap-0"
-        >
+        <div className="w-auto md:w-1/3 flex items-center gap-2.5 justify-start md:gap-0">
           <MobileMenu />
           <Logo />
         </div>

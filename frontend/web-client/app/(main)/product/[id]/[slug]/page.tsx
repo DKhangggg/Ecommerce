@@ -1,7 +1,7 @@
 import Container from "@/components/Container";
 
 import { Product } from "@/components/Product/ProductList";
-import QuantitySelector from "@/components/QuantitySelector";
+import ProductDetailClient from "@/components/ProductDetailClient";
 import { MOCK_PRODUCTS } from "@/constants/product";
 import Image from "next/image";
 
@@ -51,17 +51,8 @@ export default async function ProductDetailPage({ params }: Props) {
 
         <div className="flex flex-col gap-4">
           <h1 className="text-4xl font-bold text-brand-6">{product.name}</h1>
-          <span className="text-3xl text-brand-7 font-semibold">
-            ${product.price}
-          </span>
-          <p className="text-gray-600">
-            Đây là mô tả chi tiết của sản phẩm. Bạn sẽ fetch nội dung này từ
-            Sanity. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </p>
-          <QuantitySelector />
-          <button className="bg-brand-5 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-brand-7 transition-colors w-full md:w-auto">
-            Thêm vào giỏ hàng
-          </button>
+
+          <ProductDetailClient product={product} />
         </div>
       </div>
     </Container>

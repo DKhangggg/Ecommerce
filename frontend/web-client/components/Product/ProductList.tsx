@@ -2,15 +2,30 @@ import { MOCK_PRODUCTS } from "@/constants/product";
 import ProductCard from "./ProductCard";
 import Link from "next/link";
 
+interface ProductOptionType {
+  name: string;
+  label: string;
+  values: string[];
+}
+
+interface Variant {
+  id: string;
+  stock: number;
+  price: number;
+  [key: string]: unknown;
+}
+
 export interface Product {
   id: number;
   name: string;
-  price: string;
+  price: number;
   imageSrc: string;
   color?: string;
   href?: string;
   imageAlt?: string;
   slug?: string;
+  options?: ProductOptionType[];
+  variants?: Variant[];
 }
 
 interface Props {

@@ -21,7 +21,9 @@ const QuantitySelector = ({
   const [quantity, setQuantity] = useState(initialQuantity);
 
   useEffect(() => {
-    onChange(quantity);
+    if (onChange) {
+      onChange(quantity);
+    }
   }, [quantity, onChange]);
 
   const handleIncrement = () => {
@@ -49,13 +51,13 @@ const QuantitySelector = ({
   };
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-4 ">
       <div className="text-base font-semibold text-gray-700">{title}</div>
       <div className="flex items-center space-x-0 w-fit border border-gray-300 rounded-lg overflow-hidden">
         <Button
           onClick={handleDecrement}
           disabled={quantity <= min}
-          className="p-2 w-8 h-8 flex items-center justify-center text-xl text-gray-600 hover:bg-gray-100 transition-colors rounded-none border-r border-gray-300"
+          className="p-2 w-8 h-8 flex items-center justify-center text-xl bg-brand-5 text-gray-600 hover:bg-amber-200  transition-colors  "
         >
           <Minus />
         </Button>
@@ -70,7 +72,7 @@ const QuantitySelector = ({
         <Button
           onClick={handleIncrement}
           disabled={max !== undefined && quantity >= max}
-          className="p-2 w-8 h-8 flex items-center justify-center text-xl text-gray-600 hover:bg-gray-100 transition-colors rounded-none border-l border-gray-300"
+          className="p-2 w-8 h-8 flex items-center justify-center text-xl bg-brand-5 text-gray-600 hover:bg-amber-200 transition-colors "
         >
           <Plus />
         </Button>
