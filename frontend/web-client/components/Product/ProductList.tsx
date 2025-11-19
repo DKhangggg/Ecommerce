@@ -23,7 +23,6 @@ export default function ProductList({ title, products }: Props) {
 
   return (
     <div className="w-full bg-white border border-(--brand-2) rounded-2xl p-4 mb-4 shadow-[0_6px_16px_rgba(0,0,0,0.06)]">
-      {/* Tiêu đề */}
       {title && (
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-gray-800">{title}</h2>
@@ -39,7 +38,7 @@ export default function ProductList({ title, products }: Props) {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {productList.map((product) => (
           <Link
-            href={`/product/${product.slug}`}
+            href={`/product/${product.id}/${product.slug}`}
             key={product.id}
             className="hoverEffect"
           >

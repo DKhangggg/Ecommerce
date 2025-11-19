@@ -5,7 +5,6 @@ import React from "react";
 const Logo = ({ cl }: { cl?: string }) => {
   return (
     <Link href={"/"}>
-      {" "}
       <h2
         className={cn(
           "text-2xl text-brand-6 font-black tracking-wider uppercase hover:text-brand-7 group font-sans",

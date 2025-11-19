@@ -1,6 +1,7 @@
 import Container from "@/components/Container";
 
 import { Product } from "@/components/Product/ProductList";
+import QuantitySelector from "@/components/QuantitySelector";
 import { MOCK_PRODUCTS } from "@/constants/product";
 import Image from "next/image";
 
@@ -57,6 +58,7 @@ export default async function ProductDetailPage({ params }: Props) {
             Đây là mô tả chi tiết của sản phẩm. Bạn sẽ fetch nội dung này từ
             Sanity. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </p>
+          <QuantitySelector />
           <button className="bg-brand-5 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-brand-7 transition-colors w-full md:w-auto">
             Thêm vào giỏ hàng
           </button>

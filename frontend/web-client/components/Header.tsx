@@ -8,8 +8,10 @@ import CartIcon from "./CartIcon";
 import MobileMenu from "./MobileMenu";
 import SigninButton from "./SignInButton";
 import SwitchUiButton from "./SwitchUiButton";
+import { useAuth } from "@/context/AuthProvider";
 
 const Header = () => {
+  const { user } = useAuth();
   return (
     <header className="bg-brand-1 py-4 border-b border-brand-4">
       <Container className="flex items-center justify-between text-brand-6">
@@ -29,7 +31,7 @@ const Header = () => {
           <SearchBar />
           <CartIcon />
           <FavoriteButton />
-          <SwitchUiButton />
+          {user && <SwitchUiButton />}
           <SigninButton />
         </div>
       </Container>
