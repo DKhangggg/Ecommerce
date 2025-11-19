@@ -33,13 +33,14 @@
 }
 
 .sidebar-header {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 22px 24px;
-  /* DÙNG BIẾN CSS CỦA BẠN */
-  background: var(--color-sidebar-primary);
-  color: var(--color-sidebar-primary-foreground);
+  background: #663333;
+  color: #996600;
   font-weight: 700;
   font-size: 18px;
   letter-spacing: 0.3px;

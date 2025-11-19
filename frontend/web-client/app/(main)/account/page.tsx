@@ -10,20 +10,17 @@ import {
   Truck,
   CheckCircle,
   Star,
-  Clock, // Thêm icon cho "Đang xử lý"
+  Clock,
 } from "lucide-react";
 
-// 1. Thông tin cá nhân (Mock Data)
-// Chúng ta sẽ dùng thông tin này để hiển thị
 const mockUserInfo = {
-  fullName: "Nguyễn Văn A", // Lấy từ firstName + lastName
-  email: "user@example.com", // Lấy từ auth
+  fullName: "Nguyễn Văn A",
+  email: "user@example.com",
   phone: "0123456789",
   gender: "Nam",
   dob: "1990-01-01",
 };
 
-// 2. Thống kê (Mock Data)
 const mockStats = {
   totalOrders: 120,
   pending: 5,

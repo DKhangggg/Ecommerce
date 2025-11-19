@@ -22,14 +22,14 @@ export default function ProductList({ title, products }: Props) {
   const productList = products || MOCK_PRODUCTS;
 
   return (
-    <div className="w-full bg-white border border-[var(--brand-2)] rounded-[16px] p-4 mb-4 shadow-[0_6px_16px_rgba(0,0,0,0.06)]">
+    <div className="w-full bg-white border border-(--brand-2) rounded-2xl p-4 mb-4 shadow-[0_6px_16px_rgba(0,0,0,0.06)]">
       {/* Tiêu đề */}
       {title && (
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-gray-800">{title}</h2>
           <a
             href="#"
-            className="text-blue-500 hover:text-blue-600 text-sm font-medium"
+            className="text-brand-5 hover:text-brand-7 text-sm font-medium"
           >
             Xem tất cả
           </a>

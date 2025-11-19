@@ -121,6 +121,9 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+input[type="checkbox"] {
+  accent-color: var(--color-amber-800, #92400e); /* Màu amber-800 hex */
+}
 
 @layer base {
   * {
