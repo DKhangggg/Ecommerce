@@ -4,7 +4,7 @@ const SettingsPage = () => {
   const activeTab = "profile";
 
   return (
-    <div className="p-4 md:p-8 bg-background min-h-screen">
+    <div className="flex-1 w-full p-4 md:p-8 bg-background min-h-screen">
       {/* 1. HEADER */}
       <h1 className="text-3xl font-extrabold text-foreground mb-6">
         Cài đặt Cửa hàng
@@ -47,7 +47,7 @@ const SettingsPage = () => {
       </div>
 
       {/* 3. NỘI DUNG CỦA TAB (Ví dụ: Thông tin Cửa hàng) */}
-      <div className="bg-card p-6 md:p-8 rounded-xl shadow-lg max-w-4xl">
+      <div className="bg-card p-6 md:p-8 rounded-xl shadow-lg w-full max-w-6xl mx-auto">
         <h2 className="text-2xl font-bold text-card-foreground mb-6">
           Thông tin Cửa hàng
         </h2>

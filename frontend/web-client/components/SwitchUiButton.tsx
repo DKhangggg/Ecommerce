@@ -8,7 +8,6 @@ const SwitchUiButton = () => {
   const { user } = useAuth();
   const currentUI = usePathname().includes("/seller") ? "seller" : "user";
   const router = useRouter();
-  const isInSellerUI = "seller";
   const isInAccountUI = "user";
   const [showModal, setShowModal] = React.useState(false);
 
@@ -34,7 +33,9 @@ const SwitchUiButton = () => {
     buttonContent = (
       <>
         <Store className="h-4 w-4" />
-        <span className="text-xs font-medium">Cửa hàng của tôi</span>
+        <span className="text-xs font-medium text-brand-5">
+          Cửa hàng của tôi
+        </span>
       </>
     );
   }

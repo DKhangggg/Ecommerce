@@ -13,7 +13,7 @@ const Sellerlayout = ({ children }: { children: React.ReactNode }) => {
       <>
         <Header />
         <Container className="bg-brand-1 flex flex-row gap-5 pt-6">
-          <main className="flex min-h-screen bg-gray-100 gap 10">
+          <main className="flex w-full min-h-screen bg-gray-100 gap-10">
             <SideBar
               title="Quản Lý"
               useLink={true}
