@@ -2,7 +2,6 @@ package com.em.inventoryservice.controller;
 
 import com.em.inventoryservice.model.Inventory;
 import com.em.inventoryservice.service.InventoryService;
-import com.em.common.dto.inventory.InRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,7 @@ public class InventoryController {
     private InventoryService inventoryService;
 
     @PostMapping()
-    public ResponseEntity<Inventory> createInventory(@RequestBody InRequest inventory) {
+    public ResponseEntity<Inventory> createInventory(@RequestBody com.em.common.dto.inventory.InRequest inventory) {
         Inventory createdInventory = inventoryService.createInventory(inventory);
         return ResponseEntity.ok(createdInventory);
     }
@@ -31,7 +30,7 @@ public class InventoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Inventory> updateInventory(@PathVariable UUID id, @RequestParam InRequest inventory) {
+    public ResponseEntity<Inventory> updateInventory(@PathVariable UUID id, @RequestParam com.em.common.dto.inventory.InRequest inventory) {
         Inventory updatedInventory = inventoryService.updateInventory(id, inventory);
         return ResponseEntity.ok(updatedInventory);
     }

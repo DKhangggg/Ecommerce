@@ -9,7 +9,6 @@ import com.em.productservice.dto.request.ProductRequest;
 import com.em.common.dto.product.CategoryResponse;
 import com.em.productservice.dto.response.HomePageResponse;
 import com.em.common.dto.product.ProductResponse;
-import com.em.common.dto.product.AttributeDto;
 import com.em.productservice.events.EventPublisherService;
 import com.em.productservice.exception.CategoryNotFoundException;
 import com.em.productservice.exception.DuplicateProductException;
@@ -73,20 +72,7 @@ public class ProductService {
                 .price(product.getPrice())
                 .categories(categoryResponses)
                 .imageUrls(product.getImageUrls())
-                .attributes(product.getAttributes() != null ? product.getAttributes().stream().map(attr -> {
-                    AttributeDto a = new AttributeDto();
-                    if (attr instanceof java.util.Map<?, ?>) {
-                        java.util.Map<?, ?> m = (java.util.Map<?, ?>) attr;
-                        Object name = m.get("name") != null ? m.get("name") : m.get("key");
-                        Object value = m.get("value") != null ? m.get("value") : m.get("val");
-                        a.setName(name != null ? name.toString() : null);
-                        a.setValue(value != null ? value.toString() : null);
-                    } else {
-                        a.setName(String.valueOf(attr));
-                        a.setValue("");
-                    }
-                    return a;
-                }).toList() : List.of())
+                .attributes(product.getAttributes())
                 .createdAt(product.getCreatedAt())
                 .updatedAt(product.getUpdatedAt())
                 .build();
@@ -223,11 +209,11 @@ public class ProductService {
             List<ProductResponse> mostLikedProducts = mapToCardDto(mostLikedFuture.get());
             long endTime = System.currentTimeMillis();
             log.info("Fetched homepage products in {} ms", (endTime - startTime));
-            com.em.productservice.dto.response.HomePageResponse home = new com.em.productservice.dto.response.HomePageResponse();
-            home.setFeaturedProducts(featuredProducts);
-            home.setNewArrivals(newArrivalsProducts);
-            home.setBestSellers(mostLikedProducts);
-            return home;
+            return HomePageResponse.builder()
+                    .featuredProducts(featuredProducts)
+                    .newArrivals(newArrivalsProducts)
+                    .bestSellers(mostLikedProducts)
+                    .build();
         } catch(Exception e){
             log.error("Error fetching homepage products: {}", e.getMessage());
             throw new RuntimeException("Failed to fetch homepage products", e);
@@ -247,20 +233,7 @@ public class ProductService {
                  .salePrice(product.getSalePrice())
                  .averageRating(product.getAverageRating())
                  .ratingCount(product.getRatingCount())
-                 .attributes(product.getAttributes() != null ? product.getAttributes().stream().map(attr -> {
-                     AttributeDto a = new AttributeDto();
-                     if (attr instanceof java.util.Map<?, ?>) {
-                         java.util.Map<?, ?> m = (java.util.Map<?, ?>) attr;
-                         Object name = m.get("name") != null ? m.get("name") : m.get("key");
-                         Object value = m.get("value") != null ? m.get("value") : m.get("val");
-                         a.setName(name != null ? name.toString() : null);
-                         a.setValue(value != null ? value.toString() : null);
-                     } else {
-                         a.setName(String.valueOf(attr));
-                         a.setValue("");
-                     }
-                     return a;
-                 }).toList() : List.of())
+                 .attributes(product.getAttributes())
                  .imageUrls(product.getImageUrls())
                  .createdAt(product.getCreatedAt())
                  .description(product.getDescription())

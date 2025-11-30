@@ -1,7 +1,7 @@
 package com.em.productservice.Model;
 
 
-import com.em.productservice.dto.request.AttributeDto;
+import com.em.common.dto.product.AttributeDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

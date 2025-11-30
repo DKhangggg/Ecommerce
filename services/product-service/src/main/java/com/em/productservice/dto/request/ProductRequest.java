@@ -1,5 +1,6 @@
 package com.em.productservice.dto.request;
 
+import com.em.common.dto.product.AttributeDto;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.Getter;
