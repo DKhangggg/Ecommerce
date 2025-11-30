@@ -1,8 +1,8 @@
 package com.em.productservice.Controller;
 
-import com.em.productservice.Service.CategoryService;
 import com.em.productservice.dto.request.CategoryRequest;
-import com.em.productservice.dto.response.CategoryResponse;
+import com.em.common.dto.product.CategoryResponse;
+import com.em.productservice.Service.CategoryService;
 import com.em.common.dto.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

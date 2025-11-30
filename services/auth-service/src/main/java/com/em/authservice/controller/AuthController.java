@@ -1,10 +1,10 @@
 package com.em.authservice.controller;
 
-import com.em.authservice.dto.request.LoginRequest;
-import com.em.authservice.dto.request.RegisterRequest;
-import com.em.authservice.dto.request.TokenValidationRequest;
+import com.em.common.dto.auth.LoginRequest;
+import com.em.common.dto.auth.RegisterRequest;
+import com.em.common.dto.auth.TokenValidationRequest;
 import com.em.authservice.dto.response.AuthResponse;
-import com.em.authservice.dto.response.TokenValidResponse;
+import com.em.common.dto.auth.TokenValidResponse;
 import com.em.authservice.service.AccountService;
 import com.em.authservice.service.JwtService;
 import com.em.common.dto.response.ApiResponse;

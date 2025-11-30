@@ -1,8 +1,8 @@
 package com.em.inventoryservice.controller;
 
-import com.em.inventoryservice.dto.request.InRequest;
 import com.em.inventoryservice.model.Inventory;
 import com.em.inventoryservice.service.InventoryService;
+import com.em.common.dto.inventory.InRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

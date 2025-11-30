@@ -1,6 +1,6 @@
 package com.em.aggregatorservice.client;
 
-import com.em.aggregatorservice.dto.product.ProductResponse;
+import com.em.common.dto.product.ProductResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;

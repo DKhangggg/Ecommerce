@@ -3,7 +3,7 @@ package com.em.productservice.Service;
 import com.em.productservice.Model.Category;
 import com.em.productservice.Repository.CategoryRepository;
 import com.em.productservice.dto.request.CategoryRequest;
-import com.em.productservice.dto.response.CategoryResponse;
+import com.em.common.dto.product.CategoryResponse;
 import com.em.productservice.exception.CategoryNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

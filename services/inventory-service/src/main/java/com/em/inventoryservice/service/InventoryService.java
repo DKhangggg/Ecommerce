@@ -1,14 +1,11 @@
 package com.em.inventoryservice.service;
 
 import com.em.commonevent.ProductCreatedEvent;
-import com.em.inventoryservice.dto.request.InRequest;
-import com.em.inventoryservice.exception.InsufficientStockException;
 import com.em.inventoryservice.exception.InvalidQuantityException;
 import com.em.inventoryservice.exception.InventoryNotFoundException;
 import com.em.inventoryservice.model.Inventory;
 import com.em.inventoryservice.model.STATUS;
 import com.em.inventoryservice.repository.InventoryRepository;
-import com.em.inventoryservice.repository.InventoryTransactionRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,9 +18,8 @@ import java.util.UUID;
 @Slf4j
 public class InventoryService {
     private InventoryRepository inventoryRepo;
-    private InventoryTransactionRepository inventoryTransactionRepo;
 
-    public Inventory createInventory(InRequest inventory) {
+    public Inventory createInventory(com.em.common.dto.inventory.InRequest inventory) {
         // Validate input
         if (inventory.getQuantity() < 0) {
             throw new InvalidQuantityException("Quantity cannot be negative");
@@ -62,11 +58,7 @@ public class InventoryService {
                 .orElseThrow(() -> new InventoryNotFoundException("Inventory not found with ID: " + id));
     }
 
-    public List<Inventory> getAllInventories() {
-        return inventoryRepo.findAll();
-    }
-
-    public Inventory updateInventory(UUID id, InRequest inventory) {
+    public Inventory updateInventory(java.util.UUID id, com.em.common.dto.inventory.InRequest inventory) {
         if (inventory.getQuantity() < 0) {
             throw new InvalidQuantityException("Quantity cannot be negative");
         }
@@ -85,67 +77,6 @@ public class InventoryService {
         recordTransaction(existingInventory, "UPDATE", inventory.getQuantity());
 
         return inventoryRepo.save(existingInventory);
-    }
-
-    public void deleteInventory(UUID id) {
-        if (!inventoryRepo.existsById(id)) {
-            throw new InventoryNotFoundException("Inventory not found with ID: " + id);
-        }
-        inventoryRepo.deleteById(id);
-        log.info("Deleted inventory with ID: {}", id);
-    }
-
-    public void reserveStock(UUID inventoryId, int quantity) {
-        if (quantity <= 0) {
-            throw new InvalidQuantityException("Reserve quantity must be positive");
-        }
-
-        Inventory inventory = getInventoryById(inventoryId);
-        int availableStock = inventory.getQuantity() - inventory.getReserved();
-
-        if (availableStock < quantity) {
-            throw new InsufficientStockException("Insufficient available stock. Available: " + availableStock + ", Requested: " + quantity);
-        }
-
-        inventory.setReserved(inventory.getReserved() + quantity);
-        updateInventoryStatus(inventory);
-        inventoryRepo.save(inventory);
-
-        log.info("Reserved {} units from inventory {}", quantity, inventoryId);
-        recordTransaction(inventory, "RESERVE", quantity);
-    }
-
-    public void decreaseStock(UUID inventoryId, int quantity) {
-        if (quantity <= 0) {
-            throw new InvalidQuantityException("Decrease quantity must be positive");
-        }
-
-        Inventory inventory = getInventoryById(inventoryId);
-
-        if (inventory.getQuantity() < quantity) {
-            throw new InsufficientStockException("Insufficient stock. Available: " + inventory.getQuantity() + ", Requested: " + quantity);
-        }
-
-        inventory.setQuantity(inventory.getQuantity() - quantity);
-        updateInventoryStatus(inventory);
-        inventoryRepo.save(inventory);
-
-        log.info("Decreased {} units from inventory {}", quantity, inventoryId);
-        recordTransaction(inventory, "DECREASE", quantity);
-    }
-
-    public void increaseStock(UUID inventoryId, int quantity) {
-        if (quantity <= 0) {
-            throw new InvalidQuantityException("Increase quantity must be positive");
-        }
-
-        Inventory inventory = getInventoryById(inventoryId);
-        inventory.setQuantity(inventory.getQuantity() + quantity);
-        updateInventoryStatus(inventory);
-        inventoryRepo.save(inventory);
-
-        log.info("Increased {} units to inventory {}", quantity, inventoryId);
-        recordTransaction(inventory, "INCREASE", quantity);
     }
 
     private void updateInventoryStatus(Inventory inventory) {

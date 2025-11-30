@@ -1,6 +1,8 @@
 package com.em.aggregatorservice.client;
 
-import com.em.aggregatorservice.dto.inventory.Inventory;
+import com.em.common.dto.inventory.Inventory;
+import com.em.common.dto.product.ProductResponse;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -21,7 +23,7 @@ public class InventoryServiceClient {
                 .build();
     }
 
-    public Flux<Inventory> getInventoryBySellerId(String sellerId) {
+    public Flux<com.em.common.dto.inventory.Inventory> getInventoryBySellerId(String sellerId) {
         return this.webClient.get()
                 .uri("/inventory/my-inventory")
                 .header("X-User-Id", sellerId)
@@ -34,9 +36,9 @@ public class InventoryServiceClient {
                 )
                 .bodyToFlux(Inventory.class).doOnSubscribe(subscription ->
                         log.info("=> (InventoryServiceClient) Đang gọi API lấy iventory by SellerId ID: {}", sellerId))
-                .doOnNext(Inventory ->
+                .doOnNext(inv ->
                         log.info("<= (InventoryServiceClient) THÀNH CÔNG cho sellerId: {}. Tên SP: {}",
-                                sellerId, Inventory.getProductId())
+                                sellerId, inv.getProductId())
                 )
                 .doOnError(error ->
                         log.error("<= (InventoryServiceClient) LỖI cho ID: {}. Message: {}",
@@ -44,8 +46,8 @@ public class InventoryServiceClient {
                 );
     }
 
-    public Flux<ProductResponse> getProductsByIds(List<String> productIds, String sellerId) {
-        // Implementation similar to Inventory fetching can be done here
+    public Flux<com.em.common.dto.product.ProductResponse> getProductsByIds(List<String> productIds, String sellerId) {
+        // Placeholder: aggregator currently does batch call through ProductServiceClient; keep signature for compatibility
         return Flux.empty(); // Placeholder
     }
 }

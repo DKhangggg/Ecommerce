@@ -1,11 +1,11 @@
 package com.em.authservice.service;
 
 import com.em.authservice.OpenFeign.UserClient;
-import com.em.authservice.dto.request.LoginRequest;
-import com.em.authservice.dto.request.RegisterRequest;
+import com.em.common.dto.auth.LoginRequest;
+import com.em.common.dto.auth.RegisterRequest;
 import com.em.authservice.dto.request.UserCreate;
 import com.em.authservice.dto.response.AuthResponse;
-import com.em.authservice.dto.response.TokenValidResponse;
+import com.em.common.dto.auth.TokenValidResponse;
 import com.em.authservice.dto.response.UserInfo;
 import com.em.authservice.exception.InvalidTokenException;
 import com.em.authservice.model.Account;
@@ -164,7 +164,7 @@ public class AccountService implements UserDetailsService {
         return new AuthResponse(token, refreshToken, userInfo);
     }
 
-    public TokenValidResponse introspectToken(String token) {
+    public com.em.common.dto.auth.TokenValidResponse introspectToken(String token) {
         if (token == null || token.isEmpty()) {
             throw new InvalidRequestException("Token is required");
         }
@@ -178,11 +178,12 @@ public class AccountService implements UserDetailsService {
         if (!userDetails.getUsername().equals(username)) {
             throw new InvalidRequestException("Invalid username");
         }
-        return TokenValidResponse.builder()
-                .username(userDetails.getUsername())
-                .valid(true)
-                .roles(userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
-                .build();
+        com.em.common.dto.auth.TokenValidResponse tv = new com.em.common.dto.auth.TokenValidResponse();
+        tv.setUsername(userDetails.getUsername());
+        tv.setValid(true);
+        tv.setRoles(userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
+        return tv;
 
     }
+
 }

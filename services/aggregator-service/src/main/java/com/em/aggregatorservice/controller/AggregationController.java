@@ -1,8 +1,8 @@
 package com.em.aggregatorservice.controller;
 
-import com.em.aggregatorservice.dto.ApiResponse;
-import com.em.aggregatorservice.dto.InPro.DashboardResponse;
-import com.em.aggregatorservice.dto.InPro.InventoryAggregateResponse;
+import com.em.common.dto.response.ApiResponse;
+import com.em.common.dto.inventory.DashboardResponse;
+import com.em.common.dto.inventory.InventoryAggregateResponse;
 import com.em.aggregatorservice.service.AggregationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,5 +1,7 @@
 package com.em.productservice.dto.response;
 
+// Use fully-qualified common DTO to avoid shadowing
+import com.em.common.dto.product.ProductResponse;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,7 +11,7 @@ import java.util.List;
 @Builder
 public class HomePageResponse {
 
-    private List<ProductResponse> featuredProducts;
-    private List<ProductResponse> newArrivals;
-    private List<ProductResponse> bestSellers;
+    private java.util.List<com.em.common.dto.product.ProductResponse> featuredProducts;
+    private java.util.List<com.em.common.dto.product.ProductResponse> newArrivals;
+    private java.util.List<com.em.common.dto.product.ProductResponse> bestSellers;
 }
