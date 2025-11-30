@@ -1,6 +1,7 @@
 package com.em.aggregatorservice.controller;
 
 import com.em.aggregatorservice.dto.ApiResponse;
+import com.em.aggregatorservice.dto.InPro.DashboardResponse;
 import com.em.aggregatorservice.dto.InPro.InventoryAggregateResponse;
 import com.em.aggregatorservice.service.AggregationService;
 import lombok.AllArgsConstructor;
@@ -25,5 +26,10 @@ public class AggregationController {
                                                                                   @RequestHeader("X-Roles") String roles) {
         log.info("Received inventory aggregation request for userId: {} with roles: {}", userId, roles);
         return aggregationService.aggregateInventory(userId, roles);
+    }
+    @GetMapping("/dashboard")
+    public Mono<ApiResponse<List<DashboardResponse>>> getHomePage(){
+        log.info("Received dashboard aggregation api request");
+        return aggregationService.getDashboardData();
     }
 }

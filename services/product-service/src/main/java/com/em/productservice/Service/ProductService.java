@@ -7,6 +7,7 @@ import com.em.productservice.Repository.CategoryRepository;
 import com.em.productservice.Repository.ProductRepository;
 import com.em.productservice.dto.request.ProductRequest;
 import com.em.productservice.dto.response.CategoryResponse;
+import com.em.productservice.dto.response.HomePageResponse;
 import com.em.productservice.dto.response.ProductResponse;
 import com.em.productservice.events.EventPublisherService;
 import com.em.productservice.exception.CategoryNotFoundException;
@@ -15,12 +16,15 @@ import com.em.productservice.exception.InvalidProductDataException;
 import com.em.productservice.exception.ProductNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @AllArgsConstructor
@@ -183,5 +187,63 @@ public class ProductService {
             log.info("Found {} products for the given IDs", productList.size());
         }
         return productList;
+    }
+
+    public HomePageResponse getHomePageProducts(){
+        log.info("Fetching homepage products asynchronously...");
+        long startTime = System.currentTimeMillis();
+        int FEATURED_LIMIT = 8;
+        int NEW_ARRIVALS_LIMIT = 8;
+        int MOST_LIKED_LIMIT = 8;
+        CompletableFuture<List<Product>> featuredFuture = CompletableFuture.supplyAsync(()->productRepository
+                .findByIsFeaturedTrue(PageRequest.of(0, FEATURED_LIMIT)));
+        CompletableFuture<List<Product>> newArrialFuture=CompletableFuture.supplyAsync(()->productRepository
+                .findByIsAvailableTrue(PageRequest.of(0, NEW_ARRIVALS_LIMIT)));
+        CompletableFuture<List<Product>> mostLikedFuture=CompletableFuture.supplyAsync(()->productRepository
+                .findByIsAvailableTrueOrderByAverageRatingDesc(PageRequest.of(0, MOST_LIKED_LIMIT)));
+        CompletableFuture.allOf(featuredFuture,newArrialFuture,mostLikedFuture).join();
+        try{
+            List<ProductResponse> featuredProducts = mapToCardDto(featuredFuture.get());
+            List<ProductResponse> newArrivalsProducts = mapToCardDto(newArrialFuture.get());
+            List<ProductResponse> mostLikedProducts = mapToCardDto(mostLikedFuture.get());
+            long endTime = System.currentTimeMillis();
+            log.info("Fetched homepage products in {} ms", (endTime - startTime));
+            return HomePageResponse.builder()
+                    .featuredProducts(featuredProducts)
+                    .newArrivals(newArrivalsProducts)
+                    .bestSellers(mostLikedProducts)
+                    .build();
+        } catch(Exception e){
+            log.error("Error fetching homepage products: {}", e.getMessage());
+            throw new RuntimeException("Failed to fetch homepage products", e);
+        }
+    }
+
+    private List<ProductResponse> mapToCardDto(List<Product> products) {
+        if (products == null || products.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return products.stream().map(product -> ProductResponse.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .slug(product.getSlug())
+                .price(product.getPrice())
+                .salePrice(product.getSalePrice())
+                .averageRating(product.getAverageRating())
+                .ratingCount(product.getRatingCount())
+                .attributes(product.getAttributes())
+                .imageUrls(product.getImageUrls())
+                //disable categories
+                //.categories(product.getCategories())
+                .createdAt(product.getCreatedAt())
+                .description(product.getDescription())
+                .isAvailable(product.isAvailable())
+                .isFeatured(product.isFeatured())
+                .primaryCategoryName(product.getPrimaryCategoryName())
+                .sellerId(product.getSellerId())
+                .updatedAt(product.getUpdatedAt())
+                .build()
+        ).toList();
     }
 }

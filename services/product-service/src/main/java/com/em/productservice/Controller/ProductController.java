@@ -37,6 +37,13 @@ public class ProductController {
         ProductResponse product = productService.getProductById(id);
         return ResponseEntity.ok(ApiResponse.success("Product fetched successfully", product));
     }
+    @GetMapping("/homepage")
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> getHomePageProducts() {
+        log.info("Getting homepage products...");
+        List<ProductResponse> products = productService.getHomePageProducts();
+        log.info("Found {} homepage products", products.size());
+        return ResponseEntity.ok(ApiResponse.success("Fetched homepage products successfully", products));
+    }
 
     //PRIVATE APIS
 

@@ -16,13 +16,32 @@ import java.util.List;
 public class ProductResponse {
 
     private String id;
+
+    //seo
+    private String slug;
+    //basic info
     private String name;
     private String description;
+    //price info
     private double price;
-    private int stock;
+    private Double salePrice;
+
+    //inventory info
+    private boolean isAvailable;
+    private boolean isFeatured;
+    //social proof
+    private Double averageRating;
+    private Integer ratingCount;
+
+    //categorization
+    private String primaryCategoryName;
     private List<CategoryResponse> categories;
+    //media & attributes
     private List<String> imageUrls;
     private List<AttributeDto> attributes;
+
+    //metadata
+    private String sellerId;
     private Instant createdAt;
     private Instant updatedAt;
 }

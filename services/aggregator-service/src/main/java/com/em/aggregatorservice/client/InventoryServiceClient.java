@@ -43,4 +43,9 @@ public class InventoryServiceClient {
                                 sellerId, error.getMessage())
                 );
     }
+
+    public Flux<ProductResponse> getProductsByIds(List<String> productIds, String sellerId) {
+        // Implementation similar to Inventory fetching can be done here
+        return Flux.empty(); // Placeholder
+    }
 }

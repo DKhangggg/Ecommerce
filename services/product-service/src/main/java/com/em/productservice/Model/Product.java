@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -21,11 +22,26 @@ import java.util.List;
 public class Product {
     @Id
     private String id;
-
+    @Indexed
     private String name;
     private String description;
-    private double price;
+
     private String sellerId;
+
+    private double price;
+    private Double salePrice;
+    @Indexed
+    private boolean isFeatured;
+
+    private Double averageRating;
+    private Integer ratingCount;
+    @Indexed
+    private boolean isAvailable;
+    @Indexed(unique = true)
+    private String slug;
+
+    @Indexed
+    private String primaryCategoryName;
 
     @DBRef(lazy = true)
     private List<Category> categories;
@@ -34,6 +50,7 @@ public class Product {
     private List<AttributeDto> attributes;
 
     @CreatedDate
+    @Indexed
     private Instant createdAt;
 
     @LastModifiedDate
