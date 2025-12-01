@@ -1,7 +1,7 @@
 package com.em.aggregatorservice.controller;
 
+import com.em.aggregatorservice.dto.product.HomePageResponse;
 import com.em.common.dto.response.ApiResponse;
-import com.em.common.dto.inventory.DashboardResponse;
 import com.em.common.dto.inventory.InventoryAggregateResponse;
 import com.em.aggregatorservice.service.AggregationService;
 import lombok.AllArgsConstructor;
@@ -27,9 +27,11 @@ public class AggregationController {
         log.info("Received inventory aggregation request for userId: {} with roles: {}", userId, roles);
         return aggregationService.aggregateInventory(userId, roles);
     }
-    @GetMapping("/dashboard")
-    public Mono<ApiResponse<List<DashboardResponse>>> getHomePage(){
-        log.info("Received dashboard aggregation api request");
+
+    // Expose home page data using HTTP-interface based clients
+    @GetMapping("/homepage-data")
+    public Mono<ApiResponse<HomePageResponse>> getHomePage() {
+        log.info("Received homepage-data aggregation api request");
         return aggregationService.getDashboardData();
     }
 }

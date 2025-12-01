@@ -2,6 +2,7 @@ package com.em.aggregatorservice.service;
 
 import com.em.aggregatorservice.client.InventoryServiceClient;
 import com.em.aggregatorservice.client.ProductServiceClient;
+import com.em.aggregatorservice.dto.product.HomePageResponse;
 import com.em.common.dto.response.ApiResponse;
 import com.em.common.dto.inventory.AggregatedTransactionResponse;
 import com.em.common.dto.inventory.InventoryAggregateResponse;
@@ -11,11 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -29,100 +27,68 @@ public class AggregationService {
 
     public Mono<ApiResponse<List<InventoryAggregateResponse>>> aggregateInventory(String sellerId, String roles) {
 
-        // 1. Lấy Flux<Inventory> và gom thành Mono<List<Inventory>>
-        // (Giả định: inventoryService.getInventoryBySellerId(sellerId) trả về Flux<Inventory>)
-        // Collect inventories and process directly without assigning a typed Mono to avoid generic mismatch across modules
-        return inventoryService.getInventoryBySellerId(sellerId).collectList().flatMap(inventoriesObj -> {
+        return inventoryService.getInventoryBySellerId(sellerId)
+                .collectList()
+                .flatMap(inventories -> {
 
-            @SuppressWarnings("unchecked")
-            java.util.List<?> inventories = (java.util.List<?>) inventoriesObj;
+                    if (inventories.isEmpty()) {
+                        log.info("Không tìm thấy inventory nào cho seller {} (roles={})", sellerId, roles);
+                        return Mono.just(ApiResponse.success("Không tìm thấy inventory", List.of()));
+                    }
 
-            // Nếu danh sách rỗng, trả về thành công ngay lập tức
-            if (inventories.isEmpty()) {
-                log.info("Không tìm thấy inventory nào cho seller {} (roles={})", sellerId, roles);
-                return Mono.just(ApiResponse.success("Không tìm thấy inventory", List.of()));
-            }
+                    List<String> productIds = inventories.stream()
+                            .map(Inventory::getProductId)
+                            .filter(Objects::nonNull)
+                            .distinct()
+                            .collect(Collectors.toList());
 
-            // 3. Trích xuất Product IDs
-            java.util.List<String> productIds = inventories.stream()
-                    .map(obj -> {
-                        if (obj instanceof com.em.common.dto.inventory.Inventory) {
-                            return ((com.em.common.dto.inventory.Inventory) obj).getProductId();
-                        }
-                        // fallback: try aggregator adapter type
-                        try {
-                            java.lang.reflect.Method m = obj.getClass().getMethod("getProductId");
-                            Object pid = m.invoke(obj);
-                            return pid != null ? pid.toString() : null;
-                        } catch (Exception e) {
-                            return null;
-                        }
-                    })
-                    .filter(java.util.Objects::nonNull)
-                    .distinct()
-                    .collect(Collectors.toList());
+                    var productsMono = productService.getProductsByIds(productIds, sellerId);
 
-            // 4. Gọi Product Service MỘT LẦN DUY NHẤT (Batch Fetching)
-            var productsMono = productService.getProductsByIds(productIds, sellerId);
+                    return Mono.zip(Mono.just(inventories), productsMono)
+                            .map(tuple -> {
+                                List<Inventory> inventoriesList = tuple.getT1();
+                                List<ProductResponse> productsList = tuple.getT2();
 
-            // 5. Kết hợp List<Inventory> (đã có) và List<Product> (đang chờ)
-            return Mono.zip(Mono.just(inventories), productsMono)
-                     // 6. Map Tuple2 sang ApiResponse
-                     .map(tuple -> {
-                        // Lấy dữ liệu ra khỏi Tuple (cast at runtime to the expected common DTO types)
-                         @SuppressWarnings("unchecked")
-                         java.util.List<com.em.common.dto.inventory.Inventory> inventoriesList = (java.util.List<com.em.common.dto.inventory.Inventory>) tuple.getT1();
-                         @SuppressWarnings("unchecked")
-                         java.util.List<com.em.common.dto.product.ProductResponse> productsList = (java.util.List<com.em.common.dto.product.ProductResponse>) tuple.getT2();
+                                var productMap = productsList.stream()
+                                        .collect(Collectors.toMap(ProductResponse::getId, Function.identity(), (existing, replacement) -> existing));
 
-                        // 7. Tạo một Map (key=productId) để Join dữ liệu O(1)
-                        var productMap = productsList.stream()
-                                .collect(Collectors.toMap(com.em.common.dto.product.ProductResponse::getId, Function.identity(), (existing, replacement) -> existing));
+                                var aggregatedList = inventoriesList.stream()
+                                        .map(inventory -> {
+                                            ProductResponse product = productMap.get(inventory.getProductId());
 
-                        // 8. Lặp qua Inventory gốc và kết hợp
-                        var aggregatedList = inventoriesList.stream()
-                                .map(inventory -> {
-                                    com.em.common.dto.product.ProductResponse product = productMap.get(inventory.getProductId());
+                                            if (product == null) {
+                                                log.warn("Không tìm thấy product (trong map) cho productId: {}", inventory.getProductId());
+                                                return null;
+                                            }
 
-                                    if (product == null) {
-                                        // Bỏ qua inventory nếu không tìm thấy product tương ứng
-                                        log.warn("Không tìm thấy product (trong map) cho productId: {}", inventory.getProductId());
-                                        return null;
-                                    }
+                                            return this.mapToAggregatedDTO(inventory, product);
+                                        })
+                                        .filter(Objects::nonNull)
+                                        .collect(Collectors.toList());
 
-                                    return this.mapToAggregatedDTO(inventory, product);
-                                })
-                                .filter(Objects::nonNull) // Lọc bỏ các mục bị bỏ qua
-                                .collect(Collectors.toList());
-
-                        log.info("Tổng hợp hoàn tất cho seller {}. Tổng cộng {} sản phẩm.", inventoriesList.get(0).getSellerId(), aggregatedList.size());
-                        // Trả về ApiResponse
-                        return ApiResponse.success("Tổng hợp thành công", aggregatedList);
-                    })
-                     // 9. Xử lý lỗi (Nếu Mono.zip thất bại)
-                     .onErrorResume(ex -> {
-                         log.error("LỖI KHI ZIP/MAP: {}", ex.getMessage());
-                         return Mono.error(new RuntimeException("Lỗi tổng hợp dữ liệu từ Backend.")); // Ném lỗi để Global Handler bắt
-                     });
-
-            // --- KẾT THÚC KHỐI flatMap ---
-        }); // <--- Dấu ngoặc nhọn đóng cho flatMap
-
+                                log.info("Tổng hợp hoàn tất cho seller {}. Tổng cộng {} sản phẩm.", inventoriesList.get(0).getSellerId(), aggregatedList.size());
+                                return ApiResponse.success("Tổng hợp thành công", aggregatedList);
+                            })
+                            .onErrorResume(ex -> {
+                                log.error("LỖI KHI ZIP/MAP: {}", ex.getMessage());
+                                return Mono.error(new RuntimeException("Lỗi tổng hợp dữ liệu từ Backend."));
+                            });
+                });
     }
 
     private InventoryAggregateResponse mapToAggregatedDTO(Inventory inventory, ProductResponse product) {
 
-        java.util.List<AggregatedTransactionResponse> mappedTransactions = inventory.getLatestTransaction()
-                 .stream()
-                 .map(tx -> {
-                     com.em.common.dto.inventory.AggregatedTransactionResponse at = new com.em.common.dto.inventory.AggregatedTransactionResponse();
-                     at.setId(tx.getId());
-                     at.setQuantityChanged(tx.getQuantityChanged());
-                     at.setNote(tx.getNote());
-                     at.setCreatedAt(tx.getCreatedAt());
-                     return at;
-                 })
-                 .collect(Collectors.toList());
+        List<AggregatedTransactionResponse> mappedTransactions = inventory.getLatestTransaction()
+                .stream()
+                .map(tx -> {
+                    AggregatedTransactionResponse at = new AggregatedTransactionResponse();
+                    at.setId(tx.getId());
+                    at.setQuantityChanged(tx.getQuantityChanged());
+                    at.setNote(tx.getNote());
+                    at.setCreatedAt(tx.getCreatedAt());
+                    return at;
+                })
+                .collect(Collectors.toList());
 
         return InventoryAggregateResponse.builder()
 
@@ -146,8 +112,58 @@ public class AggregationService {
                 .build();
     }
 
-    // Simple stub to satisfy controller and allow incremental migration; implement real logic later
-    public Mono<ApiResponse<List<com.em.common.dto.inventory.DashboardResponse>>> getDashboardData() {
-        return Mono.just(ApiResponse.success("OK", java.util.List.of()));
+    public Mono<ApiResponse<HomePageResponse>> getDashboardData() {
+        return productService.getHomepage()
+                .flatMap(this::enrichWithInventory)
+                .map(enrichedHomeData -> ApiResponse.success("Dashboard data fetched successfully", enrichedHomeData));
+    }
+
+    private Mono<HomePageResponse> enrichWithInventory(HomePageResponse homeData) {
+        Set<String> allProductIds = extractAllIds(homeData);
+
+        if (allProductIds.isEmpty()) {
+            return Mono.just(homeData);
+        }
+
+        return inventoryService.getBatchStock(allProductIds)
+                .map(inventoryMap -> {
+
+                    fillStockData(homeData.getBestSellers(), inventoryMap);
+                    fillStockData(homeData.getNewArrivals(), inventoryMap);
+                    fillStockData(homeData.getFeaturedProducts(), inventoryMap);
+
+                    return homeData;
+                })
+                .onErrorResume(e -> {
+                    log.error("Lỗi khi gọi Inventory Service: {}", e.getMessage());
+                    return Mono.just(homeData);
+                });
+    }
+
+    private Set<String> extractAllIds(HomePageResponse homeData) {
+        Set<String> ids = new HashSet<>();
+
+        addIdsToSet(homeData.getBestSellers(), ids);
+        addIdsToSet(homeData.getNewArrivals(), ids);
+        addIdsToSet(homeData.getFeaturedProducts(), ids);
+
+        return ids;
+    }
+
+    private void addIdsToSet(List<ProductResponse> products, Set<String> ids) {
+        if (products != null && !products.isEmpty()) {
+            products.forEach(p -> ids.add(p.getId()));
+        }
+    }
+
+    private void fillStockData(List<ProductResponse> products, Map<String, Integer> stockMap) {
+        if (products == null || products.isEmpty()) return;
+
+        products.forEach(p -> {
+            Integer stock = stockMap.getOrDefault(p.getId(), 0);
+            // If ProductResponse later supports these fields, they can be set here.
+            // p.setStockQuantity(stock);
+            // p.setStockStatus(stock > 0 ? "IN_STOCK" : "OUT_OF_STOCK");
+        });
     }
 }

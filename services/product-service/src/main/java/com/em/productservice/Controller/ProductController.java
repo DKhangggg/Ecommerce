@@ -5,6 +5,7 @@ import com.em.productservice.Model.Product;
 import com.em.productservice.Service.ProductService;
 import com.em.productservice.dto.request.ProductRequest;
 import com.em.common.dto.product.ProductResponse;
+import com.em.productservice.dto.response.HomePageResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,10 +39,10 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.success("Product fetched successfully", product));
     }
     @GetMapping("/homepage")
-    public ResponseEntity<ApiResponse<com.em.productservice.dto.response.HomePageResponse>> getHomePageProducts() {
+    public ResponseEntity<HomePageResponse> getHomePageProducts() {
         log.info("Getting homepage products...");
         com.em.productservice.dto.response.HomePageResponse homePage = productService.getHomePageProducts();
-        return ResponseEntity.ok(ApiResponse.success("Fetched homepage products successfully", homePage));
+        return ResponseEntity.ok(homePage);
     }
 
     //PRIVATE APIS

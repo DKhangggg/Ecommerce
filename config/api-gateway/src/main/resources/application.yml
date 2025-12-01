@@ -27,6 +27,12 @@ spring:
               filters:
                 - StripPrefix=3
 
+            - id: aggregator-public
+              uri: lb://aggregator-service
+              predicates:
+                - Path=/api/public/aggregate/**
+              filters:
+                - StripPrefix=3
             # === 2. CỔNG PRIVATE ===
             - id: auth-private
               uri: lb://auth-service

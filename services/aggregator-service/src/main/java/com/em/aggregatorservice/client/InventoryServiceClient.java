@@ -1,15 +1,14 @@
 package com.em.aggregatorservice.client;
 
 import com.em.common.dto.inventory.Inventory;
-import com.em.common.dto.product.ProductResponse;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Map;
+import java.util.Set;
 
 @Component
 @Slf4j
@@ -23,31 +22,26 @@ public class InventoryServiceClient {
                 .build();
     }
 
-    public Flux<com.em.common.dto.inventory.Inventory> getInventoryBySellerId(String sellerId) {
+    public Flux<Inventory> getInventoryBySellerId(String sellerId) {
         return this.webClient.get()
                 .uri("/inventory/my-inventory")
                 .header("X-User-Id", sellerId)
                 .retrieve()
-                .onStatus(status -> status == HttpStatus.NOT_FOUND,
-                        clientResponse -> Mono.error(new RuntimeException("Inventory not found for sellerId: " + sellerId))
-                )
-                .onStatus(HttpStatusCode::is5xxServerError,
-                        clientResponse -> Mono.error(new RuntimeException("Inventory Service is down"))
-                )
-                .bodyToFlux(Inventory.class).doOnSubscribe(subscription ->
-                        log.info("=> (InventoryServiceClient) Đang gọi API lấy iventory by SellerId ID: {}", sellerId))
+                .bodyToFlux(Inventory.class)
+                .doOnSubscribe(subscription ->
+                        log.info("=> (InventoryServiceClient) Đang gọi API lấy inventory by SellerId: {}", sellerId))
                 .doOnNext(inv ->
-                        log.info("<= (InventoryServiceClient) THÀNH CÔNG cho sellerId: {}. Tên SP: {}",
+                        log.info("<= (InventoryServiceClient) THÀNH CÔNG cho sellerId: {}. ProductId: {}",
                                 sellerId, inv.getProductId())
                 )
                 .doOnError(error ->
-                        log.error("<= (InventoryServiceClient) LỖI cho ID: {}. Message: {}",
+                        log.error("<= (InventoryServiceClient) LỖI cho sellerId: {}. Message: {}",
                                 sellerId, error.getMessage())
                 );
     }
 
-    public Flux<com.em.common.dto.product.ProductResponse> getProductsByIds(List<String> productIds, String sellerId) {
-        // Placeholder: aggregator currently does batch call through ProductServiceClient; keep signature for compatibility
-        return Flux.empty(); // Placeholder
+    public Mono<Map<String, Integer>> getBatchStock(Set<String> productIds) {
+        // Tạm thời trả map trống cho enrich homepage; có thể triển khai sau khi có API batch-stock.
+        return Mono.just(Map.of());
     }
 }

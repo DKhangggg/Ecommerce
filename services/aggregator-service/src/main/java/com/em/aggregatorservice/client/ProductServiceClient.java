@@ -1,13 +1,13 @@
 package com.em.aggregatorservice.client;
 
+import com.em.aggregatorservice.dto.product.HomePageResponse;
 import com.em.common.dto.product.ProductResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -22,30 +22,30 @@ public class ProductServiceClient {
                 .build();
     }
 
+    public Mono<HomePageResponse> getHomepage() {
+        log.info("=> (ProductServiceClient) Đang gọi API /product/homepage");
+        return this.webClient.get()
+                .uri("/product/homepage")
+                .retrieve()
+                .bodyToMono(HomePageResponse.class);
+    }
 
     public Mono<List<ProductResponse>> getProductsByIds(List<String> productIds, String sellerId) {
 
         if (productIds == null || productIds.isEmpty()) {
-            return Mono.just(List.of());
+            return Mono.just(Collections.emptyList());
         }
 
-        log.info("=> (ProductServiceClient) Đang gọi API /by-ids cho {} IDs", productIds.size());
+        log.info("=> (ProductServiceClient) Đang gọi API /product/by-ids cho {} IDs", productIds.size());
 
         return this.webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/product/by-ids")
                         .queryParam("ids", String.join(",", productIds))
-                        .build()
-                )
+                        .build())
                 .header("X-User-Id", sellerId)
                 .retrieve()
-                .onStatus(HttpStatusCode::is5xxServerError,
-                        clientResponse -> {
-                            log.error("<= (ProductServiceClient) Product Service báo lỗi 5xx");
-                            return Mono.error(new RuntimeException("Product Service (bulk) is down"));
-                        }
-                )
-                .bodyToMono(new ParameterizedTypeReference<List<ProductResponse>>() {
-                });
+                .bodyToFlux(ProductResponse.class)
+                .collectList();
     }
 }

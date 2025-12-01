@@ -1,7 +1,5 @@
 package com.em.productservice.dto.response;
 
-// Use fully-qualified common DTO to avoid shadowing
-import com.em.common.dto.product.ProductResponse;
 import lombok.Builder;
 import lombok.Data;
 
