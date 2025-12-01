@@ -3,6 +3,8 @@ package com.em.aggregatorservice.service;
 import com.em.aggregatorservice.client.InventoryServiceClient;
 import com.em.aggregatorservice.client.ProductServiceClient;
 import com.em.aggregatorservice.dto.product.HomePageResponse;
+import com.em.aggregatorservice.dto.response.HomePageDataResponse;
+import com.em.aggregatorservice.dto.response.SellerDashboardSummary;
 import com.em.common.dto.response.ApiResponse;
 import com.em.common.dto.inventory.AggregatedTransactionResponse;
 import com.em.common.dto.inventory.InventoryAggregateResponse;
@@ -116,6 +118,58 @@ public class AggregationService {
         return productService.getHomepage()
                 .flatMap(this::enrichWithInventory)
                 .map(enrichedHomeData -> ApiResponse.success("Dashboard data fetched successfully", enrichedHomeData));
+    }
+
+    public Mono<ApiResponse<HomePageDataResponse>> getHomepageSummary() {
+        return productService.getHomepage()
+                .flatMap(this::enrichWithInventory)
+                .map(home -> {
+                    int featuredCount = home.getFeaturedProducts() != null ? home.getFeaturedProducts().size() : 0;
+                    int newArrivalsCount = home.getNewArrivals() != null ? home.getNewArrivals().size() : 0;
+                    int bestSellersCount = home.getBestSellers() != null ? home.getBestSellers().size() : 0;
+
+                    HomePageDataResponse dto = HomePageDataResponse.builder()
+                            .homePage(home)
+                            .featuredCount(featuredCount)
+                            .newArrivalsCount(newArrivalsCount)
+                            .bestSellersCount(bestSellersCount)
+                            .build();
+
+                    return ApiResponse.success("Homepage summary fetched successfully", dto);
+                });
+    }
+
+    public Mono<ApiResponse<SellerDashboardSummary>> getSellerDashboard(String sellerId, String roles) {
+        return inventoryService.getInventoryBySellerId(sellerId)
+                .collectList()
+                .map(inventories -> {
+                    if (inventories.isEmpty()) {
+                        return ApiResponse.success("No inventory found for seller", SellerDashboardSummary.empty());
+                    }
+
+                    int totalProducts = (int) inventories.stream()
+                            .map(Inventory::getProductId)
+                            .filter(Objects::nonNull)
+                            .distinct()
+                            .count();
+
+                    int totalQuantity = inventories.stream()
+                            .mapToInt(Inventory::getQuantity)
+                            .sum();
+
+                    long lowStockCount = inventories.stream()
+                            .filter(inv -> inv.getQuantity() < 5)
+                            .count();
+
+                    SellerDashboardSummary summary = SellerDashboardSummary.builder()
+                            .sellerId(sellerId)
+                            .totalProducts(totalProducts)
+                            .totalQuantity(totalQuantity)
+                            .lowStockCount((int) lowStockCount)
+                            .build();
+
+                    return ApiResponse.success("Seller dashboard fetched successfully", summary);
+                });
     }
 
     private Mono<HomePageResponse> enrichWithInventory(HomePageResponse homeData) {

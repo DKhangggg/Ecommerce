@@ -1,6 +1,8 @@
 package com.em.aggregatorservice.controller;
 
 import com.em.aggregatorservice.dto.product.HomePageResponse;
+import com.em.aggregatorservice.dto.response.HomePageDataResponse;
+import com.em.aggregatorservice.dto.response.SellerDashboardSummary;
 import com.em.common.dto.response.ApiResponse;
 import com.em.common.dto.inventory.InventoryAggregateResponse;
 import com.em.aggregatorservice.service.AggregationService;
@@ -33,5 +35,18 @@ public class AggregationController {
     public Mono<ApiResponse<HomePageResponse>> getHomePage() {
         log.info("Received homepage-data aggregation api request");
         return aggregationService.getDashboardData();
+    }
+
+    @GetMapping("/homepage-summary")
+    public Mono<ApiResponse<HomePageDataResponse>> getHomepageSummary() {
+        log.info("Received homepage-summary aggregation api request");
+        return aggregationService.getHomepageSummary();
+    }
+
+    @GetMapping("/seller-dashboard")
+    public Mono<ApiResponse<SellerDashboardSummary>> getSellerDashboard(@RequestHeader("X-User-Id") String userId,
+                                                                       @RequestHeader("X-Roles") String roles) {
+        log.info("Received seller-dashboard aggregation api request for userId: {} with roles: {}", userId, roles);
+        return aggregationService.getSellerDashboard(userId, roles);
     }
 }
