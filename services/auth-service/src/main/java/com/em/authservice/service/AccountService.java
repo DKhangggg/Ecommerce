@@ -186,4 +186,11 @@ public class AccountService implements UserDetailsService {
 
     }
 
+    public long countAllAccounts() {
+        return accountRepo.countAllAccounts();
+    }
+
+    public long countSellerAccounts() {
+        return accountRepo.countSellerAccounts();
+    }
 }

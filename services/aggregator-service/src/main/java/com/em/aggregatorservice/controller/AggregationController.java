@@ -4,6 +4,7 @@ import com.em.aggregatorservice.dto.product.HomePageResponse;
 import com.em.aggregatorservice.dto.response.HomePageDataResponse;
 import com.em.aggregatorservice.dto.response.SellerDashboardSummary;
 import com.em.common.dto.response.ApiResponse;
+import com.em.common.dto.admin.AdminOverviewResponse;
 import com.em.common.dto.inventory.InventoryAggregateResponse;
 import com.em.common.dto.product.ProductDetailWithStockResponse;
 import com.em.aggregatorservice.service.AggregationService;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import com.em.common.dto.admin.AdminProductsSummaryResponse;
+import com.em.common.dto.admin.InventoryStockSummaryDto;
 
 @RestController
 @AllArgsConstructor
@@ -58,5 +61,23 @@ public class AggregationController {
     ) {
         log.info("Received product detail aggregation request for productId: {}", productId);
         return aggregationService.getProductDetailWithStock(productId);
+    }
+
+    @GetMapping("/admin/overview")
+    public Mono<ApiResponse<AdminOverviewResponse>> getAdminOverview() {
+        log.info("Received admin overview aggregation api request");
+        return aggregationService.getAdminOverview();
+    }
+
+    @GetMapping("/admin/products-summary")
+    public Mono<ApiResponse<AdminProductsSummaryResponse>> getAdminProductsSummary() {
+        log.info("Received admin products-summary aggregation api request");
+        return aggregationService.getAdminProductsSummary();
+    }
+
+    @GetMapping("/admin/inventory-summary")
+    public Mono<ApiResponse<InventoryStockSummaryDto>> getAdminInventorySummary() {
+        log.info("Received admin inventory-summary aggregation api request");
+        return aggregationService.getAdminInventorySummary();
     }
 }

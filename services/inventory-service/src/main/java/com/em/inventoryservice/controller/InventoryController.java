@@ -1,5 +1,7 @@
 package com.em.inventoryservice.controller;
 
+import com.em.common.dto.admin.CountResponse;
+import com.em.common.dto.admin.InventoryStockSummaryDto;
 import com.em.inventoryservice.model.Inventory;
 import com.em.inventoryservice.service.InventoryService;
 import lombok.AllArgsConstructor;
@@ -53,5 +55,17 @@ public class InventoryController {
                     return ResponseEntity.ok(available);
                 })
                 .orElseGet(() -> ResponseEntity.ok(0));
+    }
+
+    @GetMapping("/internal/admin/count")
+    public ResponseEntity<CountResponse> countAllInventory() {
+        long count = inventoryService.countAllInventory();
+        return ResponseEntity.ok(CountResponse.builder().count(count).build());
+    }
+
+    @GetMapping("/internal/admin/stock-summary")
+    public ResponseEntity<InventoryStockSummaryDto> getAdminStockSummary() {
+        InventoryStockSummaryDto summary = inventoryService.getStockSummary();
+        return ResponseEntity.ok(summary);
     }
 }

@@ -1,6 +1,7 @@
 package com.em.aggregatorservice.client;
 
 import com.em.aggregatorservice.dto.product.HomePageResponse;
+import com.em.common.dto.admin.AdminProductsSummaryResponse;
 import com.em.common.dto.product.ProductResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -59,5 +60,20 @@ public class ProductServiceClient {
                 .retrieve()
                 .bodyToMono(new org.springframework.core.ParameterizedTypeReference<com.em.common.dto.response.ApiResponse<ProductResponse>>() {})
                 .map(api -> api.getData());
+    }
+
+    public Mono<Long> getTotalProducts() {
+        return this.webClient.get()
+                .uri("/product/internal/admin/count")
+                .retrieve()
+                .bodyToMono(com.em.common.dto.admin.CountResponse.class)
+                .map(com.em.common.dto.admin.CountResponse::getCount);
+    }
+
+    public Mono<AdminProductsSummaryResponse> getAdminProductsSummary() {
+        return this.webClient.get()
+                .uri("/product/internal/admin/products-summary")
+                .retrieve()
+                .bodyToMono(AdminProductsSummaryResponse.class);
     }
 }

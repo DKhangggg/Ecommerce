@@ -14,9 +14,18 @@ import com.em.productservice.exception.CategoryNotFoundException;
 import com.em.productservice.exception.DuplicateProductException;
 import com.em.productservice.exception.InvalidProductDataException;
 import com.em.productservice.exception.ProductNotFoundException;
+import com.em.common.dto.admin.AdminProductsSummaryResponse;
+import com.em.common.dto.admin.CategoryProductCountDto;
+import com.em.common.dto.admin.ProductStatusCountDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
+import org.bson.Document;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -34,6 +43,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final EventPublisherService eventPublisher;
+    private final MongoTemplate mongoTemplate;
 
     public List<ProductResponse> getAllProducts() {
         log.info("Fetching all products from database...");
@@ -305,6 +315,59 @@ public class ProductService {
                     return true;
                 })
                 .map(this::mapToProductResponse)
+                .toList();
+    }
+
+    public long countAllProducts() {
+        return productRepository.count();
+    }
+
+    public AdminProductsSummaryResponse getAdminProductsSummary() {
+        List<ProductStatusCountDto> byStatus = countByAvailability();
+        List<CategoryProductCountDto> byCategory = countByPrimaryCategory();
+        return AdminProductsSummaryResponse.builder()
+                .byStatus(byStatus)
+                .byCategory(byCategory)
+                .build();
+    }
+
+    private List<ProductStatusCountDto> countByAvailability() {
+        GroupOperation group = Aggregation.group("isAvailable").count().as("count");
+        ProjectionOperation project = Aggregation.project("count")
+                .and("_id").as("available");
+        Aggregation agg = Aggregation.newAggregation(group, project);
+
+        AggregationResults<Document> results =
+                mongoTemplate.aggregate(agg, "products", Document.class);
+
+        return results.getMappedResults().stream()
+                .map(doc -> {
+                    Boolean avail = doc.getBoolean("available");
+                    String status = Boolean.TRUE.equals(avail) ? "AVAILABLE" : "UNAVAILABLE";
+                    long count = doc.getLong("count");
+                    return ProductStatusCountDto.builder()
+                            .status(status)
+                            .count(count)
+                            .build();
+                })
+                .toList();
+    }
+
+    private List<CategoryProductCountDto> countByPrimaryCategory() {
+        GroupOperation group = Aggregation.group("primaryCategoryName").count().as("count");
+        ProjectionOperation project = Aggregation.project("count")
+                .and("_id").as("categoryName");
+        Aggregation agg = Aggregation.newAggregation(group, project);
+
+        AggregationResults<Document> results =
+                mongoTemplate.aggregate(agg, "products", Document.class);
+
+        return results.getMappedResults().stream()
+                .map(doc -> CategoryProductCountDto.builder()
+                        .categoryId(null)
+                        .categoryName(doc.getString("categoryName"))
+                        .count(doc.getLong("count"))
+                        .build())
                 .toList();
     }
 }

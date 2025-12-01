@@ -1,5 +1,6 @@
 package com.em.authservice.controller;
 
+import com.em.common.dto.admin.CountResponse;
 import com.em.common.dto.auth.LoginRequest;
 import com.em.common.dto.auth.RegisterRequest;
 import com.em.common.dto.auth.TokenValidationRequest;
@@ -14,17 +15,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
 @AllArgsConstructor
+@RequestMapping
 public class AuthController {
 
-    final private AccountService accountService;
+    private final AccountService accountService;
 
     @Autowired
     private JwtService jwtService;
@@ -60,5 +59,17 @@ public class AuthController {
     public ResponseEntity<ApiResponse<?>> validateToken(@Valid @RequestBody TokenValidationRequest request) {
         TokenValidResponse response = accountService.introspectToken(request.getToken());
         return ResponseEntity.ok(ApiResponse.success("Token validation successful", response));
+    }
+
+    @GetMapping("/internal/admin/user/count")
+    public ResponseEntity<CountResponse> countAllUsers() {
+        long count = accountService.countAllAccounts();
+        return ResponseEntity.ok(CountResponse.builder().count(count).build());
+    }
+
+    @GetMapping("/internal/admin/user/count-sellers")
+    public ResponseEntity<CountResponse> countSellers() {
+        long count = accountService.countSellerAccounts();
+        return ResponseEntity.ok(CountResponse.builder().count(count).build());
     }
 }

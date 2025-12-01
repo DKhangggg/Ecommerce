@@ -59,17 +59,28 @@ Optional:
 
 ## 3. Admin Use Cases & Required APIs (High-Level)
 
-Admin-focused aggregation & stats are still not implemented.
+Admin-focused aggregation & stats:
 
-Suggested aggregator admin endpoints:
-- ⏳ `GET /api/private/aggregate/admin/overview` – total users, sellers, products, inventory items.
-- ⏳ `GET /api/private/aggregate/admin/products-summary` – stats by category/status.
-- ⏳ `GET /api/private/aggregate/admin/inventory-summary` – stock levels, out-of-stock counts.
+**Aggregator admin endpoints:**
+- ✅ `GET /api/private/aggregate/admin/overview` – total users, sellers, products, inventory items.
+- ✅ `GET /api/private/aggregate/admin/products-summary` – stats by availability (AVAILABLE/UNAVAILABLE) and primary category.
+- ✅ `GET /api/private/aggregate/admin/inventory-summary` – stock levels, in/low/out-of-stock counts.
 
-Would require new admin endpoints in:
-- user-service – counts by role.
-- product-service – product counts.
-- inventory-service – inventory counts and stock stats.
+Implemented supporting internal admin endpoints:
+- **auth-service**
+  - ✅ `GET /internal/admin/user/count` – total accounts.
+  - ✅ `GET /internal/admin/user/count-sellers` – total accounts having `ROLE_SELLER`.
+- **product-service**
+  - ✅ `GET /product/internal/admin/count` – total products.
+  - ✅ `GET /product/internal/admin/products-summary` – aggregated counts by availability and category (Mongo aggregation).
+- **inventory-service**
+  - ✅ `GET /inventory/internal/admin/count` – total inventory records.
+  - ✅ `GET /inventory/internal/admin/stock-summary` – aggregated inventory stock summary (`InventoryStockSummaryDto`).
+
+Still to implement for richer analytics:
+- user-service – counts by role (if needed beyond auth-service roles).
+- product-service – product counts by more granular status (if you introduce a dedicated status field).
+- inventory-service – more detailed stock stats/groupings, if frontend needs dashboards beyond the current summary.
 
 ---
 
@@ -123,7 +134,7 @@ Not yet implemented, but recommended for full ecommerce:
 Easier → Harder
 
 1. 🟡 **Improve `/shop` filters & paging**
-   - Already have basic filters; optimize Mongo queries and add total count/total pages to response.
+   - Already have filters backed by Mongo queries for category/price; still can add total count/total pages in response.
 
 2. ✅ **Aggregator product detail with stock**
    - Done: `/api/public/aggregate/product/{id}`.
@@ -134,8 +145,8 @@ Easier → Harder
 4. ⏳ **Aggregator seller products overview**
    - New endpoint to list seller products + inventory info.
 
-5. ⏳ **User profile & addresses (user-service)**
-   - Add `GET/PUT /api/private/user/profile`, `GET/POST/PUT/DELETE /api/private/user/addresses`.
+5. ✅ **User profile & addresses (user-service)**
+   - Implemented: `GET/PUT /api/private/user/profile`, `GET/POST/PUT/DELETE /api/private/user/addresses`.
 
 6. ⏳ **Cart service**
    - Implement basic CRUD for cart items.
@@ -143,5 +154,5 @@ Easier → Harder
 7. ⏳ **Order service**
    - Implement order placement and listing.
 
-8. ⏳ **Admin analytics (aggregator + services)**
-   - Create admin overview & stats endpoints.
+8. ✅ **Admin analytics (aggregator + services)**
+   - Admin overview, products-summary, and inventory-summary implemented end-to-end.

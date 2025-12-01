@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+import com.em.common.dto.admin.InventoryStockSummaryDto;
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -109,5 +111,30 @@ public class InventoryService {
     public java.util.Optional<Inventory> findByProductId(String productId) {
         log.info("Looking up inventory by productId: {}", productId);
         return inventoryRepo.findByProductId(productId);
+    }
+
+    public long countAllInventory() {
+        return inventoryRepo.count();
+    }
+
+    public InventoryStockSummaryDto getStockSummary() {
+        List<Inventory> all = inventoryRepo.findAll();
+
+        long totalItems = all.size();
+        long totalQuantity = all.stream().mapToLong(Inventory::getQuantity).sum();
+        long totalReserved = all.stream().mapToLong(Inventory::getReserved).sum();
+
+        long inStock = all.stream().filter(inv -> inv.getStatus() == STATUS.IN_STOCK).count();
+        long lowStock = all.stream().filter(inv -> inv.getStatus() == STATUS.LOW_STOCK).count();
+        long outOfStock = all.stream().filter(inv -> inv.getStatus() == STATUS.OUT_OF_STOCK).count();
+
+        return InventoryStockSummaryDto.builder()
+                .totalInventoryItems(totalItems)
+                .totalQuantity(totalQuantity)
+                .totalReserved(totalReserved)
+                .inStockCount(inStock)
+                .lowStockCount(lowStock)
+                .outOfStockCount(outOfStock)
+                .build();
     }
 }

@@ -1,16 +1,20 @@
 package com.em.aggregatorservice.service;
 
+import com.em.aggregatorservice.client.AuthServiceClient;
 import com.em.aggregatorservice.client.InventoryServiceClient;
 import com.em.aggregatorservice.client.ProductServiceClient;
 import com.em.aggregatorservice.dto.product.HomePageResponse;
 import com.em.aggregatorservice.dto.response.HomePageDataResponse;
 import com.em.aggregatorservice.dto.response.SellerDashboardSummary;
+import com.em.common.dto.admin.AdminOverviewResponse;
+import com.em.common.dto.admin.AdminProductsSummaryResponse;
 import com.em.common.dto.response.ApiResponse;
 import com.em.common.dto.inventory.AggregatedTransactionResponse;
 import com.em.common.dto.inventory.InventoryAggregateResponse;
 import com.em.common.dto.inventory.Inventory;
 import com.em.common.dto.product.ProductResponse;
 import com.em.common.dto.product.ProductDetailWithStockResponse;
+import com.em.common.dto.admin.InventoryStockSummaryDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,7 @@ public class AggregationService {
 
     private final InventoryServiceClient inventoryService;
     private final ProductServiceClient productService;
+    private final AuthServiceClient authServiceClient;
 
     public Mono<ApiResponse<List<InventoryAggregateResponse>>> aggregateInventory(String sellerId, String roles) {
 
@@ -239,5 +244,33 @@ public class AggregationService {
                             return ApiResponse.success("Product detail fetched successfully", dto);
                         })
                 );
+    }
+
+    public Mono<ApiResponse<AdminOverviewResponse>> getAdminOverview() {
+        Mono<Long> totalUsersMono = authServiceClient.getTotalUsers();
+        Mono<Long> totalSellersMono = authServiceClient.getTotalSellers();
+        Mono<Long> totalProductsMono = productService.getTotalProducts();
+        Mono<Long> totalInventoryMono = inventoryService.getTotalInventoryItems();
+
+        return Mono.zip(totalUsersMono, totalSellersMono, totalProductsMono, totalInventoryMono)
+                .map(tuple -> {
+                    AdminOverviewResponse overview = AdminOverviewResponse.builder()
+                            .totalUsers(tuple.getT1())
+                            .totalSellers(tuple.getT2())
+                            .totalProducts(tuple.getT3())
+                            .totalInventoryItems(tuple.getT4())
+                            .build();
+                    return ApiResponse.success("Admin overview fetched successfully", overview);
+                });
+    }
+
+    public Mono<ApiResponse<AdminProductsSummaryResponse>> getAdminProductsSummary() {
+        return productService.getAdminProductsSummary()
+                .map(summary -> ApiResponse.success("Admin products summary fetched successfully", summary));
+    }
+
+    public Mono<ApiResponse<InventoryStockSummaryDto>> getAdminInventorySummary() {
+        return inventoryService.getAdminStockSummary()
+                .map(summary -> ApiResponse.success("Admin inventory summary fetched successfully", summary));
     }
 }

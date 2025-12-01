@@ -1,5 +1,6 @@
 package com.em.aggregatorservice.client;
 
+import com.em.common.dto.admin.InventoryStockSummaryDto;
 import com.em.common.dto.inventory.Inventory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -58,5 +59,20 @@ public class InventoryServiceClient {
                     log.error("<= (InventoryServiceClient) ERROR fetching stock for productId {}: {}", productId, error.getMessage());
                     return Mono.just(0);
                 });
+    }
+
+    public Mono<Long> getTotalInventoryItems() {
+        return this.webClient.get()
+                .uri("/inventory/internal/admin/count")
+                .retrieve()
+                .bodyToMono(com.em.common.dto.admin.CountResponse.class)
+                .map(com.em.common.dto.admin.CountResponse::getCount);
+    }
+
+    public Mono<InventoryStockSummaryDto> getAdminStockSummary() {
+        return this.webClient.get()
+                .uri("/inventory/internal/admin/stock-summary")
+                .retrieve()
+                .bodyToMono(InventoryStockSummaryDto.class);
     }
 }

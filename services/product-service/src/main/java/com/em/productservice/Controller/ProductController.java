@@ -6,6 +6,8 @@ import com.em.productservice.Service.ProductService;
 import com.em.productservice.dto.request.ProductRequest;
 import com.em.common.dto.product.ProductResponse;
 import com.em.productservice.dto.response.HomePageResponse;
+import com.em.common.dto.admin.CountResponse;
+import com.em.common.dto.admin.AdminProductsSummaryResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -92,4 +94,15 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    @GetMapping("/internal/admin/count")
+    public ResponseEntity<CountResponse> countAllProducts() {
+        long count = productService.countAllProducts();
+        return ResponseEntity.ok(CountResponse.builder().count(count).build());
+    }
+
+    @GetMapping("/internal/admin/products-summary")
+    public ResponseEntity<AdminProductsSummaryResponse> getAdminProductsSummary() {
+        AdminProductsSummaryResponse summary = productService.getAdminProductsSummary();
+        return ResponseEntity.ok(summary);
+    }
 }
