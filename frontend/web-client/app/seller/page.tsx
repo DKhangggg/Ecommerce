@@ -1,6 +1,11 @@
 import React from "react";
+import { getSellerDashboardSummary } from "@/lib/api";
+import { SellerDashboardSummary } from "@/types/api";
 
-const Dashboardpage = () => {
+const Dashboardpage = async () => {
+  const token = localStorage.get("accessToken")?.value || "";
+  const summary = (await getSellerDashboardSummary(token)) as SellerDashboardSummary | null;
+
   return (
     <div className="p-4 md:p-8 bg-background min-h-screen">
       {/* 1. TIÊU ĐỀ CHÍNH */}
@@ -10,40 +15,43 @@ const Dashboardpage = () => {
 
       {/* 2. HÀNG THẺ THỐNG KÊ (STAT CARDS) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {/* Doanh thu hôm nay - placeholder cho đến khi có order-service */}
         <div className="bg-card p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-l-4 border-primary">
           <p className="text-sm font-medium text-muted-foreground flex justify-between items-center">
             Doanh thu hôm nay
           </p>
           <h2 className="text-4xl font-bold text-card-foreground mt-1">
-            45.500.000₫
+            0₫
           </h2>
-
           <p className="text-xs text-chart-1 mt-2 font-semibold">
-            +12% so với hôm qua
+            (Chưa kết nối order-service)
           </p>
         </div>
 
-        {/* Box 2: Đơn hàng */}
+        {/* Đơn hàng cần xử lý - placeholder */}
         <div className="bg-card p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-l-4 border-secondary">
           <p className="text-sm font-medium text-muted-foreground flex justify-between items-center">
             Đơn hàng cần xử lý
           </p>
-          <h2 className="text-4xl font-bold text-card-foreground mt-1">254</h2>
+          <h2 className="text-4xl font-bold text-card-foreground mt-1">0</h2>
           <p className="text-xs text-destructive mt-2 font-semibold">
-            5 đơn bị hủy tuần này
+            (Sẽ cập nhật khi có order-service)
           </p>
         </div>
 
-        {/* Box 3: Sản phẩm */}
+        {/* Sản phẩm đang bán - dùng dữ liệu thật từ aggregator */}
         <div className="bg-card p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-l-4 border-accent">
           <p className="text-sm font-medium text-muted-foreground flex justify-between items-center">
             Sản phẩm đang bán
           </p>
           <h2 className="text-4xl font-bold text-card-foreground mt-1">
-            1.234
+            {summary?.totalProducts ?? 0}
           </h2>
           <p className="text-xs text-muted-foreground mt-2 font-semibold">
-            Cần cập nhật 15 sản phẩm
+            Tổng tồn kho: {summary?.totalQuantity ?? 0}
+          </p>
+          <p className="text-xs text-destructive mt-1 font-semibold">
+            {summary?.lowStockCount ?? 0} sản phẩm sắp hết hàng
           </p>
         </div>
       </div>

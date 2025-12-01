@@ -3,64 +3,6 @@
   <component name="CopilotDiffPersistence">
     <option name="pendingDiffs">
       <map>
-        <entry key="$PROJECT_DIR$/common/common-data/src/main/java/com/em/common/dto/cart/CartItemDto.java">
-          <value>
-            <PendingDiffInfo>
-              <option name="filePath" value="$PROJECT_DIR$/common/common-data/src/main/java/com/em/common/dto/cart/CartItemDto.java" />
-              <option name="originalContent" value="}&#10;    private Integer quantity;&#10;    private double price;&#10;    private String imageUrl;&#10;    private String productName;&#10;    private String productId;&#10;&#10;public class CartItemDto {&#10;@AllArgsConstructor&#10;@NoArgsConstructor&#10;@Builder&#10;@Data&#10;&#10;import lombok.NoArgsConstructor;&#10;import lombok.Data;&#10;import lombok.Builder;&#10;import lombok.AllArgsConstructor;&#10;&#10;&#10;" />
-              <option name="updatedContent" value="package com.em.common.dto.cart;&#10;&#10;import lombok.AllArgsConstructor;&#10;import lombok.Builder;&#10;import lombok.Data;&#10;import lombok.NoArgsConstructor;&#10;&#10;@Data&#10;@Builder&#10;@NoArgsConstructor&#10;@AllArgsConstructor&#10;public class CartItemDto {&#10;&#10;    private String productId;&#10;    private String productName;&#10;    private String imageUrl;&#10;    private double price;&#10;    private Integer quantity;&#10;}" />
-            </PendingDiffInfo>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/common/common-data/src/main/java/com/em/common/dto/cart/CartResponse.java">
-          <value>
-            <PendingDiffInfo>
-              <option name="filePath" value="$PROJECT_DIR$/common/common-data/src/main/java/com/em/common/dto/cart/CartResponse.java" />
-              <option name="updatedContent" value="package com.em.common.dto.cart;&#10;&#10;import lombok.AllArgsConstructor;&#10;import lombok.Builder;&#10;import lombok.Data;&#10;import lombok.NoArgsConstructor;&#10;&#10;import java.util.List;&#10;&#10;@Data&#10;@Builder&#10;@NoArgsConstructor&#10;@AllArgsConstructor&#10;public class CartResponse {&#10;&#10;    private String userId;&#10;    private List&lt;CartItemDto&gt; items;&#10;    private double totalPrice;&#10;}&#10;" />
-            </PendingDiffInfo>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/common/common-data/src/main/java/com/em/common/dto/favorite/FavoriteItemDto.java">
-          <value>
-            <PendingDiffInfo>
-              <option name="filePath" value="$PROJECT_DIR$/common/common-data/src/main/java/com/em/common/dto/favorite/FavoriteItemDto.java" />
-              <option name="originalContent" value="}&#10;    private double price;&#10;    private String imageUrl;&#10;    private String productName;&#10;    private String productId;&#10;&#10;public class FavoriteItemDto {&#10;@AllArgsConstructor&#10;@NoArgsConstructor&#10;@Builder&#10;@Data&#10;&#10;import lombok.NoArgsConstructor;&#10;import lombok.Data;&#10;import lombok.Builder;&#10;import lombok.AllArgsConstructor;&#10;&#10;&#10;" />
-              <option name="updatedContent" value="package com.em.common.dto.favorite;&#10;&#10;import lombok.AllArgsConstructor;&#10;import lombok.Builder;&#10;import lombok.Data;&#10;import lombok.NoArgsConstructor;&#10;&#10;@Data&#10;@Builder&#10;@NoArgsConstructor&#10;@AllArgsConstructor&#10;public class FavoriteItemDto {&#10;&#10;    private String productId;&#10;    private String productName;&#10;    private String imageUrl;&#10;    private double price;&#10;}" />
-            </PendingDiffInfo>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/common/common-data/src/main/java/com/em/common/dto/order/OrderItemDto.java">
-          <value>
-            <PendingDiffInfo>
-              <option name="filePath" value="$PROJECT_DIR$/common/common-data/src/main/java/com/em/common/dto/order/OrderItemDto.java" />
-              <option name="updatedContent" value="package com.em.common.dto.order;&#10;&#10;import lombok.AllArgsConstructor;&#10;import lombok.Builder;&#10;import lombok.Data;&#10;import lombok.NoArgsConstructor;&#10;&#10;@Data&#10;@Builder&#10;@NoArgsConstructor&#10;@AllArgsConstructor&#10;public class OrderItemDto {&#10;&#10;    private String productId;&#10;    private String productName;&#10;    private double price;&#10;    private Integer quantity;&#10;}&#10;" />
-            </PendingDiffInfo>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/common/common-data/src/main/java/com/em/common/dto/order/OrderRequest.java">
-          <value>
-            <PendingDiffInfo>
-              <option name="filePath" value="$PROJECT_DIR$/common/common-data/src/main/java/com/em/common/dto/order/OrderRequest.java" />
-              <option name="updatedContent" value="package com.em.common.dto.order;&#10;&#10;import lombok.AllArgsConstructor;&#10;import lombok.Builder;&#10;import lombok.Data;&#10;import lombok.NoArgsConstructor;&#10;&#10;import java.util.List;&#10;&#10;@Data&#10;@Builder&#10;@NoArgsConstructor&#10;@AllArgsConstructor&#10;public class OrderRequest {&#10;&#10;    private String userId;&#10;    private List&lt;OrderItemDto&gt; items;&#10;    private String addressId;&#10;    private String paymentMethod;&#10;}&#10;" />
-            </PendingDiffInfo>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/common/common-data/src/main/java/com/em/common/dto/order/OrderResponse.java">
-          <value>
-            <PendingDiffInfo>
-              <option name="filePath" value="$PROJECT_DIR$/common/common-data/src/main/java/com/em/common/dto/order/OrderResponse.java" />
-              <option name="updatedContent" value="package com.em.common.dto.order;&#10;&#10;import lombok.AllArgsConstructor;&#10;import lombok.Builder;&#10;import lombok.Data;&#10;import lombok.NoArgsConstructor;&#10;&#10;import java.time.Instant;&#10;import java.util.List;&#10;&#10;@Data&#10;@Builder&#10;@NoArgsConstructor&#10;@AllArgsConstructor&#10;public class OrderResponse {&#10;&#10;    private String id;&#10;    private String userId;&#10;    private List&lt;OrderItemDto&gt; items;&#10;    private double totalPrice;&#10;    private String status;&#10;    private Instant createdAt;&#10;}&#10;" />
-            </PendingDiffInfo>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/common/common-data/src/main/java/com/em/common/dto/user/UserProfileResponse.java">
-          <value>
-            <PendingDiffInfo>
-              <option name="filePath" value="$PROJECT_DIR$/common/common-data/src/main/java/com/em/common/dto/user/UserProfileResponse.java" />
-              <option name="updatedContent" value="package com.em.common.dto.user;&#10;&#10;import lombok.AllArgsConstructor;&#10;import lombok.Builder;&#10;import lombok.Data;&#10;import lombok.NoArgsConstructor;&#10;&#10;import java.time.LocalDate;&#10;import java.time.LocalDateTime;&#10;&#10;@Data&#10;@Builder&#10;@NoArgsConstructor&#10;@AllArgsConstructor&#10;public class UserProfileResponse {&#10;&#10;    private String id;&#10;    private String firstName;&#10;    private String lastName;&#10;    private String phoneNumber;&#10;    private String gender;&#10;    private LocalDate dateOfBirth;&#10;    private String avatarUrl;&#10;    private LocalDateTime createdAt;&#10;    private LocalDateTime updatedAt;&#10;}&#10;" />
-            </PendingDiffInfo>
-          </value>
-        </entry>
         <entry key="$PROJECT_DIR$/frontend/web-client/src/components/chat/ChatSidebar.tsx">
           <value>
             <PendingDiffInfo>

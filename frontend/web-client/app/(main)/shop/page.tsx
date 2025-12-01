@@ -7,6 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useCallback, useMemo, useEffect } from "react";
+import { getShopProducts } from "@/lib/api";
+import { Product } from "@/components/Product/ProductList";
+import { ProductResponse } from "@/types/api";
 
 const CategoryFilterOptions = [
   { value: "cat-1", label: "Quần áo & Thời trang", slug: "quan-ao-thoi-trang" },
@@ -48,10 +51,24 @@ const CategoryFilterItem: React.FC<CategoryItemProps> = ({
   </div>
 );
 
+function mapBackendProductToUI(p: ProductResponse): Product {
+  return {
+    id: p.id,
+    name: p.name,
+    price: p.price.toFixed(2),
+    imageSrc: p.imageUrls?.[0] ?? "/placeholder.png",
+    imageAlt: p.name,
+    slug: p.slug ?? p.id,
+  };
+}
+
 const ShopPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const categoriesMap = useMemo(() => {
     const mapById: Record<string, string> = {};
@@ -135,6 +152,25 @@ const ShopPage = () => {
     (inputFilters.minPrice || inputFilters.maxPrice ? 1 : 0) +
     (selectedCategories.length > 0 ? 1 : 0);
 
+  useEffect(() => {
+    async function loadProducts() {
+      setLoading(true);
+      setError(null);
+      try {
+        const params = new URLSearchParams(searchParams.toString());
+        const backendProducts = await getShopProducts(params);
+        setProducts(backendProducts.map(mapBackendProductToUI));
+      } catch (e) {
+        setError("Không tải được danh sách sản phẩm");
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadProducts();
+  }, [searchParams]);
+
   return (
     <div>
       <div className="flex items-center justify-evenly gap-4 p-4">
@@ -197,7 +233,19 @@ const ShopPage = () => {
         </div>
       </FilterModal>
 
-      <ProductList />
+      {loading && (
+        <div className="p-4 text-center text-sm text-muted-foreground">
+          Đang tải sản phẩm...
+        </div>
+      )}
+
+      {!loading && error && (
+        <div className="p-4 text-center text-sm text-red-500">{error}</div>
+      )}
+
+      {!loading && !error && (
+        <ProductList title="Kết quả tìm kiếm" products={products} />
+      )}
     </div>
   );
 };

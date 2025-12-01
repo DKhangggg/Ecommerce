@@ -16,6 +16,8 @@ interface Variant {
 
 interface ProductDetailClientProps {
   product: Product;
+    stockQuantity: number;
+    stockStatus: string;
 }
 
 export default function ProductDetailClient({

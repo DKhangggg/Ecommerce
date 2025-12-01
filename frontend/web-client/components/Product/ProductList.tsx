@@ -16,9 +16,9 @@ interface Variant {
 }
 
 export interface Product {
-  id: number;
+  id: string;
   name: string;
-  price: number;
+  price: string;
   imageSrc: string;
   color?: string;
   href?: string;

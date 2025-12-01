@@ -1,6 +1,8 @@
 import Container from "@/components/Container";
 import HomeBanner from "@/components/homeBanner";
 import ProductList, { Product } from "@/components/Product/ProductList";
+import { getHomepageData } from "@/lib/api";
+import { ProductResponse } from "@/types/api";
 
 interface HomeSection {
   id: string;
@@ -8,104 +10,35 @@ interface HomeSection {
   products: Product[];
 }
 
+function mapBackendProductToUI(p: ProductResponse): Product {
+  return {
+    id: p.id,
+    name: p.name,
+    price: p.price.toFixed(2),
+    imageSrc: p.imageUrls?.[0] ?? "/placeholder.png",
+    imageAlt: p.name,
+    slug: p.slug ?? p.id,
+  };
+}
+
 async function getHomeSections(): Promise<HomeSection[]> {
+  const home = await getHomepageData();
+
   return [
     {
-      id: "sec_1",
+      id: "featured",
       title: "Sản Phẩm Nổi Bật (Hot)",
-      products: [
-        {
-          id: 1,
-          name: "Tai nghe Bluetooth cao cấp",
-          price: "150.00",
-          imageSrc: "https://placehold.co/300x300/E8D59E/663333?text=Headphone",
-          imageAlt: "Tai nghe xịn",
-          slug: "tai-nghe-bluetooth-cao-cap",
-        },
-        {
-          id: 2,
-          name: "Bàn phím cơ không dây",
-          price: "120.50",
-          imageSrc: "https://placehold.co/300x300/D9BBB0/663333?text=Keyboard",
-          imageAlt: "Bàn phím cơ",
-          slug: "ban-phim-co-khong-day",
-        },
-        {
-          id: 3,
-          name: "Chuột quang chơi game RGB",
-          price: "75.00",
-          imageSrc: "https://placehold.co/300x300/AD9C8E/F6F6F6?text=Mouse",
-          imageAlt: "Chuột gaming",
-          slug: "chuot-quang-choi-game-rgb",
-        },
-        {
-          id: 4,
-          name: "Màn hình cong 27-inch 4K",
-          price: "450.00",
-          imageSrc: "https://placehold.co/300x300/996600/FFFFFF?text=Monitor",
-          imageAlt: "Màn hình 4K",
-          slug: "man-hinh-cong-27-inch-4k",
-        },
-        {
-          id: 5,
-          name: "Webcam Full HD 1080p",
-          price: "45.00",
-          imageSrc: "https://placehold.co/300x300/CC3300/FFFFFF?text=Webcam",
-          imageAlt: "Webcam",
-          slug: "webcam-full-hd-1080p",
-        },
-      ],
+      products: (home.featuredProducts ?? []).map(mapBackendProductToUI),
     },
     {
-      id: "sec_2",
+      id: "cheap",
       title: "Xả kho giá rẻ",
-      products: [
-        {
-          id: 1,
-          name: "Tai nghe Bluetooth cao cấp",
-          price: "150.00",
-          imageSrc: "https://placehold.co/300x300/E8D59E/663333?text=Headphone",
-          imageAlt: "Tai nghe xịn",
-          slug: "tai-nghe-bluetooth-cao-cap",
-        },
-        {
-          id: 2,
-          name: "Bàn phím cơ không dây",
-          price: "120.50",
-          imageSrc: "https://placehold.co/300x300/D9BBB0/663333?text=Keyboard",
-          imageAlt: "Bàn phím cơ",
-          slug: "ban-phim-co-khong-day",
-        },
-        {
-          id: 3,
-          name: "Chuột quang chơi game RGB",
-          price: "75.00",
-          imageSrc: "https://placehold.co/300x300/AD9C8E/F6F6F6?text=Mouse",
-          imageAlt: "Chuột gaming",
-          slug: "chuot-quang-choi-game-rgb",
-        },
-        {
-          id: 4,
-          name: "Màn hình cong 27-inch 4K",
-          price: "450.00",
-          imageSrc: "https://placehold.co/300x300/996600/FFFFFF?text=Monitor",
-          imageAlt: "Màn hình 4K",
-          slug: "man-hinh-cong-27-inch-4k",
-        },
-        {
-          id: 5,
-          name: "Webcam Full HD 1080p",
-          price: "45.00",
-          imageSrc: "https://placehold.co/300x300/CC3300/FFFFFF?text=Webcam",
-          imageAlt: "Webcam",
-          slug: "webcam-full-hd-1080p",
-        },
-      ],
+      products: (home.newArrivals ?? []).map(mapBackendProductToUI),
     },
     {
-      id: "sec_3",
+      id: "for-you",
       title: "Dành riêng cho bạn",
-      products: [],
+      products: (home.bestSellers ?? []).map(mapBackendProductToUI),
     },
   ];
 }

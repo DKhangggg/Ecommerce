@@ -2,38 +2,48 @@ import Container from "@/components/Container";
 
 import { Product } from "@/components/Product/ProductList";
 import ProductDetailClient from "@/components/ProductDetailClient";
-import { MOCK_PRODUCTS } from "@/constants/product";
+import { getProductDetailWithStock } from "@/lib/api";
+import { ProductDetailWithStockResponse, ProductResponse } from "@/types/api";
 import Image from "next/image";
 
 type Props = {
   params: {
+    id: string;
     slug: string;
   };
 };
 
-async function getProductDetails(slug: string): Promise<Product | undefined> {
-  const displaySlug = slug ? slug.toUpperCase() : "Không rõ";
-  const product = MOCK_PRODUCTS.find((p) => p.slug === slug);
-  return product;
+function mapBackendProductToUI(p: ProductResponse): Product {
+  return {
+    id: p.id,
+    name: p.name,
+    price: p.price.toFixed(2),
+    imageSrc: p.imageUrls?.[0] ?? "/placeholder.png",
+    imageAlt: p.name,
+    slug: p.slug ?? p.id,
+  };
 }
 
 export default async function ProductDetailPage({ params }: Props) {
-  const { slug } = await params;
-  if (!slug) {
+  const { id } = params;
+  if (!id) {
     return (
       <Container className="bg-brand-1 pt-12">
         <div className="text-red-500">Lỗi: URL không hợp lệ.</div>
       </Container>
     );
   }
-  const product = await getProductDetails(slug);
-  if (!product) {
+
+  const detail = (await getProductDetailWithStock(id)) as ProductDetailWithStockResponse | null;
+  if (!detail) {
     return (
       <Container className="bg-brand-1 pt-12">
         <div>Không tìm thấy sản phẩm</div>
       </Container>
     );
   }
+
+  const product = mapBackendProductToUI(detail.product);
 
   return (
     <Container className="bg-brand-1 pt-12">
@@ -51,8 +61,11 @@ export default async function ProductDetailPage({ params }: Props) {
 
         <div className="flex flex-col gap-4">
           <h1 className="text-4xl font-bold text-brand-6">{product.name}</h1>
-
-          <ProductDetailClient product={product} />
+          <ProductDetailClient
+            product={product}
+            stockQuantity={detail?.stockQuantity??0 }
+            stockStatus={detail.stockStatus}
+          />
         </div>
       </div>
     </Container>
