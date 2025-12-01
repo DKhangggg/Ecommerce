@@ -264,13 +264,35 @@ public class ProductService {
         int pageNumber = page != null && page >= 0 ? page : 0;
         int pageSize = size != null && size > 0 ? size : 20;
 
+        double effectiveMin = minPrice != null ? minPrice : 0d;
+        double effectiveMax = maxPrice != null ? maxPrice : Double.MAX_VALUE;
+
         var pageable = PageRequest.of(pageNumber, pageSize);
         log.info("Fetching products with filters page={} size={} keyword={} categorySlug={} minPrice={} maxPrice={}",
-                pageNumber, pageSize, keyword, categorySlug, minPrice, maxPrice);
+                pageNumber, pageSize, keyword, categorySlug, effectiveMin, effectiveMax);
 
-        // For now, apply filters in memory to keep it simple with MongoRepository.
-        // In future we can replace with custom MongoTemplate queries.
-        List<Product> products = productRepository.findAll(pageable).getContent();
+        // Server-side filtering with Mongo query methods for category + price,
+        // then apply keyword filter in memory (on the page) for simplicity.
+        Page<Product> pageResult;
+        boolean hasCategory = categorySlug != null && !categorySlug.isBlank();
+        boolean hasPriceRange = minPrice != null || maxPrice != null;
+
+        if (hasCategory && hasPriceRange) {
+            pageResult = productRepository.findByPrimaryCategoryNameIgnoreCaseAndPriceBetween(
+                    categorySlug,
+                    effectiveMin,
+                    effectiveMax,
+                    pageable
+            );
+        } else if (hasCategory) {
+            pageResult = productRepository.findByPrimaryCategoryNameIgnoreCase(categorySlug, pageable);
+        } else if (hasPriceRange) {
+            pageResult = productRepository.findByPriceBetween(effectiveMin, effectiveMax, pageable);
+        } else {
+            pageResult = productRepository.findAll(pageable);
+        }
+
+        List<Product> products = pageResult.getContent();
 
         return products.stream()
                 .filter(p -> {
@@ -278,16 +300,8 @@ public class ProductService {
                         String kw = keyword.toLowerCase();
                         boolean matchName = p.getName() != null && p.getName().toLowerCase().contains(kw);
                         boolean matchDesc = p.getDescription() != null && p.getDescription().toLowerCase().contains(kw);
-                        if (!matchName && !matchDesc) return false;
+                        return matchName || matchDesc;
                     }
-                    if (categorySlug != null && !categorySlug.isBlank()) {
-                        if (p.getPrimaryCategoryName() == null ||
-                                !p.getPrimaryCategoryName().equalsIgnoreCase(categorySlug)) {
-                            return false;
-                        }
-                    }
-                    if (minPrice != null && p.getPrice() < minPrice) return false;
-                    if (maxPrice != null && p.getPrice() > maxPrice) return false;
                     return true;
                 })
                 .map(this::mapToProductResponse)

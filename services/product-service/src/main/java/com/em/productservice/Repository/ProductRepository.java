@@ -33,4 +33,14 @@ public interface ProductRepository extends MongoRepository<Product, String> {
 
     // 4. Basic paginated find-all for shop
     Page<Product> findAll(Pageable pageable);
+
+    // 5. Filtered by category slug and price range
+    Page<Product> findByPrimaryCategoryNameIgnoreCaseAndPriceBetween(String primaryCategoryName,
+                                                                     double minPrice,
+                                                                     double maxPrice,
+                                                                     Pageable pageable);
+
+    Page<Product> findByPriceBetween(double minPrice, double maxPrice, Pageable pageable);
+
+    Page<Product> findByPrimaryCategoryNameIgnoreCase(String primaryCategoryName, Pageable pageable);
 }
