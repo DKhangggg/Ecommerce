@@ -44,4 +44,19 @@ public class InventoryServiceClient {
         // Tạm thời trả map trống cho enrich homepage; có thể triển khai sau khi có API batch-stock.
         return Mono.just(Map.of());
     }
+
+    public Mono<Integer> getStockByProductId(String productId) {
+        log.info("=> (InventoryServiceClient) Calling /inventory/stock/{}", productId);
+        return this.webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/inventory/stock/{productId}")
+                        .build(productId))
+                .retrieve()
+                .bodyToMono(Integer.class)
+                .doOnNext(stock -> log.info("<= (InventoryServiceClient) Stock for productId {} is {}", productId, stock))
+                .onErrorResume(error -> {
+                    log.error("<= (InventoryServiceClient) ERROR fetching stock for productId {}: {}", productId, error.getMessage());
+                    return Mono.just(0);
+                });
+    }
 }

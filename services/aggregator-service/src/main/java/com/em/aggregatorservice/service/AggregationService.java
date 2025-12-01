@@ -10,6 +10,7 @@ import com.em.common.dto.inventory.AggregatedTransactionResponse;
 import com.em.common.dto.inventory.InventoryAggregateResponse;
 import com.em.common.dto.inventory.Inventory;
 import com.em.common.dto.product.ProductResponse;
+import com.em.common.dto.product.ProductDetailWithStockResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -219,5 +220,24 @@ public class AggregationService {
             // p.setStockQuantity(stock);
             // p.setStockStatus(stock > 0 ? "IN_STOCK" : "OUT_OF_STOCK");
         });
+    }
+
+    public Mono<ApiResponse<ProductDetailWithStockResponse>> getProductDetailWithStock(String productId) {
+        return productService.getProductById(productId)
+                .flatMap(product -> inventoryService.getStockByProductId(productId)
+                        .map(stock -> {
+                            String status;
+                            if (stock <= 0) status = "OUT_OF_STOCK";
+                            else if (stock < 5) status = "LOW_STOCK";
+                            else status = "IN_STOCK";
+
+                            ProductDetailWithStockResponse dto = ProductDetailWithStockResponse.builder()
+                                    .product(product)
+                                    .stockQuantity(stock)
+                                    .stockStatus(status)
+                                    .build();
+                            return ApiResponse.success("Product detail fetched successfully", dto);
+                        })
+                );
     }
 }

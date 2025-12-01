@@ -27,10 +27,15 @@ public class ProductController {
     @GetMapping()
     public ResponseEntity<ApiResponse<List<ProductResponse>>> getAllProducts(
             @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "size", required = false) Integer size
+            @RequestParam(value = "size", required = false) Integer size,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "category", required = false) String categorySlug,
+            @RequestParam(value = "minPrice", required = false) Double minPrice,
+            @RequestParam(value = "maxPrice", required = false) Double maxPrice
     ) {
-        log.info("Getting products with pagination: page={}, size={}", page, size);
-        List<ProductResponse> products = productService.getAllProducts(page, size);
+        log.info("Getting products with pagination & filters: page={}, size={}, keyword={}, category={}, minPrice={}, maxPrice={}",
+                page, size, keyword, categorySlug, minPrice, maxPrice);
+        List<ProductResponse> products = productService.getAllProducts(page, size, keyword, categorySlug, minPrice, maxPrice);
         return ResponseEntity.ok(ApiResponse.success("Fetched products successfully", products));
     }
 

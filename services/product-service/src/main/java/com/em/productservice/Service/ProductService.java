@@ -258,4 +258,39 @@ public class ProductService {
                 .map(this::mapToProductResponse)
                 .toList();
     }
+
+    public List<ProductResponse> getAllProducts(Integer page, Integer size, String keyword, String categorySlug,
+                                               Double minPrice, Double maxPrice) {
+        int pageNumber = page != null && page >= 0 ? page : 0;
+        int pageSize = size != null && size > 0 ? size : 20;
+
+        var pageable = PageRequest.of(pageNumber, pageSize);
+        log.info("Fetching products with filters page={} size={} keyword={} categorySlug={} minPrice={} maxPrice={}",
+                pageNumber, pageSize, keyword, categorySlug, minPrice, maxPrice);
+
+        // For now, apply filters in memory to keep it simple with MongoRepository.
+        // In future we can replace with custom MongoTemplate queries.
+        List<Product> products = productRepository.findAll(pageable).getContent();
+
+        return products.stream()
+                .filter(p -> {
+                    if (keyword != null && !keyword.isBlank()) {
+                        String kw = keyword.toLowerCase();
+                        boolean matchName = p.getName() != null && p.getName().toLowerCase().contains(kw);
+                        boolean matchDesc = p.getDescription() != null && p.getDescription().toLowerCase().contains(kw);
+                        if (!matchName && !matchDesc) return false;
+                    }
+                    if (categorySlug != null && !categorySlug.isBlank()) {
+                        if (p.getPrimaryCategoryName() == null ||
+                                !p.getPrimaryCategoryName().equalsIgnoreCase(categorySlug)) {
+                            return false;
+                        }
+                    }
+                    if (minPrice != null && p.getPrice() < minPrice) return false;
+                    if (maxPrice != null && p.getPrice() > maxPrice) return false;
+                    return true;
+                })
+                .map(this::mapToProductResponse)
+                .toList();
+    }
 }

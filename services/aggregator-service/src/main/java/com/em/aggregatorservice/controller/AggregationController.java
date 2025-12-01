@@ -5,10 +5,12 @@ import com.em.aggregatorservice.dto.response.HomePageDataResponse;
 import com.em.aggregatorservice.dto.response.SellerDashboardSummary;
 import com.em.common.dto.response.ApiResponse;
 import com.em.common.dto.inventory.InventoryAggregateResponse;
+import com.em.common.dto.product.ProductDetailWithStockResponse;
 import com.em.aggregatorservice.service.AggregationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
@@ -48,5 +50,13 @@ public class AggregationController {
                                                                        @RequestHeader("X-Roles") String roles) {
         log.info("Received seller-dashboard aggregation api request for userId: {} with roles: {}", userId, roles);
         return aggregationService.getSellerDashboard(userId, roles);
+    }
+
+    @GetMapping("/product/{id}")
+    public Mono<ApiResponse<ProductDetailWithStockResponse>> getProductDetailWithStock(
+            @PathVariable("id") String productId
+    ) {
+        log.info("Received product detail aggregation request for productId: {}", productId);
+        return aggregationService.getProductDetailWithStock(productId);
     }
 }

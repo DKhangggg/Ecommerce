@@ -43,4 +43,15 @@ public class InventoryController {
         List<Inventory> inventories = inventoryService.findAllBySellerId(sellerId);
         return ResponseEntity.ok(inventories);
     }
+
+    @GetMapping("/stock/{productId}")
+    public ResponseEntity<Integer> getStockByProductId(@PathVariable("productId") String productId) {
+        log.info("Fetching stock for productId: {}", productId);
+        return inventoryService.findByProductId(productId)
+                .map(inv -> {
+                    int available = inv.getQuantity() - inv.getReserved();
+                    return ResponseEntity.ok(available);
+                })
+                .orElseGet(() -> ResponseEntity.ok(0));
+    }
 }

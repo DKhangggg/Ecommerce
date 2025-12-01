@@ -5,6 +5,7 @@ import com.em.common.dto.product.ProductResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -47,5 +48,16 @@ public class ProductServiceClient {
                 .retrieve()
                 .bodyToFlux(ProductResponse.class)
                 .collectList();
+    }
+
+    public Mono<ProductResponse> getProductById(String productId) {
+        log.info("=> (ProductServiceClient) Đang gọi API /product/{}", productId);
+        return this.webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/product/{id}")
+                        .build(productId))
+                .retrieve()
+                .bodyToMono(new org.springframework.core.ParameterizedTypeReference<com.em.common.dto.response.ApiResponse<ProductResponse>>() {})
+                .map(api -> api.getData());
     }
 }

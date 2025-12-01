@@ -105,4 +105,9 @@ public class InventoryService {
         }
         return inventoryRepo.findAllBySellerId(sellerId);
     }
+
+    public java.util.Optional<Inventory> findByProductId(String productId) {
+        log.info("Looking up inventory by productId: {}", productId);
+        return inventoryRepo.findByProductId(productId);
+    }
 }
