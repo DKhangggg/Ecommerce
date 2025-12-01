@@ -25,10 +25,12 @@ public class ProductController {
     //PUBLIC APIS
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<List<ProductResponse>>> getAllProducts() {
-        log.info("Getting all products...");
-        List<ProductResponse> products = productService.getAllProducts();
-        log.info("Found {} products", products.size());
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> getAllProducts(
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "size", required = false) Integer size
+    ) {
+        log.info("Getting products with pagination: page={}, size={}", page, size);
+        List<ProductResponse> products = productService.getAllProducts(page, size);
         return ResponseEntity.ok(ApiResponse.success("Fetched products successfully", products));
     }
 

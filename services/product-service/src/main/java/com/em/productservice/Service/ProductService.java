@@ -244,4 +244,18 @@ public class ProductService {
                  .updatedAt(product.getUpdatedAt())
                  .build()).toList();
     }
+
+    public List<ProductResponse> getAllProducts(Integer page, Integer size) {
+        int pageNumber = page != null && page >= 0 ? page : 0;
+        int pageSize = size != null && size > 0 ? size : 20;
+
+        var pageable = PageRequest.of(pageNumber, pageSize);
+        log.info("Fetching products page={} size={}", pageNumber, pageSize);
+
+        List<Product> products = productRepository.findAll(pageable).getContent();
+
+        return products.stream()
+                .map(this::mapToProductResponse)
+                .toList();
+    }
 }

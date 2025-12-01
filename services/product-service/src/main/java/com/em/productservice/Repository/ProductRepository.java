@@ -1,6 +1,7 @@
 package com.em.productservice.Repository;
 
 import com.em.productservice.Model.Product;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
@@ -21,7 +22,7 @@ public interface ProductRepository extends MongoRepository<Product, String> {
 
     List<Product> findAllByIdIn(List<String> ids);
 
-    //1. Featured
+    // 1. Featured
     List<Product> findByIsFeaturedTrue(Pageable pageable);
 
     // 2. New Arrivals
@@ -29,4 +30,7 @@ public interface ProductRepository extends MongoRepository<Product, String> {
 
     // 3. Most Liked
     List<Product> findByIsAvailableTrueOrderByAverageRatingDesc(Pageable pageable);
+
+    // 4. Basic paginated find-all for shop
+    Page<Product> findAll(Pageable pageable);
 }
